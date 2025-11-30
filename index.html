@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>本地文档管理列表</title>
+    <style>
+        /* 1. 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4; /* 轻微的背景色 */
+        }
+
+        /* 2. 表格容器样式 */
+        .document-table {
+            width: 100%;
+            border-collapse: collapse; /* 消除单元格间距 */
+            background-color: white; /* 表格背景色 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 轻微的阴影效果 */
+        }
+
+        /* 3. 表格头部 (Header) 样式 */
+        .document-table thead th {
+            background-color: #003366; /* 头部深蓝色背景 */
+            color: white; /* 文字颜色 */
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #002244;
+        }
+        
+        /* 设置头部列宽 */
+        .document-table thead th:nth-child(1) { width: 45%; } /* Title */
+        .document-table thead th:nth-child(2) { width: 25%; } /* Author(s) */
+        .document-table thead th:nth-child(3) { width: 10%; } /* Year */
+        .document-table thead th:nth-child(4) { width: 10%; } /* Type */
+        .document-table thead th:nth-child(5) { width: 10%; } /* Download Column */
+
+        /* 4. 表格行 (Row) 样式 */
+        .document-table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* 鼠标悬停在行上时的效果 */
+        .document-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* 隔行变色 (可选，使阅读更舒适) */
+        .document-table tbody tr:nth-child(odd) {
+             background-color: #fcfdff; /* 浅浅的蓝白色 */
+        }
+        
+        /* 5. 单元格 (Cell) 样式 */
+        .document-table td {
+            padding: 15px;
+            vertical-align: top; /* 顶部对齐 */
+        }
+
+        /* 6. 链接/按钮样式 */
+        .download-btn {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #007bff; /* 蓝色背景 */
+            color: white; /* 白色文字 */
+            text-decoration: none; /* 去掉下划线 */
+            border-radius: 4px; /* 圆角 */
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3; /* 鼠标悬停时颜色加深 */
+        }
+
+        /* 7. 标题链接样式 */
+        .document-title a {
+            color: #004085; /* 深蓝色，与头部颜色搭配 */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .document-title a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="document-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author(s)</th>
+                <th>Year</th>
+                <th>Type</th>
+                <th></th> </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td class="document-title">
+                    <a href="Paper/RISC-V Testing – status and current state of the art.pdf" target="_blank">RISC-V Testing – status and current state of the art</a>
+                </td>
+                <td>Jon Taylor</td>
+                <td>2024</td>
+                <td>Paper</td>
+                <td>
+                    <a href="Paper/RISC-V Testing – status and current state of the art.pdf" target="_blank" class="download-btn">Download</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="document-title">
+                    <a href="Presentation/RISC-V Testing Status and current state of the art.pdf" target="_blank">RISC-V Testing Status and current state of the art</a>
+                </td>
+                <td>Jon Taylor</td>
+                <td>2024</td>
+                <td>Presentation</td>
+                <td>
+                    <a href="Presentation/RISC-V Testing Status and current state of the art.pdf" target="_blank" class="download-btn">Download</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="document-title">
+                    <a href="Paper/Single Instruction Isolation for RISC-V Vector Test Failures.pdf" target="_blank">Single Instruction Isolation for RISC-V Vector Test Failures</a>
+                </td>
+                <td>Jiang-Tang Xiao, Osmond Yao, Yung Cheng Chen, Harish Peta</td>
+                <td>2025</td>
+                <td>Paper</td>
+                <td>
+                    <a href="Paper/Single Instruction Isolation for RISC-V Vector Test Failures.pdf" target="_blank" class="download-btn">Download</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="document-title">
+                    <a href="Paper/Test Program Generator MicroTESK for RISC-V.pdf" target="_blank">Test Program Generator MicroTESK for RISC-V</a>
+                </td>
+                <td>Jiang-Tang Xiao, Osmond Yao, Yung Cheng Chen, Harish Peta</td>
+                <td>2025</td>
+                <td>Paper</td>
+                <td>
+                    <a href="Paper/Test Program Generator MicroTESK for RISC-V.pdf" target="_blank" class="download-btn">Download</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="document-title">
+                    <a href="files/poster-2025.jpg"></a>
+                </td>
+                <td>Jiang-Tang Xiao, Yung Cheng Chen, Harish Peta, Osmond Yao</td>
+                <td>2025</td>
+                <td>Poster</td>
+                <td>
+                    <a href="files/poster-2025.jpg" class="download-btn">Download</a>
+                </td>
+            </tr>
+            
+             </tbody>
+    </table>
+
+</body>
+</html>
