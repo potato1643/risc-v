@@ -1,0 +1,13 @@
+cp_lui:
+     config:
+        - rs1 != rd
+     mnemonics:
+          lui: 4
+          coverage: 1/1
+     total_coverage: 1/1
+datasets:
+     all_regs:
+          x0: 0
+          x1: 0
+          x2: 0
+          x3: 0
