@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - /usr/include/c++/11/bits/deque.tcc</title>
+  <title>LCOV - riscof_rv64_coverage.info - /usr/include/c++/11/bits/deque.tcc</title>
   <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">8</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -918,25 +918,25 @@
 <a name="856"><span class="lineNum">     856 </span>            : </a>
 <a name="857"><span class="lineNum">     857 </span>            :    template&lt;typename _Tp, typename _Alloc&gt;</a>
 <a name="858"><span class="lineNum">     858 </span>            :      void</a>
-<a name="859"><span class="lineNum">     859 </span><span class="lineCov">         13 :      deque&lt;_Tp, _Alloc&gt;::</span></a>
+<a name="859"><span class="lineNum">     859 </span><span class="lineCov">         50 :      deque&lt;_Tp, _Alloc&gt;::</span></a>
 <a name="860"><span class="lineNum">     860 </span>            :      _M_destroy_data_aux(iterator __first, iterator __last)</a>
 <a name="861"><span class="lineNum">     861 </span>            :      {</a>
-<a name="862"><span class="lineNum">     862 </span><span class="lineCov">         13 :        for (_Map_pointer __node = __first._M_node + 1;</span></a>
-<a name="863"><span class="lineNum">     863 </span><span class="lineCov">         13 :             __node &lt; __last._M_node; ++__node)</span></a>
+<a name="862"><span class="lineNum">     862 </span><span class="lineCov">         50 :        for (_Map_pointer __node = __first._M_node + 1;</span></a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineCov">         50 :             __node &lt; __last._M_node; ++__node)</span></a>
 <a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :          std::_Destroy(*__node, *__node + _S_buffer_size(),</span></a>
 <a name="865"><span class="lineNum">     865 </span><span class="lineNoCov">          0 :                        _M_get_Tp_allocator());</span></a>
 <a name="866"><span class="lineNum">     866 </span>            : </a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineCov">         13 :        if (__first._M_node != __last._M_node)</span></a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineCov">         50 :        if (__first._M_node != __last._M_node)</span></a>
 <a name="868"><span class="lineNum">     868 </span>            :          {</a>
 <a name="869"><span class="lineNum">     869 </span><span class="lineNoCov">          0 :            std::_Destroy(__first._M_cur, __first._M_last,</span></a>
 <a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :                          _M_get_Tp_allocator());</span></a>
-<a name="871"><span class="lineNum">     871 </span><span class="lineCov">         13 :            std::_Destroy(__last._M_first, __last._M_cur,</span></a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineCov">         50 :            std::_Destroy(__last._M_first, __last._M_cur,</span></a>
 <a name="872"><span class="lineNum">     872 </span><span class="lineNoCov">          0 :                          _M_get_Tp_allocator());</span></a>
 <a name="873"><span class="lineNum">     873 </span>            :          }</a>
 <a name="874"><span class="lineNum">     874 </span>            :        else</a>
-<a name="875"><span class="lineNum">     875 </span><span class="lineCov">         26 :          std::_Destroy(__first._M_cur, __last._M_cur,</span></a>
-<a name="876"><span class="lineNum">     876 </span><span class="lineCov">         13 :                        _M_get_Tp_allocator());</span></a>
-<a name="877"><span class="lineNum">     877 </span><span class="lineCov">         13 :      }</span></a>
+<a name="875"><span class="lineNum">     875 </span><span class="lineCov">        100 :          std::_Destroy(__first._M_cur, __last._M_cur,</span></a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineCov">         50 :                        _M_get_Tp_allocator());</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineCov">         50 :      }</span></a>
 <a name="878"><span class="lineNum">     878 </span>            : </a>
 <a name="879"><span class="lineNum">     879 </span>            :   template &lt;typename _Tp, typename _Alloc&gt;</a>
 <a name="880"><span class="lineNum">     880 </span>            :     void</a>

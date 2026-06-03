@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/triggers.cc</title>
+  <title>LCOV - microtesk_coverage.info - riscv/triggers.cc</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">16</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -583,11 +583,11 @@
 <a name="521"><span class="lineNum">     521 </span>            :   }</a>
 <a name="522"><span class="lineNum">     522 </span><span class="lineCov">         30 : }</span></a>
 <a name="523"><span class="lineNum">     523 </span>            : </a>
-<a name="524"><span class="lineNum">     524 </span><span class="lineCov">          4 : module_t::~module_t() {</span></a>
-<a name="525"><span class="lineNum">     525 </span><span class="lineCov">         20 :   for (auto trigger : triggers) {</span></a>
-<a name="526"><span class="lineNum">     526 </span><span class="lineCov">         16 :     delete trigger;</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineCov">         30 : module_t::~module_t() {</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineCov">        150 :   for (auto trigger : triggers) {</span></a>
+<a name="526"><span class="lineNum">     526 </span><span class="lineCov">        120 :     delete trigger;</span></a>
 <a name="527"><span class="lineNum">     527 </span>            :   }</a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineCov">          4 : }</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineCov">         30 : }</span></a>
 <a name="529"><span class="lineNum">     529 </span>            : </a>
 <a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 : reg_t module_t::tdata1_read(unsigned index) const noexcept</span></a>
 <a name="531"><span class="lineNum">     531 </span>            : {</a>
@@ -722,19 +722,19 @@
 <a name="660"><span class="lineNum">     660 </span><span class="lineNoCov">          0 :   return ret;</span></a>
 <a name="661"><span class="lineNum">     661 </span>            : }</a>
 <a name="662"><span class="lineNum">     662 </span>            : </a>
-<a name="663"><span class="lineNum">     663 </span><span class="lineCov">   40893364 : std::optional&lt;match_result_t&gt; module_t::detect_trap_match(const trap_t&amp; t) noexcept</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">         30 : std::optional&lt;match_result_t&gt; module_t::detect_trap_match(const trap_t&amp; t) noexcept</span></a>
 <a name="664"><span class="lineNum">     664 </span>            : {</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">   40893364 :   state_t * const state = proc-&gt;get_state();</span></a>
-<a name="666"><span class="lineNum">     666 </span><span class="lineCov">   40893364 :   if (state-&gt;debug_mode)</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">         30 :   state_t * const state = proc-&gt;get_state();</span></a>
+<a name="666"><span class="lineNum">     666 </span><span class="lineCov">         30 :   if (state-&gt;debug_mode)</span></a>
 <a name="667"><span class="lineNum">     667 </span><span class="lineNoCov">          0 :     return std::nullopt;</span></a>
 <a name="668"><span class="lineNum">     668 </span>            : </a>
-<a name="669"><span class="lineNum">     669 </span><span class="lineCov">   40893364 :   std::optional&lt;match_result_t&gt; ret = std::nullopt;</span></a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineCov">  204466816 :   for (auto trigger: triggers) {</span></a>
-<a name="671"><span class="lineNum">     671 </span><span class="lineCov">  163573453 :     auto result = trigger-&gt;detect_trap_match(proc, t);</span></a>
-<a name="672"><span class="lineNum">     672 </span><span class="lineCov">  163573452 :     if (result.has_value() &amp;&amp; (!ret.has_value() || ret-&gt;action &lt; result-&gt;action))</span></a>
+<a name="669"><span class="lineNum">     669 </span><span class="lineCov">         30 :   std::optional&lt;match_result_t&gt; ret = std::nullopt;</span></a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        150 :   for (auto trigger: triggers) {</span></a>
+<a name="671"><span class="lineNum">     671 </span><span class="lineCov">        120 :     auto result = trigger-&gt;detect_trap_match(proc, t);</span></a>
+<a name="672"><span class="lineNum">     672 </span><span class="lineCov">        120 :     if (result.has_value() &amp;&amp; (!ret.has_value() || ret-&gt;action &lt; result-&gt;action))</span></a>
 <a name="673"><span class="lineNum">     673 </span><span class="lineNoCov">          0 :       ret = result;</span></a>
 <a name="674"><span class="lineNum">     674 </span>            :   }</a>
-<a name="675"><span class="lineNum">     675 </span><span class="lineCov">   40893363 :   return ret;</span></a>
+<a name="675"><span class="lineNum">     675 </span><span class="lineCov">         30 :   return ret;</span></a>
 <a name="676"><span class="lineNum">     676 </span>            : }</a>
 <a name="677"><span class="lineNum">     677 </span>            : </a>
 <a name="678"><span class="lineNum">     678 </span><span class="lineNoCov">          0 : reg_t module_t::tinfo_read(unsigned UNUSED index) const noexcept</span></a>

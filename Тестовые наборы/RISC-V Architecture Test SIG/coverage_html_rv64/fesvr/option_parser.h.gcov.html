@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - fesvr/option_parser.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - fesvr/option_parser.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">6</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -68,7 +68,7 @@
 <a name="6"><span class="lineNum">       6 </span>            : #include &lt;vector&gt;</a>
 <a name="7"><span class="lineNum">       7 </span>            : #include &lt;functional&gt;</a>
 <a name="8"><span class="lineNum">       8 </span>            : </a>
-<a name="9"><span class="lineNum">       9 </span><span class="lineCov">         13 : class option_parser_t</span></a>
+<a name="9"><span class="lineNum">       9 </span><span class="lineCov">         50 : class option_parser_t</span></a>
 <a name="10"><span class="lineNum">      10 </span>            : {</a>
 <a name="11"><span class="lineNum">      11 </span>            :  public:</a>
 <a name="12"><span class="lineNum">      12 </span><span class="lineCov">        100 :   option_parser_t() : helpmsg(0) {}</span></a>
@@ -76,7 +76,7 @@
 <a name="14"><span class="lineNum">      14 </span>            :   void option(char c, const char* s, int arg, std::function&lt;void(const char*)&gt; action);</a>
 <a name="15"><span class="lineNum">      15 </span>            :   const char* const* parse(const char* const* argv0);</a>
 <a name="16"><span class="lineNum">      16 </span>            :  private:</a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">      11724 :   struct option_t</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">      13500 :   struct option_t</span></a>
 <a name="18"><span class="lineNum">      18 </span>            :   {</a>
 <a name="19"><span class="lineNum">      19 </span>            :     char chr;</a>
 <a name="20"><span class="lineNum">      20 </span>            :     const char* str;</a>

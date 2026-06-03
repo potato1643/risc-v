@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/sim.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/sim.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">6</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -122,7 +122,7 @@
 <a name="60"><span class="lineNum">      60 </span><span class="lineCov">         30 :   abstract_interrupt_controller_t* get_intctrl() const { assert(plic.get()); return plic.get(); }</span></a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">        450 :   virtual const cfg_t &amp;get_cfg() const override { return *cfg; }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">   40893483 :   virtual const std::map&lt;size_t, processor_t*&gt;&amp; get_harts() const override { return harts; }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        183 :   virtual const std::map&lt;size_t, processor_t*&gt;&amp; get_harts() const override { return harts; }</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            :   // Callback for processors to let the simulation know they were reset.</a>
 <a name="66"><span class="lineNum">      66 </span>            :   virtual void proc_reset(unsigned id) override;</a>
@@ -217,8 +217,8 @@
 <a name="155"><span class="lineNum">     155 </span>            :   virtual void idle() override;</a>
 <a name="156"><span class="lineNum">     156 </span>            :   virtual void read_chunk(addr_t taddr, size_t len, void* dst) override;</a>
 <a name="157"><span class="lineNum">     157 </span>            :   virtual void write_chunk(addr_t taddr, size_t len, const void* src) override;</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">   40893468 :   virtual size_t chunk_align() override { return 8; }</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">   81788826 :   virtual size_t chunk_max_size() override { return 8; }</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        213 :   virtual size_t chunk_align() override { return 8; }</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       2346 :   virtual size_t chunk_max_size() override { return 8; }</span></a>
 <a name="160"><span class="lineNum">     160 </span>            :   virtual endianness_t get_target_endianness() const override;</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
 <a name="162"><span class="lineNum">     162 </span>            : public:</a>

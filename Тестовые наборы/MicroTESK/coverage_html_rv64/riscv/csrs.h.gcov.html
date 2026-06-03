@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/csrs.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/csrs.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">16</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -137,12 +137,12 @@
 <a name="75"><span class="lineNum">      75 </span>            : typedef std::shared_ptr&lt;csr_t&gt; csr_t_p;</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : // Basic CSRs, with XLEN bits fully readable and writable.</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        204 : class basic_csr_t: public csr_t {</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        360 : class basic_csr_t: public csr_t {</span></a>
 <a name="79"><span class="lineNum">      79 </span>            :  public:</a>
 <a name="80"><span class="lineNum">      80 </span>            :   basic_csr_t(processor_t* const proc, const reg_t addr, const reg_t init);</a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">  940551814 :   virtual reg_t read() const noexcept override {</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">  695189485 :     return val;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">      13869 :   virtual reg_t read() const noexcept override {</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">       8760 :     return val;</span></a>
 <a name="84"><span class="lineNum">      84 </span>            :   }</a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
 <a name="86"><span class="lineNum">      86 </span>            :  protected:</a>
@@ -276,7 +276,7 @@
 <a name="214"><span class="lineNum">     214 </span>            : };</a>
 <a name="215"><span class="lineNum">     215 </span>            : </a>
 <a name="216"><span class="lineNum">     216 </span>            : // For *status family of CSRs</a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         68 : class base_status_csr_t: public csr_t {</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">        120 : class base_status_csr_t: public csr_t {</span></a>
 <a name="218"><span class="lineNum">     218 </span>            :  public:</a>
 <a name="219"><span class="lineNum">     219 </span>            :   base_status_csr_t(processor_t* const proc, const reg_t addr);</a>
 <a name="220"><span class="lineNum">     220 </span>            : </a>
@@ -299,7 +299,7 @@
 <a name="237"><span class="lineNum">     237 </span>            : // For vsstatus, which is its own separate architectural register</a>
 <a name="238"><span class="lineNum">     238 </span>            : // (unlike sstatus)</a>
 <a name="239"><span class="lineNum">     239 </span>            : // vstatus.sdt is read_only 0 when henvcfg.dte = 0</a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         34 : class vsstatus_csr_t final: public base_status_csr_t {</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         60 : class vsstatus_csr_t final: public base_status_csr_t {</span></a>
 <a name="241"><span class="lineNum">     241 </span>            :  public:</a>
 <a name="242"><span class="lineNum">     242 </span>            :   vsstatus_csr_t(processor_t* const proc, const reg_t addr);</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
@@ -313,7 +313,7 @@
 <a name="251"><span class="lineNum">     251 </span>            : </a>
 <a name="252"><span class="lineNum">     252 </span>            : typedef std::shared_ptr&lt;vsstatus_csr_t&gt; vsstatus_csr_t_p;</a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         34 : class mstatus_csr_t final: public base_status_csr_t {</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         60 : class mstatus_csr_t final: public base_status_csr_t {</span></a>
 <a name="255"><span class="lineNum">     255 </span>            :  public:</a>
 <a name="256"><span class="lineNum">     256 </span>            :   mstatus_csr_t(processor_t* const proc, const reg_t addr);</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
@@ -397,13 +397,13 @@
 <a name="335"><span class="lineNum">     335 </span>            : </a>
 <a name="336"><span class="lineNum">     336 </span>            : typedef std::shared_ptr&lt;sstatus_csr_t&gt; sstatus_csr_t_p;</a>
 <a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">         34 : class misa_csr_t final: public basic_csr_t {</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">         60 : class misa_csr_t final: public basic_csr_t {</span></a>
 <a name="339"><span class="lineNum">     339 </span>            :  public:</a>
 <a name="340"><span class="lineNum">     340 </span>            :   misa_csr_t(processor_t* const proc, const reg_t addr, const reg_t max_isa);</a>
 <a name="341"><span class="lineNum">     341 </span>            : </a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">  204470184 :   bool extension_enabled(unsigned char ext) const noexcept {</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">  204470184 :     assert(ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z');</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">  204470184 :     return (read() &gt;&gt; (ext - 'A')) &amp; 1;</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">       4124 :   bool extension_enabled(unsigned char ext) const noexcept {</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">       4124 :     assert(ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z');</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">       4124 :     return (read() &gt;&gt; (ext - 'A')) &amp; 1;</span></a>
 <a name="345"><span class="lineNum">     345 </span>            :   }</a>
 <a name="346"><span class="lineNum">     346 </span>            : </a>
 <a name="347"><span class="lineNum">     347 </span>            :   bool extension_enabled_const(unsigned char ext) const noexcept;</a>
@@ -550,7 +550,7 @@
 <a name="488"><span class="lineNum">     488 </span>            : };</a>
 <a name="489"><span class="lineNum">     489 </span>            : </a>
 <a name="490"><span class="lineNum">     490 </span>            : // For CSRs with certain bits hardwired</a>
-<a name="491"><span class="lineNum">     491 </span><span class="lineCov">        272 : class masked_csr_t: public basic_csr_t {</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineCov">        480 : class masked_csr_t: public basic_csr_t {</span></a>
 <a name="492"><span class="lineNum">     492 </span>            :  public:</a>
 <a name="493"><span class="lineNum">     493 </span>            :   masked_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init);</a>
 <a name="494"><span class="lineNum">     494 </span>            :  protected:</a>
@@ -559,7 +559,7 @@
 <a name="497"><span class="lineNum">     497 </span>            :   const reg_t mask;</a>
 <a name="498"><span class="lineNum">     498 </span>            : };</a>
 <a name="499"><span class="lineNum">     499 </span>            : </a>
-<a name="500"><span class="lineNum">     500 </span><span class="lineCov">         68 : class envcfg_csr_t: public masked_csr_t {</span></a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineCov">        120 : class envcfg_csr_t: public masked_csr_t {</span></a>
 <a name="501"><span class="lineNum">     501 </span>            :  public:</a>
 <a name="502"><span class="lineNum">     502 </span>            :   envcfg_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init);</a>
 <a name="503"><span class="lineNum">     503 </span>            :  protected:</a>
@@ -795,7 +795,7 @@
 <a name="733"><span class="lineNum">     733 </span>            : </a>
 <a name="734"><span class="lineNum">     734 </span>            : typedef std::shared_ptr&lt;dcsr_csr_t&gt; dcsr_csr_t_p;</a>
 <a name="735"><span class="lineNum">     735 </span>            : </a>
-<a name="736"><span class="lineNum">     736 </span><span class="lineCov">         68 : class float_csr_t final: public masked_csr_t {</span></a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineCov">        120 : class float_csr_t final: public masked_csr_t {</span></a>
 <a name="737"><span class="lineNum">     737 </span>            :  public:</a>
 <a name="738"><span class="lineNum">     738 </span>            :   float_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init);</a>
 <a name="739"><span class="lineNum">     739 </span>            :   virtual void verify_permissions(insn_t insn, bool write) const override;</a>
@@ -875,7 +875,7 @@
 <a name="813"><span class="lineNum">     813 </span>            :   virtual bool unlogged_write(const reg_t val) noexcept override;</a>
 <a name="814"><span class="lineNum">     814 </span>            : };</a>
 <a name="815"><span class="lineNum">     815 </span>            : </a>
-<a name="816"><span class="lineNum">     816 </span><span class="lineCov">         34 : class senvcfg_csr_t final: public envcfg_csr_t {</span></a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineCov">         60 : class senvcfg_csr_t final: public envcfg_csr_t {</span></a>
 <a name="817"><span class="lineNum">     817 </span>            :  public:</a>
 <a name="818"><span class="lineNum">     818 </span>            :   senvcfg_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init);</a>
 <a name="819"><span class="lineNum">     819 </span>            :   reg_t read() const noexcept override;</a>
@@ -970,7 +970,7 @@
 <a name="908"><span class="lineNum">     908 </span>            : typedef std::shared_ptr&lt;hvip_csr_t&gt; hvip_csr_t_p;</a>
 <a name="909"><span class="lineNum">     909 </span>            : </a>
 <a name="910"><span class="lineNum">     910 </span>            : // ssp CSR provided by CFI Zicfiss extension</a>
-<a name="911"><span class="lineNum">     911 </span><span class="lineCov">         34 : class ssp_csr_t final : public masked_csr_t {</span></a>
+<a name="911"><span class="lineNum">     911 </span><span class="lineCov">         60 : class ssp_csr_t final : public masked_csr_t {</span></a>
 <a name="912"><span class="lineNum">     912 </span>            :  public:</a>
 <a name="913"><span class="lineNum">     913 </span>            :   ssp_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init);</a>
 <a name="914"><span class="lineNum">     914 </span>            :   virtual void verify_permissions(insn_t insn, bool write) const override;</a>
@@ -983,7 +983,7 @@
 <a name="921"><span class="lineNum">     921 </span>            :   virtual void verify_permissions(insn_t insn, bool write) const override;</a>
 <a name="922"><span class="lineNum">     922 </span>            : };</a>
 <a name="923"><span class="lineNum">     923 </span>            : </a>
-<a name="924"><span class="lineNum">     924 </span><span class="lineCov">         34 : class hstatus_csr_t final: public basic_csr_t {</span></a>
+<a name="924"><span class="lineNum">     924 </span><span class="lineCov">         60 : class hstatus_csr_t final: public basic_csr_t {</span></a>
 <a name="925"><span class="lineNum">     925 </span>            :  public:</a>
 <a name="926"><span class="lineNum">     926 </span>            :   hstatus_csr_t(processor_t* const proc, const reg_t addr);</a>
 <a name="927"><span class="lineNum">     927 </span>            :  protected:</a>

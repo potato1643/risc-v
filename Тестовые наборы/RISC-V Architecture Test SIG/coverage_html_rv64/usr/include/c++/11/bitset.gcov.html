@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - /usr/include/c++/11/bitset</title>
+  <title>LCOV - riscof_rv64_coverage.info - /usr/include/c++/11/bitset</title>
   <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">32</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -158,28 +158,28 @@
 <a name="96"><span class="lineNum">      96 </span>            : #endif</a>
 <a name="97"><span class="lineNum">      97 </span>            : </a>
 <a name="98"><span class="lineNum">      98 </span>            :       static _GLIBCXX_CONSTEXPR size_t</a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">  269445254 :       _S_whichword(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">  269445254 :       { return __pos / _GLIBCXX_BITSET_BITS_PER_WORD; }</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">      10094 :       _S_whichword(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">      10094 :       { return __pos / _GLIBCXX_BITSET_BITS_PER_WORD; }</span></a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
 <a name="102"><span class="lineNum">     102 </span>            :       static _GLIBCXX_CONSTEXPR size_t</a>
 <a name="103"><span class="lineNum">     103 </span>            :       _S_whichbyte(size_t __pos) _GLIBCXX_NOEXCEPT</a>
 <a name="104"><span class="lineNum">     104 </span>            :       { return (__pos % _GLIBCXX_BITSET_BITS_PER_WORD) / __CHAR_BIT__; }</a>
 <a name="105"><span class="lineNum">     105 </span>            : </a>
 <a name="106"><span class="lineNum">     106 </span>            :       static _GLIBCXX_CONSTEXPR size_t</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">  134732227 :       _S_whichbit(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">  134726827 :       { return __pos % _GLIBCXX_BITSET_BITS_PER_WORD; }</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">      15772 :       _S_whichbit(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">       9622 :       { return __pos % _GLIBCXX_BITSET_BITS_PER_WORD; }</span></a>
 <a name="109"><span class="lineNum">     109 </span>            : </a>
 <a name="110"><span class="lineNum">     110 </span>            :       static _GLIBCXX_CONSTEXPR _WordT</a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">  269449454 :       _S_maskbit(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">  404177181 :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">      14294 :       _S_maskbit(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">      24816 :       { return (static_cast&lt;_WordT&gt;(1)) &lt;&lt; _S_whichbit(__pos); }</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            :       _WordT&amp;</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">  134731927 :       _M_getword(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">  134731927 :       { return _M_w[_S_whichword(__pos)]; }</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">      15472 :       _M_getword(size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">      15472 :       { return _M_w[_S_whichword(__pos)]; }</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            :       _GLIBCXX_CONSTEXPR _WordT</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">  606251318 :       _M_getword(size_t __pos) const _GLIBCXX_NOEXCEPT</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">  673622955 :       { return _M_w[_S_whichword(__pos)]; }</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">      87558 :       _M_getword(size_t __pos) const _GLIBCXX_NOEXCEPT</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">     382848 :       { return _M_w[_S_whichword(__pos)]; }</span></a>
 <a name="121"><span class="lineNum">     121 </span>            : </a>
 <a name="122"><span class="lineNum">     122 </span>            : #if __cplusplus &gt;= 201103L</a>
 <a name="123"><span class="lineNum">     123 </span>            :       const _WordT*</a>
@@ -872,25 +872,25 @@
 <a name="810"><span class="lineNum">     810 </span>            :         reference();</a>
 <a name="811"><span class="lineNum">     811 </span>            : </a>
 <a name="812"><span class="lineNum">     812 </span>            :       public:</a>
-<a name="813"><span class="lineNum">     813 </span><span class="lineCov">  134731927 :         reference(bitset&amp; __b, size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
+<a name="813"><span class="lineNum">     813 </span><span class="lineCov">      15472 :         reference(bitset&amp; __b, size_t __pos) _GLIBCXX_NOEXCEPT</span></a>
 <a name="814"><span class="lineNum">     814 </span>            :         {</a>
-<a name="815"><span class="lineNum">     815 </span><span class="lineCov">  134731927 :           _M_wp = &amp;__b._M_getword(__pos);</span></a>
-<a name="816"><span class="lineNum">     816 </span><span class="lineCov">  134731927 :           _M_bpos = _Base::_S_whichbit(__pos);</span></a>
+<a name="815"><span class="lineNum">     815 </span><span class="lineCov">      15472 :           _M_wp = &amp;__b._M_getword(__pos);</span></a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineCov">      15472 :           _M_bpos = _Base::_S_whichbit(__pos);</span></a>
 <a name="817"><span class="lineNum">     817 </span>            :         }</a>
 <a name="818"><span class="lineNum">     818 </span>            : </a>
 <a name="819"><span class="lineNum">     819 </span>            : #if __cplusplus &gt;= 201103L</a>
 <a name="820"><span class="lineNum">     820 </span>            :         reference(const reference&amp;) = default;</a>
 <a name="821"><span class="lineNum">     821 </span>            : #endif</a>
 <a name="822"><span class="lineNum">     822 </span>            : </a>
-<a name="823"><span class="lineNum">     823 </span><span class="lineCov">  134725777 :         ~reference() _GLIBCXX_NOEXCEPT</span></a>
-<a name="824"><span class="lineNum">     824 </span><span class="lineCov">        300 :         { }</span></a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineCov">       7672 :         ~reference() _GLIBCXX_NOEXCEPT</span></a>
+<a name="824"><span class="lineNum">     824 </span><span class="lineCov">        450 :         { }</span></a>
 <a name="825"><span class="lineNum">     825 </span>            : </a>
 <a name="826"><span class="lineNum">     826 </span>            :         // For b[i] = __x;</a>
 <a name="827"><span class="lineNum">     827 </span>            :         reference&amp;</a>
-<a name="828"><span class="lineNum">     828 </span><span class="lineCov">  134723077 :         operator=(bool __x) _GLIBCXX_NOEXCEPT</span></a>
+<a name="828"><span class="lineNum">     828 </span><span class="lineCov">       6772 :         operator=(bool __x) _GLIBCXX_NOEXCEPT</span></a>
 <a name="829"><span class="lineNum">     829 </span>            :         {</a>
 <a name="830"><span class="lineNum">     830 </span><span class="lineCov">        300 :           if (__x)</span></a>
-<a name="831"><span class="lineNum">     831 </span><span class="lineCov">  134722927 :             *_M_wp |= _Base::_S_maskbit(_M_bpos);</span></a>
+<a name="831"><span class="lineNum">     831 </span><span class="lineCov">       4972 :             *_M_wp |= _Base::_S_maskbit(_M_bpos);</span></a>
 <a name="832"><span class="lineNum">     832 </span>            :           else</a>
 <a name="833"><span class="lineNum">     833 </span><span class="lineNoCov">          0 :             *_M_wp &amp;= ~_Base::_S_maskbit(_M_bpos);</span></a>
 <a name="834"><span class="lineNum">     834 </span><span class="lineCov">        300 :           return *this;</span></a>
@@ -1124,9 +1124,9 @@
 <a name="1062"><span class="lineNum">    1062 </span>            :       }</a>
 <a name="1063"><span class="lineNum">    1063 </span>            : </a>
 <a name="1064"><span class="lineNum">    1064 </span>            :       _GLIBCXX_CONSTEXPR bool</a>
-<a name="1065"><span class="lineNum">    1065 </span><span class="lineCov">  673612275 :       _Unchecked_test(size_t __pos) const _GLIBCXX_NOEXCEPT</span></a>
-<a name="1066"><span class="lineNum">    1066 </span><span class="lineCov">  673623023 :       { return ((this-&gt;_M_getword(__pos) &amp; _Base::_S_maskbit(__pos))</span></a>
-<a name="1067"><span class="lineNum">    1067 </span><span class="lineCov">  134722727 :                 != static_cast&lt;_WordT&gt;(0)); }</span></a>
+<a name="1065"><span class="lineNum">    1065 </span><span class="lineCov">      89508 :       _Unchecked_test(size_t __pos) const _GLIBCXX_NOEXCEPT</span></a>
+<a name="1066"><span class="lineNum">    1066 </span><span class="lineCov">     385017 :       { return ((this-&gt;_M_getword(__pos) &amp; _Base::_S_maskbit(__pos))</span></a>
+<a name="1067"><span class="lineNum">    1067 </span><span class="lineCov">       4869 :                 != static_cast&lt;_WordT&gt;(0)); }</span></a>
 <a name="1068"><span class="lineNum">    1068 </span>            :       ///@}</a>
 <a name="1069"><span class="lineNum">    1069 </span>            : </a>
 <a name="1070"><span class="lineNum">    1070 </span>            :       // Set, reset, and flip.</a>
@@ -1222,12 +1222,12 @@
 <a name="1160"><span class="lineNum">    1160 </span>            :        *  (users' responsibility), and these functions must not throw.  -pme</a>
 <a name="1161"><span class="lineNum">    1161 </span>            :        */</a>
 <a name="1162"><span class="lineNum">    1162 </span>            :       reference</a>
-<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">  134731927 :       operator[](size_t __position)</span></a>
-<a name="1164"><span class="lineNum">    1164 </span><span class="lineCov">  134729677 :       { return reference(*this, __position); }</span></a>
+<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">      15472 :       operator[](size_t __position)</span></a>
+<a name="1164"><span class="lineNum">    1164 </span><span class="lineCov">      12772 :       { return reference(*this, __position); }</span></a>
 <a name="1165"><span class="lineNum">    1165 </span>            : </a>
 <a name="1166"><span class="lineNum">    1166 </span>            :       _GLIBCXX_CONSTEXPR bool</a>
-<a name="1167"><span class="lineNum">    1167 </span><span class="lineCov">  673612275 :       operator[](size_t __position) const</span></a>
-<a name="1168"><span class="lineNum">    1168 </span><span class="lineCov">  673621655 :       { return _Unchecked_test(__position); }</span></a>
+<a name="1167"><span class="lineNum">    1167 </span><span class="lineCov">      89508 :       operator[](size_t __position) const</span></a>
+<a name="1168"><span class="lineNum">    1168 </span><span class="lineCov">     381798 :       { return _Unchecked_test(__position); }</span></a>
 <a name="1169"><span class="lineNum">    1169 </span>            :       ///@}</a>
 <a name="1170"><span class="lineNum">    1170 </span>            : </a>
 <a name="1171"><span class="lineNum">    1171 </span>            :       /**</a>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - riscv/abstract_device.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - riscv/abstract_device.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">3</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -79,8 +79,8 @@
 <a name="17"><span class="lineNum">      17 </span>            :   virtual bool load(reg_t addr, size_t len, uint8_t* bytes) = 0;</a>
 <a name="18"><span class="lineNum">      18 </span>            :   virtual bool store(reg_t addr, size_t len, const uint8_t* bytes) = 0;</a>
 <a name="19"><span class="lineNum">      19 </span>            :   virtual reg_t size() = 0;</a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">         54 :   virtual ~abstract_device_t() {}</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">  134717994 :   virtual void tick(reg_t UNUSED rtc_ticks) {}</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">        200 :   virtual ~abstract_device_t() {}</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        144 :   virtual void tick(reg_t UNUSED rtc_ticks) {}</span></a>
 <a name="22"><span class="lineNum">      22 </span>            : };</a>
 <a name="23"><span class="lineNum">      23 </span>            : </a>
 <a name="24"><span class="lineNum">      24 </span>            : // factory for devices which should show up in the DTS, and can be</a>

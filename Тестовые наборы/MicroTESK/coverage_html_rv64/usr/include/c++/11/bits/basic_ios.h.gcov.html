@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - /usr/include/c++/11/bits/basic_ios.h</title>
+  <title>LCOV - microtesk_coverage.info - /usr/include/c++/11/bits/basic_ios.h</title>
   <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">6</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -341,7 +341,7 @@
 <a name="279"><span class="lineNum">     279 </span>            :        *  destroy the streambuf held by rdbuf().</a>
 <a name="280"><span class="lineNum">     280 </span>            :       */</a>
 <a name="281"><span class="lineNum">     281 </span>            :       virtual</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">   40893553 :       ~basic_ios() { }</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">     186331 :       ~basic_ios() { }</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : </a>
 <a name="284"><span class="lineNum">     284 </span>            :       // Members:</a>
 <a name="285"><span class="lineNum">     285 </span>            :       /**</a>
@@ -380,8 +380,8 @@
 <a name="318"><span class="lineNum">     318 </span>            :        *  This does not change the state of the stream.</a>
 <a name="319"><span class="lineNum">     319 </span>            :       */</a>
 <a name="320"><span class="lineNum">     320 </span>            :       basic_streambuf&lt;_CharT, _Traits&gt;*</a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">   40893639 :       rdbuf() const</span></a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">   40893639 :       { return _M_streambuf; }</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">     186361 :       rdbuf() const</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">     186361 :       { return _M_streambuf; }</span></a>
 <a name="323"><span class="lineNum">     323 </span>            : </a>
 <a name="324"><span class="lineNum">     324 </span>            :       /**</a>
 <a name="325"><span class="lineNum">     325 </span>            :        *  @brief  Changing the underlying buffer.</a>
@@ -449,10 +449,10 @@
 <a name="387"><span class="lineNum">     387 </span>            :        *  used, and Q&lt;P.  It defaults to a space (' ') in the current locale.</a>
 <a name="388"><span class="lineNum">     388 </span>            :       */</a>
 <a name="389"><span class="lineNum">     389 </span>            :       char_type</a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">  163573866 :       fill(char_type __ch)</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">     405386 :       fill(char_type __ch)</span></a>
 <a name="391"><span class="lineNum">     391 </span>            :       {</a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">  163573866 :         char_type __old = this-&gt;fill();</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">  163573866 :         _M_fill = __ch;</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">     405386 :         char_type __old = this-&gt;fill();</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">     405386 :         _M_fill = __ch;</span></a>
 <a name="394"><span class="lineNum">     394 </span>            :         return __old;</a>
 <a name="395"><span class="lineNum">     395 </span>            :       }</a>
 <a name="396"><span class="lineNum">     396 </span>            : </a>

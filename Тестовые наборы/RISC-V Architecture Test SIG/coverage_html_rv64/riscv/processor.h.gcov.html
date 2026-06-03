@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - riscv/processor.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - riscv/processor.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">41</td>
+            <td class="headerCovTableEntry">40</td>
             <td class="headerCovTableEntry">63</td>
-            <td class="headerCovTableEntryLo">65.1 %</td>
+            <td class="headerCovTableEntryLo">63.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -106,18 +106,18 @@
 <a name="44"><span class="lineNum">      44 </span>            :   insn_func_t logged_rv32e;</a>
 <a name="45"><span class="lineNum">      45 </span>            :   insn_func_t logged_rv64e;</a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">      44750 :   insn_func_t func(int xlen, bool rve, bool logged) const</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">      44900 :   insn_func_t func(int xlen, bool rve, bool logged) const</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :   {</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">      44750 :     if (logged)</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">      44900 :     if (logged)</span></a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :       if (rve)</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :         return xlen == 64 ? logged_rv64e : logged_rv32e;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :       else</a>
 <a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :         return xlen == 64 ? logged_rv64i : logged_rv32i;</span></a>
 <a name="54"><span class="lineNum">      54 </span>            :     else</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      44750 :       if (rve)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">      44900 :       if (rve)</span></a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :         return xlen == 64 ? fast_rv64e : fast_rv32e;</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :       else</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">      44750 :         return xlen == 64 ? fast_rv64i : fast_rv32i;</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">      44900 :         return xlen == 64 ? fast_rv64i : fast_rv32i;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :   }</a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span>            :   static const insn_desc_t illegal_instruction;</a>
@@ -292,28 +292,28 @@
 <a name="230"><span class="lineNum">     230 </span>            :               FILE *log_file, std::ostream&amp; sout_); // because of command line option --log and -s we need both</a>
 <a name="231"><span class="lineNum">     231 </span>            :   ~processor_t();</a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">   67359157 :   const isa_parser_t &amp;get_isa() const &amp; { return isa; }</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        150 :   const isa_parser_t &amp;get_isa() const &amp; { return isa; }</span></a>
 <a name="234"><span class="lineNum">     234 </span><span class="lineCov">        100 :   const cfg_t &amp;get_cfg() const &amp; { return *cfg; }</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : </a>
 <a name="236"><span class="lineNum">     236 </span>            :   void set_debug(bool value);</a>
 <a name="237"><span class="lineNum">     237 </span>            :   void set_histogram(bool value);</a>
 <a name="238"><span class="lineNum">     238 </span>            :   void enable_log_commits();</a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">  471535414 :   bool get_log_commits_enabled() const { return log_commits_enabled; }</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">     721273 :   bool get_log_commits_enabled() const { return log_commits_enabled; }</span></a>
 <a name="240"><span class="lineNum">     240 </span>            :   void reset();</a>
 <a name="241"><span class="lineNum">     241 </span>            :   void step(size_t n); // run for n cycles</a>
 <a name="242"><span class="lineNum">     242 </span>            :   void put_csr(int which, reg_t val);</a>
 <a name="243"><span class="lineNum">     243 </span><span class="lineCov">        100 :   uint32_t get_id() const { return id; }</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :   reg_t get_csr(int which, insn_t insn, bool write, bool peek = 0);</a>
 <a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :   reg_t get_csr(int which) { return get_csr(which, insn_t(0), false, true); }</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">   67360146 :   mmu_t* get_mmu() { return mmu; }</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">   67359099 :   state_t* get_state() { return &amp;state; }</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">   67360049 :   unsigned get_xlen() const { return xlen; }</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">      70613 :   mmu_t* get_mmu() { return mmu; }</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">        100 :   state_t* get_state() { return &amp;state; }</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">       1130 :   unsigned get_xlen() const { return xlen; }</span></a>
 <a name="249"><span class="lineNum">     249 </span><span class="lineCov">        100 :   unsigned paddr_bits() { return isa.get_max_xlen() == 64 ? 56 : 34; }</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">   67359917 :   unsigned get_const_xlen() const {</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       1623 :   unsigned get_const_xlen() const {</span></a>
 <a name="251"><span class="lineNum">     251 </span>            :     // Any code that assumes a const xlen should use this method to</a>
 <a name="252"><span class="lineNum">     252 </span>            :     // document that assumption. If Spike ever changes to allow</a>
 <a name="253"><span class="lineNum">     253 </span>            :     // variable xlen, this method should be removed.</a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">   67359917 :     return xlen;</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">       1623 :     return xlen;</span></a>
 <a name="255"><span class="lineNum">     255 </span>            :   }</a>
 <a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :   unsigned get_flen() const {</span></a>
 <a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :     return extension_enabled('Q') ? 128 :</span></a>
@@ -328,14 +328,14 @@
 <a name="266"><span class="lineNum">     266 </span><span class="lineCov">        400 :   bool any_vector_extensions() const {</span></a>
 <a name="267"><span class="lineNum">     267 </span><span class="lineCov">        400 :     return VU.VLEN &gt; 0;</span></a>
 <a name="268"><span class="lineNum">     268 </span>            :   }</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">  336798077 :   bool extension_enabled(unsigned char ext) const {</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">  336798077 :     return extension_enabled(isa_extension_t(ext));</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">       3050 :   bool extension_enabled(unsigned char ext) const {</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">       3050 :     return extension_enabled(isa_extension_t(ext));</span></a>
 <a name="271"><span class="lineNum">     271 </span>            :   }</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">  875680025 :   bool extension_enabled(isa_extension_t ext) const {</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">  471521277 :     if (ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z')</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">  336798077 :       return state.misa-&gt;extension_enabled(ext);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">      80286 :   bool extension_enabled(isa_extension_t ext) const {</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">      74829 :     if (ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z')</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">       3050 :       return state.misa-&gt;extension_enabled(ext);</span></a>
 <a name="275"><span class="lineNum">     275 </span>            :     else</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">  471533571 :       return extension_enable_table[ext];</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">     370526 :       return extension_enable_table[ext];</span></a>
 <a name="277"><span class="lineNum">     277 </span>            :   }</a>
 <a name="278"><span class="lineNum">     278 </span>            :   // Is this extension enabled? and abort if this extension can</a>
 <a name="279"><span class="lineNum">     279 </span>            :   // possibly be disabled dynamically. Useful for documenting</a>
@@ -343,13 +343,13 @@
 <a name="281"><span class="lineNum">     281 </span><span class="lineCov">       2550 :   bool extension_enabled_const(unsigned char ext) const {</span></a>
 <a name="282"><span class="lineNum">     282 </span><span class="lineCov">       2350 :     return extension_enabled_const(isa_extension_t(ext));</span></a>
 <a name="283"><span class="lineNum">     283 </span>            :   }</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">  134725177 :   bool extension_enabled_const(isa_extension_t ext) const {</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">  134725177 :     if (ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z') {</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">       7222 :   bool extension_enabled_const(isa_extension_t ext) const {</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       7222 :     if (ext &gt;= 'A' &amp;&amp; ext &lt;= 'Z') {</span></a>
 <a name="286"><span class="lineNum">     286 </span><span class="lineCov">       2550 :       return state.misa-&gt;extension_enabled_const(ext);</span></a>
 <a name="287"><span class="lineNum">     287 </span>            :     } else {</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">  134722627 :       assert(!extension_dynamic[ext]);</span></a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">  134722627 :       extension_assumed_const[ext] = true;</span></a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">  134722627 :       return extension_enabled(ext);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">       4672 :       assert(!extension_dynamic[ext]);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">       4672 :       extension_assumed_const[ext] = true;</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">       4672 :       return extension_enabled(ext);</span></a>
 <a name="291"><span class="lineNum">     291 </span>            :     }</a>
 <a name="292"><span class="lineNum">     292 </span>            :   }</a>
 <a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :   void set_extension_enable(unsigned char ext, bool enable) {</span></a>
@@ -364,9 +364,9 @@
 <a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :   bool supports_impl(uint8_t impl) const {</span></a>
 <a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :     return impl_table[impl];</span></a>
 <a name="304"><span class="lineNum">     304 </span>            :   }</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">   67359457 :   reg_t pc_alignment_mask() {</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">   67359907 :     const int ialign = extension_enabled(EXT_ZCA) ? 16 : 32;</span></a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">   67359457 :     return ~(reg_t)(ialign == 16 ? 0 : 2);</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">      63813 :   reg_t pc_alignment_mask() {</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">      63813 :     const int ialign = extension_enabled(EXT_ZCA) ? 16 : 32;</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :     return ~(reg_t)(ialign == 16 ? 0 : 2);</span></a>
 <a name="308"><span class="lineNum">     308 </span>            :   }</a>
 <a name="309"><span class="lineNum">     309 </span>            :   reg_t throw_instruction_address_misaligned(reg_t pc);</a>
 <a name="310"><span class="lineNum">     310 </span>            :   reg_t legalize_privilege(reg_t);</a>
@@ -377,8 +377,8 @@
 <a name="315"><span class="lineNum">     315 </span>            : </a>
 <a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :   FILE *get_log_file() { return log_file; }</span></a>
 <a name="317"><span class="lineNum">     317 </span>            : </a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineCov">      44700 :   void register_base_insn(insn_desc_t insn) {</span></a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">         50 :     register_insn(insn, instructions);</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">      44850 :   void register_base_insn(insn_desc_t insn) {</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">        200 :     register_insn(insn, instructions);</span></a>
 <a name="320"><span class="lineNum">     320 </span>            :   }</a>
 <a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :   void register_custom_insn(insn_desc_t insn) {</span></a>
 <a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :     register_insn(insn, custom_instructions);</span></a>
@@ -448,7 +448,7 @@
 <a name="386"><span class="lineNum">     386 </span>            :   std::vector&lt;insn_desc_t&gt; custom_instructions;</a>
 <a name="387"><span class="lineNum">     387 </span>            :   std::unordered_map&lt;reg_t,uint64_t&gt; pc_histogram;</a>
 <a name="388"><span class="lineNum">     388 </span>            : </a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">   67359121 :   void take_pending_interrupt() { take_interrupt(state.mip-&gt;read() &amp; state.mie-&gt;read()); }</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">        172 :   void take_pending_interrupt() { take_interrupt(state.mip-&gt;read() &amp; state.mie-&gt;read()); }</span></a>
 <a name="390"><span class="lineNum">     390 </span>            :   void take_interrupt(reg_t mask); // take first enabled interrupt in mask</a>
 <a name="391"><span class="lineNum">     391 </span>            :   void take_trap(trap_t&amp; t, reg_t epc); // take an exception</a>
 <a name="392"><span class="lineNum">     392 </span>            :   void take_trigger_action(triggers::action_t action, reg_t breakpoint_tval, reg_t epc, bool virt);</a>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/csrs.cc</title>
+  <title>LCOV - microtesk_coverage.info - riscv/csrs.cc</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">452</td>
+            <td class="headerCovTableEntry">543</td>
             <td class="headerCovTableEntry">1392</td>
-            <td class="headerCovTableEntryLo">32.5 %</td>
+            <td class="headerCovTableEntryLo">39.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">104</td>
+            <td class="headerCovTableEntry">125</td>
             <td class="headerCovTableEntry">271</td>
-            <td class="headerCovTableEntryLo">38.4 %</td>
+            <td class="headerCovTableEntryLo">46.1 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -85,54 +85,54 @@
 <a name="23"><span class="lineNum">      23 </span>            : #define STATE (*state)</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
 <a name="25"><span class="lineNum">      25 </span>            : // implement class csr_t</a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">      15180 : csr_t::csr_t(processor_t* const proc, const reg_t addr):</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">      15180 :   proc(proc),</span></a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">      15180 :   state(proc-&gt;get_state()),</span></a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">      15180 :   address(addr),</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">      15180 :   csr_priv(get_field(addr, 0x300)),</span></a>
-<a name="31"><span class="lineNum">      31 </span><span class="lineCov">      15180 :   csr_read_only(get_field(addr, 0xC00) == 3) {</span></a>
-<a name="32"><span class="lineNum">      32 </span><span class="lineCov">      15180 : }</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">      15360 : csr_t::csr_t(processor_t* const proc, const reg_t addr):</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">      15360 :   proc(proc),</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">      15360 :   state(proc-&gt;get_state()),</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">      15360 :   address(addr),</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">      15360 :   csr_priv(get_field(addr, 0x300)),</span></a>
+<a name="31"><span class="lineNum">      31 </span><span class="lineCov">      15360 :   csr_read_only(get_field(addr, 0xC00) == 3) {</span></a>
+<a name="32"><span class="lineNum">      32 </span><span class="lineCov">      15360 : }</span></a>
 <a name="33"><span class="lineNum">      33 </span>            : </a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">         30 : void csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">        511 : void csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
 <a name="35"><span class="lineNum">      35 </span>            :   // Check permissions. Raise virtual-instruction exception if V=1,</a>
 <a name="36"><span class="lineNum">      36 </span>            :   // privileges are insufficient, and the CSR belongs to supervisor or</a>
 <a name="37"><span class="lineNum">      37 </span>            :   // hypervisor. Raise illegal-instruction exception otherwise.</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         30 :   unsigned priv = state-&gt;prv == PRV_S &amp;&amp; !state-&gt;v ? PRV_HS : state-&gt;prv;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">        511 :   unsigned priv = state-&gt;prv == PRV_S &amp;&amp; !state-&gt;v ? PRV_HS : state-&gt;prv;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         30 :   if ((csr_priv == PRV_S &amp;&amp; !proc-&gt;extension_enabled('S')) ||</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        511 :   if ((csr_priv == PRV_S &amp;&amp; !proc-&gt;extension_enabled('S')) ||</span></a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 :       (csr_priv == PRV_HS &amp;&amp; !proc-&gt;extension_enabled('H')))</span></a>
 <a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         30 :   if (write &amp;&amp; csr_read_only)</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">        511 :   if (write &amp;&amp; csr_read_only)</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         30 :   if (priv &lt; csr_priv) {</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        511 :   if (priv &lt; csr_priv) {</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :     if (state-&gt;v &amp;&amp; csr_priv &lt;= PRV_HS)</span></a>
 <a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :       throw trap_virtual_instruction(insn.bits());</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
 <a name="50"><span class="lineNum">      50 </span>            :   }</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         30 : }</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        511 : }</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       9538 : csr_t::~csr_t() {</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">       9538 : }</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">      15360 : csr_t::~csr_t() {</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">      15360 : }</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">  245360310 : void csr_t::write(const reg_t val) noexcept {</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">  245360310 :   const bool success = unlogged_write(val);</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">  245360310 :   if (success) {</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">  245360310 :     log_write();</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        720 : void csr_t::write(const reg_t val) noexcept {</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        720 :   const bool success = unlogged_write(val);</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        720 :   if (success) {</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        660 :     log_write();</span></a>
 <a name="60"><span class="lineNum">      60 </span>            :   }</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">  245360310 : }</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        720 : }</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">  245360310 : void csr_t::log_write() const noexcept {</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">  245360310 :   log_special_write(address, written_value());</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">  245360310 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        690 : void csr_t::log_write() const noexcept {</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">        690 :   log_special_write(address, written_value());</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">        690 : }</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">  245360310 : void csr_t::log_special_write(const reg_t UNUSED address, const reg_t UNUSED val) const noexcept {</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">  245360310 :   if (proc-&gt;get_log_commits_enabled())</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        690 : void csr_t::log_special_write(const reg_t UNUSED address, const reg_t UNUSED val) const noexcept {</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        690 :   if (proc-&gt;get_log_commits_enabled())</span></a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :     proc-&gt;get_state()-&gt;log_reg_write[((address) &lt;&lt; 4) | 4] = {val, 0};</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">  245360310 : }</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        690 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">  245360310 : reg_t csr_t::written_value() const noexcept {</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">  245360310 :   return read();</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        690 : reg_t csr_t::written_value() const noexcept {</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">        690 :   return read();</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : }</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
 <a name="76"><span class="lineNum">      76 </span>            : // implement class basic_csr_t</a>
@@ -141,9 +141,9 @@
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">       4560 :   val(init) {</span></a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineCov">       4560 : }</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">  163573460 : bool basic_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">  163573460 :   this-&gt;val = val;</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">  163573460 :   return true;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        210 : bool basic_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        210 :   this-&gt;val = val;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        210 :   return true;</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : }</a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
 <a name="87"><span class="lineNum">      87 </span>            : // implement class pmpaddr_csr_t</a>
@@ -154,111 +154,111 @@
 <a name="92"><span class="lineNum">      92 </span><span class="lineCov">       3840 :   pmpidx(address - CSR_PMPADDR0) {</span></a>
 <a name="93"><span class="lineNum">      93 </span><span class="lineCov">       3840 : }</span></a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : void pmpaddr_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :   csr_t::verify_permissions(insn, write);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         30 : void pmpaddr_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         30 :   csr_t::verify_permissions(insn, write);</span></a>
 <a name="97"><span class="lineNum">      97 </span>            :   // If n_pmp is zero, that means pmp is not implemented hence raise</a>
 <a name="98"><span class="lineNum">      98 </span>            :   // trap if it tries to access the csr. I would prefer to implement</a>
 <a name="99"><span class="lineNum">      99 </span>            :   // this by not instantiating any pmpaddr_csr_t for these regs, but</a>
 <a name="100"><span class="lineNum">     100 </span>            :   // n_pmp can change after reset() is run.</a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :   if (proc-&gt;n_pmp == 0)</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">         30 :   if (proc-&gt;n_pmp == 0)</span></a>
 <a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         30 : }</span></a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         60 : reg_t pmpaddr_csr_t::read() const noexcept {</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         60 :   if ((cfg &amp; PMP_A) &gt;= PMP_NAPOT)</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :     return val | (~proc-&gt;pmp_tor_mask() &gt;&gt; 1);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        120 : reg_t pmpaddr_csr_t::read() const noexcept {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        120 :   if ((cfg &amp; PMP_A) &gt;= PMP_NAPOT)</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         60 :     return val | (~proc-&gt;pmp_tor_mask() &gt;&gt; 1);</span></a>
 <a name="108"><span class="lineNum">     108 </span><span class="lineCov">         60 :   return val &amp; proc-&gt;pmp_tor_mask();</span></a>
 <a name="109"><span class="lineNum">     109 </span>            : }</a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         60 : bool pmpaddr_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         90 : bool pmpaddr_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
 <a name="112"><span class="lineNum">     112 </span>            :   // If no PMPs are configured, disallow access to all. Otherwise,</a>
 <a name="113"><span class="lineNum">     113 </span>            :   // allow access to all, but unimplemented ones are hardwired to</a>
 <a name="114"><span class="lineNum">     114 </span>            :   // zero. Note that n_pmp can change after reset(); otherwise I would</a>
 <a name="115"><span class="lineNum">     115 </span>            :   // implement this in state_t::reset() by instantiating the correct</a>
 <a name="116"><span class="lineNum">     116 </span>            :   // number of pmpaddr_csr_t.</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         60 :   if (proc-&gt;n_pmp == 0)</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         90 :   if (proc-&gt;n_pmp == 0)</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :     return false;</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         60 :   const bool lock_bypass = state-&gt;mseccfg-&gt;get_rlb();</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">         60 :   const bool locked = !lock_bypass &amp;&amp; (cfg &amp; PMP_L);</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         90 :   const bool lock_bypass = state-&gt;mseccfg-&gt;get_rlb();</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">         90 :   const bool locked = !lock_bypass &amp;&amp; (cfg &amp; PMP_L);</span></a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         60 :   if (pmpidx &lt; proc-&gt;n_pmp &amp;&amp; !locked &amp;&amp; !next_locked_and_tor()) {</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         60 :     this-&gt;val = val &amp; ((reg_t(1) &lt;&lt; (proc-&gt;paddr_bits() - PMP_SHIFT)) - 1);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         90 :   if (pmpidx &lt; proc-&gt;n_pmp &amp;&amp; !locked &amp;&amp; !next_locked_and_tor()) {</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         90 :     this-&gt;val = val &amp; ((reg_t(1) &lt;&lt; (proc-&gt;paddr_bits() - PMP_SHIFT)) - 1);</span></a>
 <a name="125"><span class="lineNum">     125 </span>            :   }</a>
 <a name="126"><span class="lineNum">     126 </span>            :   else</a>
 <a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :     return false;</span></a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         60 :   proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">         60 :   return true;</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         90 :   proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">         90 :   return true;</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : }</a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         60 : bool pmpaddr_csr_t::next_locked_and_tor() const noexcept {</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         60 :   if (pmpidx+1 &gt;= state-&gt;max_pmp) return false;  // this is the last entry</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         60 :   const bool lock_bypass = state-&gt;mseccfg-&gt;get_rlb();</span></a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         60 :   const bool next_locked = !lock_bypass &amp;&amp; (state-&gt;pmpaddr[pmpidx+1]-&gt;cfg &amp; PMP_L);</span></a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">         60 :   const bool next_tor = (state-&gt;pmpaddr[pmpidx+1]-&gt;cfg &amp; PMP_A) == PMP_TOR;</span></a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         60 :   return next_locked &amp;&amp; next_tor;</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         90 : bool pmpaddr_csr_t::next_locked_and_tor() const noexcept {</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         90 :   if (pmpidx+1 &gt;= state-&gt;max_pmp) return false;  // this is the last entry</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         90 :   const bool lock_bypass = state-&gt;mseccfg-&gt;get_rlb();</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         90 :   const bool next_locked = !lock_bypass &amp;&amp; (state-&gt;pmpaddr[pmpidx+1]-&gt;cfg &amp; PMP_L);</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">         90 :   const bool next_tor = (state-&gt;pmpaddr[pmpidx+1]-&gt;cfg &amp; PMP_A) == PMP_TOR;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         90 :   return next_locked &amp;&amp; next_tor;</span></a>
 <a name="138"><span class="lineNum">     138 </span>            : }</a>
 <a name="139"><span class="lineNum">     139 </span>            : </a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov"> 1308590038 : reg_t pmpaddr_csr_t::tor_paddr() const noexcept {</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov"> 1308590038 :   return (val &amp; proc-&gt;pmp_tor_mask()) &lt;&lt; PMP_SHIFT;</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">       8644 : reg_t pmpaddr_csr_t::tor_paddr() const noexcept {</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">       8644 :   return (val &amp; proc-&gt;pmp_tor_mask()) &lt;&lt; PMP_SHIFT;</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : }</a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">  654295004 : reg_t pmpaddr_csr_t::tor_base_paddr() const noexcept {</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">  654295004 :   if (pmpidx == 0) return 0;  // entry 0 always uses 0 as base</span></a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">  613401566 :   return state-&gt;pmpaddr[pmpidx-1]-&gt;tor_paddr();</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">       4304 : reg_t pmpaddr_csr_t::tor_base_paddr() const noexcept {</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">       4304 :   if (pmpidx == 0) return 0;  // entry 0 always uses 0 as base</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       4035 :   return state-&gt;pmpaddr[pmpidx-1]-&gt;tor_paddr();</span></a>
 <a name="147"><span class="lineNum">     147 </span>            : }</a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">   81786906 : reg_t pmpaddr_csr_t::napot_mask() const noexcept {</span></a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">   81786906 :   bool is_na4 = (cfg &amp; PMP_A) == PMP_NA4;</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">   81786906 :   reg_t mask = (val &lt;&lt; 1) | (!is_na4) | ~proc-&gt;pmp_tor_mask();</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">   81786906 :   return ~(mask &amp; ~(mask + 1)) &lt;&lt; PMP_SHIFT;</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">        574 : reg_t pmpaddr_csr_t::napot_mask() const noexcept {</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        574 :   bool is_na4 = (cfg &amp; PMP_A) == PMP_NA4;</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">        574 :   reg_t mask = (val &lt;&lt; 1) | (!is_na4) | ~proc-&gt;pmp_tor_mask();</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        574 :   return ~(mask &amp; ~(mask + 1)) &lt;&lt; PMP_SHIFT;</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : }</a>
 <a name="154"><span class="lineNum">     154 </span>            : </a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">   40893468 : bool pmpaddr_csr_t::match4(reg_t addr) const noexcept {</span></a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">   40893468 :   if ((cfg &amp; PMP_A) == 0) return false;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">   40893468 :   bool is_tor = (cfg &amp; PMP_A) == PMP_TOR;</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">   40893468 :   if (is_tor) return tor_base_paddr() &lt;= addr &amp;&amp; addr &lt; tor_paddr();</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">        305 : bool pmpaddr_csr_t::match4(reg_t addr) const noexcept {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">        305 :   if ((cfg &amp; PMP_A) == 0) return false;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        305 :   bool is_tor = (cfg &amp; PMP_A) == PMP_TOR;</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        305 :   if (is_tor) return tor_base_paddr() &lt;= addr &amp;&amp; addr &lt; tor_paddr();</span></a>
 <a name="159"><span class="lineNum">     159 </span>            :   // NAPOT or NA4:</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">   40893468 :   return ((addr ^ tor_paddr()) &amp; napot_mask()) == 0;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        305 :   return ((addr ^ tor_paddr()) &amp; napot_mask()) == 0;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">  654295004 : bool pmpaddr_csr_t::subset_match(reg_t addr, reg_t len) const noexcept {</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">  654295004 :   if ((addr | len) &amp; (len - 1))</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       4304 : bool pmpaddr_csr_t::subset_match(reg_t addr, reg_t len) const noexcept {</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">       4304 :   if ((addr | len) &amp; (len - 1))</span></a>
 <a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :     abort();</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">  654295004 :   reg_t base = tor_base_paddr();</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">  654295004 :   reg_t tor = tor_paddr();</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       4304 :   reg_t base = tor_base_paddr();</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">       4304 :   reg_t tor = tor_paddr();</span></a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">  654295004 :   if ((cfg &amp; PMP_A) == 0) return false;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">       4304 :   if ((cfg &amp; PMP_A) == 0) return false;</span></a>
 <a name="170"><span class="lineNum">     170 </span>            : </a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">   40893438 :   bool is_tor = (cfg &amp; PMP_A) == PMP_TOR;</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">   40893438 :   bool begins_after_lower = addr &gt;= base;</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">   40893438 :   bool begins_after_upper = addr &gt;= tor;</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">   40893438 :   bool ends_before_lower = (addr &amp; -len) &lt; (base &amp; -len);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">   40893438 :   bool ends_before_upper = (addr &amp; -len) &lt; (tor &amp; -len);</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">   40893438 :   bool tor_homogeneous = ends_before_lower || begins_after_upper ||</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">   40893438 :     (begins_after_lower &amp;&amp; ends_before_upper);</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        269 :   bool is_tor = (cfg &amp; PMP_A) == PMP_TOR;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        269 :   bool begins_after_lower = addr &gt;= base;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        269 :   bool begins_after_upper = addr &gt;= tor;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        269 :   bool ends_before_lower = (addr &amp; -len) &lt; (base &amp; -len);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">        269 :   bool ends_before_upper = (addr &amp; -len) &lt; (tor &amp; -len);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">        269 :   bool tor_homogeneous = ends_before_lower || begins_after_upper ||</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        269 :     (begins_after_lower &amp;&amp; ends_before_upper);</span></a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">   40893438 :   bool mask_homogeneous = ~(napot_mask() &lt;&lt; 1) &amp; len;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">   40893438 :   bool napot_homogeneous = mask_homogeneous || ((addr ^ tor) / len) != 0;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        269 :   bool mask_homogeneous = ~(napot_mask() &lt;&lt; 1) &amp; len;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        269 :   bool napot_homogeneous = mask_homogeneous || ((addr ^ tor) / len) != 0;</span></a>
 <a name="181"><span class="lineNum">     181 </span>            : </a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">   40893438 :   return !(is_tor ? tor_homogeneous : napot_homogeneous);</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        269 :   return !(is_tor ? tor_homogeneous : napot_homogeneous);</span></a>
 <a name="183"><span class="lineNum">     183 </span>            : }</a>
 <a name="184"><span class="lineNum">     184 </span>            : </a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">   40893438 : bool pmpaddr_csr_t::access_ok(access_type type, reg_t mode, bool hlvx) const noexcept {</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">   40893438 :   const bool cfgx = cfg &amp; PMP_X;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">   40893438 :   const bool cfgw = cfg &amp; PMP_W;</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">   40893438 :   const bool cfgr = cfg &amp; PMP_R;</span></a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">   40893438 :   const bool cfgl = cfg &amp; PMP_L;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        269 : bool pmpaddr_csr_t::access_ok(access_type type, reg_t mode, bool hlvx) const noexcept {</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">        269 :   const bool cfgx = cfg &amp; PMP_X;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        269 :   const bool cfgw = cfg &amp; PMP_W;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        269 :   const bool cfgr = cfg &amp; PMP_R;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">        269 :   const bool cfgl = cfg &amp; PMP_L;</span></a>
 <a name="190"><span class="lineNum">     190 </span>            : </a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">   40893438 :   const bool prvm = mode == PRV_M;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        269 :   const bool prvm = mode == PRV_M;</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : </a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">   40893438 :   const bool typer = type == LOAD;</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">   40893438 :   const bool typex = type == FETCH;</span></a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">   40893438 :   const bool typew = type == STORE;</span></a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">   40893438 :   const bool normal_rwx = (typer &amp;&amp; cfgr &amp;&amp; (!hlvx || cfgx)) || (typew &amp;&amp; cfgw) || (typex &amp;&amp; cfgx);</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">   40893438 :   const bool mseccfg_mml = state-&gt;mseccfg-&gt;get_mml();</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">        269 :   const bool typer = type == LOAD;</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">        269 :   const bool typex = type == FETCH;</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">        269 :   const bool typew = type == STORE;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">        269 :   const bool normal_rwx = (typer &amp;&amp; cfgr &amp;&amp; (!hlvx || cfgx)) || (typew &amp;&amp; cfgw) || (typex &amp;&amp; cfgx);</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">        269 :   const bool mseccfg_mml = state-&gt;mseccfg-&gt;get_mml();</span></a>
 <a name="198"><span class="lineNum">     198 </span>            : </a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">   40893438 :   if (mseccfg_mml) {</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        269 :   if (mseccfg_mml) {</span></a>
 <a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :     if (cfgx &amp;&amp; cfgw &amp;&amp; cfgr &amp;&amp; cfgl) {</span></a>
 <a name="201"><span class="lineNum">     201 </span>            :       // Locked Shared data region: Read only on both M and S/U mode.</a>
 <a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :       return typer &amp;&amp; !hlvx;</span></a>
@@ -273,8 +273,8 @@
 <a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :       return mml_shared_region ? mml_chk_shared : mml_chk_normal;</span></a>
 <a name="212"><span class="lineNum">     212 </span>            :     }</a>
 <a name="213"><span class="lineNum">     213 </span>            :   } else {</a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">   40893438 :     const bool m_bypass = (prvm &amp;&amp; !cfgl);</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">   40893438 :     return m_bypass || normal_rwx;</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">        269 :     const bool m_bypass = (prvm &amp;&amp; !cfgl);</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">        269 :     return m_bypass || normal_rwx;</span></a>
 <a name="216"><span class="lineNum">     216 </span>            :   }</a>
 <a name="217"><span class="lineNum">     217 </span>            : }</a>
 <a name="218"><span class="lineNum">     218 </span>            : </a>
@@ -283,69 +283,69 @@
 <a name="221"><span class="lineNum">     221 </span><span class="lineCov">        480 :   csr_t(proc, addr) {</span></a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineCov">        480 : }</span></a>
 <a name="223"><span class="lineNum">     223 </span>            : </a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 : void pmpcfg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :   csr_t::verify_permissions(insn, write);</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">         30 : void pmpcfg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">         30 :   csr_t::verify_permissions(insn, write);</span></a>
 <a name="226"><span class="lineNum">     226 </span>            :   // If n_pmp is zero, that means pmp is not implemented hence raise</a>
 <a name="227"><span class="lineNum">     227 </span>            :   // trap if it tries to access the csr. I would prefer to implement</a>
 <a name="228"><span class="lineNum">     228 </span>            :   // this by not instantiating any pmpcfg_csr_t for these regs, but</a>
 <a name="229"><span class="lineNum">     229 </span>            :   // n_pmp can change after reset() is run.</a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :   if (proc-&gt;n_pmp == 0)</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         30 :   if (proc-&gt;n_pmp == 0)</span></a>
 <a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         30 : }</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : </a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         60 : reg_t pmpcfg_csr_t::read() const noexcept {</span></a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">         60 :   reg_t cfg_res = 0;</span></a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        540 :   for (size_t i0 = (address - CSR_PMPCFG0) * 4, i = i0; i &lt; i0 + proc-&gt;get_xlen() / 8 &amp;&amp; i &lt; state-&gt;max_pmp; i++)</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">        480 :     cfg_res |= reg_t(state-&gt;pmpaddr[i]-&gt;cfg) &lt;&lt; (8 * (i - i0));</span></a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">         60 :   return cfg_res;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        120 : reg_t pmpcfg_csr_t::read() const noexcept {</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        120 :   reg_t cfg_res = 0;</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">       1080 :   for (size_t i0 = (address - CSR_PMPCFG0) * 4, i = i0; i &lt; i0 + proc-&gt;get_xlen() / 8 &amp;&amp; i &lt; state-&gt;max_pmp; i++)</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">        960 :     cfg_res |= reg_t(state-&gt;pmpaddr[i]-&gt;cfg) &lt;&lt; (8 * (i - i0));</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        120 :   return cfg_res;</span></a>
 <a name="239"><span class="lineNum">     239 </span>            : }</a>
 <a name="240"><span class="lineNum">     240 </span>            : </a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         60 : bool pmpcfg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         60 :   if (proc-&gt;n_pmp == 0)</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         90 : bool pmpcfg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         90 :   if (proc-&gt;n_pmp == 0)</span></a>
 <a name="243"><span class="lineNum">     243 </span>            :     return false;</a>
 <a name="244"><span class="lineNum">     244 </span>            : </a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         60 :   bool write_success = false;</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         60 :   const bool rlb = state-&gt;mseccfg-&gt;get_rlb();</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         60 :   const bool mml = state-&gt;mseccfg-&gt;get_mml();</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">        540 :   for (size_t i0 = (address - CSR_PMPCFG0) * 4, i = i0; i &lt; i0 + proc-&gt;get_xlen() / 8; i++) {</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        480 :     if (i &lt; proc-&gt;n_pmp) {</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        480 :       const bool locked = (state-&gt;pmpaddr[i]-&gt;cfg &amp; PMP_L);</span></a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        480 :       if (rlb || !locked) {</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        480 :         uint8_t all_cfg_fields = (PMP_R | PMP_W | PMP_X | PMP_A |</span></a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        480 :             (proc-&gt;extension_enabled(EXT_SMPMPMT) ? PMP_MT : 0) |</span></a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        480 :             PMP_L);</span></a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        480 :         uint8_t cfg = (val &gt;&gt; (8 * (i - i0))) &amp; all_cfg_fields;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         90 :   bool write_success = false;</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         90 :   const bool rlb = state-&gt;mseccfg-&gt;get_rlb();</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         90 :   const bool mml = state-&gt;mseccfg-&gt;get_mml();</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">        810 :   for (size_t i0 = (address - CSR_PMPCFG0) * 4, i = i0; i &lt; i0 + proc-&gt;get_xlen() / 8; i++) {</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        720 :     if (i &lt; proc-&gt;n_pmp) {</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        720 :       const bool locked = (state-&gt;pmpaddr[i]-&gt;cfg &amp; PMP_L);</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        720 :       if (rlb || !locked) {</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        720 :         uint8_t all_cfg_fields = (PMP_R | PMP_W | PMP_X | PMP_A |</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        720 :             (proc-&gt;extension_enabled(EXT_SMPMPMT) ? PMP_MT : 0) |</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        720 :             PMP_L);</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        720 :         uint8_t cfg = (val &gt;&gt; (8 * (i - i0))) &amp; all_cfg_fields;</span></a>
 <a name="256"><span class="lineNum">     256 </span>            :         // Drop R=0 W=1 when MML = 0</a>
 <a name="257"><span class="lineNum">     257 </span>            :         // Remove the restriction when MML = 1</a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        480 :         if (!mml) {</span></a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        480 :           cfg &amp;= ~PMP_W | ((cfg &amp; PMP_R) ? PMP_W : 0);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        720 :         if (!mml) {</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        720 :           cfg &amp;= ~PMP_W | ((cfg &amp; PMP_R) ? PMP_W : 0);</span></a>
 <a name="260"><span class="lineNum">     260 </span>            :         }</a>
 <a name="261"><span class="lineNum">     261 </span>            :         // Disallow A=NA4 when granularity &gt; 4</a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        480 :         if (proc-&gt;lg_pmp_granularity != PMP_SHIFT &amp;&amp; (cfg &amp; PMP_A) == PMP_NA4)</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        720 :         if (proc-&gt;lg_pmp_granularity != PMP_SHIFT &amp;&amp; (cfg &amp; PMP_A) == PMP_NA4)</span></a>
 <a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :           cfg |= PMP_NAPOT;</span></a>
 <a name="264"><span class="lineNum">     264 </span>            :         // MT value 0x3 is reserved</a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        480 :         if (get_field(cfg, PMP_MT) == 0x3)</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        720 :         if (get_field(cfg, PMP_MT) == 0x3)</span></a>
 <a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :           cfg = set_field(cfg, PMP_MT, 0);</span></a>
 <a name="267"><span class="lineNum">     267 </span>            :         /*</a>
 <a name="268"><span class="lineNum">     268 </span>            :          * Adding a rule with executable privileges that either is M-mode-only or a locked Shared-Region</a>
 <a name="269"><span class="lineNum">     269 </span>            :          * is not possible and such pmpcfg writes are ignored, leaving pmpcfg unchanged.</a>
 <a name="270"><span class="lineNum">     270 </span>            :          * This restriction can be temporarily lifted e.g. during the boot process, by setting mseccfg.RLB.</a>
 <a name="271"><span class="lineNum">     271 </span>            :          */</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        480 :         const bool cfgx = cfg &amp; PMP_X;</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">        480 :         const bool cfgw = cfg &amp; PMP_W;</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        480 :         const bool cfgr = cfg &amp; PMP_R;</span></a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">        480 :         if (rlb || !(mml &amp;&amp; ((cfg &amp; PMP_L)      // M-mode-only or a locked Shared-Region</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        720 :         const bool cfgx = cfg &amp; PMP_X;</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">        720 :         const bool cfgw = cfg &amp; PMP_W;</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        720 :         const bool cfgr = cfg &amp; PMP_R;</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">        720 :         if (rlb || !(mml &amp;&amp; ((cfg &amp; PMP_L)      // M-mode-only or a locked Shared-Region</span></a>
 <a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 &amp;&amp; !(cfgx &amp;&amp; cfgw &amp;&amp; cfgr)      // RWX = 111 is allowed</span></a>
 <a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 &amp;&amp; (cfgx || (cfgw &amp;&amp; !cfgr))    // X=1 or RW=01 is not allowed</span></a>
 <a name="278"><span class="lineNum">     278 </span>            :         ))) {</a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        480 :           state-&gt;pmpaddr[i]-&gt;cfg = cfg;</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        720 :           state-&gt;pmpaddr[i]-&gt;cfg = cfg;</span></a>
 <a name="280"><span class="lineNum">     280 </span>            :         }</a>
 <a name="281"><span class="lineNum">     281 </span>            :       }</a>
 <a name="282"><span class="lineNum">     282 </span>            :       write_success = true;</a>
 <a name="283"><span class="lineNum">     283 </span>            :     }</a>
 <a name="284"><span class="lineNum">     284 </span>            :   }</a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">         60 :   proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">         60 :   return write_success;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">         90 :   proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">         90 :   return write_success;</span></a>
 <a name="287"><span class="lineNum">     287 </span>            : }</a>
 <a name="288"><span class="lineNum">     288 </span>            : </a>
 <a name="289"><span class="lineNum">     289 </span>            : // implement class mseccfg_csr_t</a>
@@ -362,16 +362,16 @@
 <a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
 <a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">   40893498 : bool mseccfg_csr_t::get_mml() const noexcept {</span></a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">   40893498 :   return (read() &amp; MSECCFG_MML);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        359 : bool mseccfg_csr_t::get_mml() const noexcept {</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">        359 :   return (read() &amp; MSECCFG_MML);</span></a>
 <a name="305"><span class="lineNum">     305 </span>            : }</a>
 <a name="306"><span class="lineNum">     306 </span>            : </a>
 <a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 : bool mseccfg_csr_t::get_mmwp() const noexcept {</span></a>
 <a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :   return (read() &amp; MSECCFG_MMWP);</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : }</a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">        180 : bool mseccfg_csr_t::get_rlb() const noexcept {</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">        180 :   return (read() &amp; MSECCFG_RLB);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">        270 : bool mseccfg_csr_t::get_rlb() const noexcept {</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">        270 :   return (read() &amp; MSECCFG_RLB);</span></a>
 <a name="313"><span class="lineNum">     313 </span>            : }</a>
 <a name="314"><span class="lineNum">     314 </span>            : </a>
 <a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 : bool mseccfg_csr_t::get_useed() const noexcept {</span></a>
@@ -429,20 +429,20 @@
 <a name="367"><span class="lineNum">     367 </span><span class="lineCov">       1080 :   virt_csr(virt) {</span></a>
 <a name="368"><span class="lineNum">     368 </span><span class="lineCov">        540 : }</span></a>
 <a name="369"><span class="lineNum">     369 </span>            : </a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 : reg_t virtualized_csr_t::read() const noexcept {</span></a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :   return readvirt(state-&gt;v);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">         30 : reg_t virtualized_csr_t::read() const noexcept {</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">         30 :   return readvirt(state-&gt;v);</span></a>
 <a name="372"><span class="lineNum">     372 </span>            : }</a>
 <a name="373"><span class="lineNum">     373 </span>            : </a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">   40893468 : reg_t virtualized_csr_t::readvirt(bool virt) const noexcept {</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">   40893468 :   return virt ? virt_csr-&gt;read() : orig_csr-&gt;read();</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">        401 : reg_t virtualized_csr_t::readvirt(bool virt) const noexcept {</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">        401 :   return virt ? virt_csr-&gt;read() : orig_csr-&gt;read();</span></a>
 <a name="376"><span class="lineNum">     376 </span>            : }</a>
 <a name="377"><span class="lineNum">     377 </span>            : </a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 : bool virtualized_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :   if (state-&gt;v)</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">         30 : bool virtualized_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">         30 :   if (state-&gt;v)</span></a>
 <a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :     virt_csr-&gt;write(val);</span></a>
 <a name="381"><span class="lineNum">     381 </span>            :   else</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :     orig_csr-&gt;write(val);</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :   return false; // virt_csr or orig_csr has already logged</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         30 :     orig_csr-&gt;write(val);</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         30 :   return false; // virt_csr or orig_csr has already logged</span></a>
 <a name="384"><span class="lineNum">     384 </span>            : }</a>
 <a name="385"><span class="lineNum">     385 </span>            : </a>
 <a name="386"><span class="lineNum">     386 </span>            : // implement class epc_csr_t</a>
@@ -451,13 +451,13 @@
 <a name="389"><span class="lineNum">     389 </span><span class="lineCov">        240 :   val(0) {</span></a>
 <a name="390"><span class="lineNum">     390 </span><span class="lineCov">        240 : }</span></a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">   40893365 : reg_t epc_csr_t::read() const noexcept {</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">   40893365 :   return val &amp; proc-&gt;pc_alignment_mask();</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">        120 : reg_t epc_csr_t::read() const noexcept {</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">        120 :   return val &amp; proc-&gt;pc_alignment_mask();</span></a>
 <a name="394"><span class="lineNum">     394 </span>            : }</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">   40893365 : bool epc_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">   40893365 :   this-&gt;val = val &amp; ~(reg_t)1;</span></a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">   40893365 :   return true;</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">         60 : bool epc_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">         60 :   this-&gt;val = val &amp; ~(reg_t)1;</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">         60 :   return true;</span></a>
 <a name="399"><span class="lineNum">     399 </span>            : }</a>
 <a name="400"><span class="lineNum">     400 </span>            : </a>
 <a name="401"><span class="lineNum">     401 </span>            : // implement class tvec_csr_t</a>
@@ -466,13 +466,13 @@
 <a name="404"><span class="lineNum">     404 </span><span class="lineCov">        180 :   val(0) {</span></a>
 <a name="405"><span class="lineNum">     405 </span><span class="lineCov">        180 : }</span></a>
 <a name="406"><span class="lineNum">     406 </span>            : </a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">   81786730 : reg_t tvec_csr_t::read() const noexcept {</span></a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineCov">   81786730 :   return val;</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">        300 : reg_t tvec_csr_t::read() const noexcept {</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">        300 :   return val;</span></a>
 <a name="409"><span class="lineNum">     409 </span>            : }</a>
 <a name="410"><span class="lineNum">     410 </span>            : </a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 : bool tvec_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :   this-&gt;val = val &amp; ~(reg_t)2;</span></a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :   return true;</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">        120 : bool tvec_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineCov">        120 :   this-&gt;val = val &amp; ~(reg_t)2;</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">        120 :   return true;</span></a>
 <a name="414"><span class="lineNum">     414 </span>            : }</a>
 <a name="415"><span class="lineNum">     415 </span>            : </a>
 <a name="416"><span class="lineNum">     416 </span>            : // implement class cause_csr_t</a>
@@ -480,12 +480,12 @@
 <a name="418"><span class="lineNum">     418 </span><span class="lineCov">        180 :   basic_csr_t(proc, addr, 0) {</span></a>
 <a name="419"><span class="lineNum">     419 </span><span class="lineCov">        180 : }</span></a>
 <a name="420"><span class="lineNum">     420 </span>            : </a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineCov">   40893365 : reg_t cause_csr_t::read() const noexcept {</span></a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineCov">   40893365 :   reg_t val = basic_csr_t::read();</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">         61 : reg_t cause_csr_t::read() const noexcept {</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">         61 :   reg_t val = basic_csr_t::read();</span></a>
 <a name="423"><span class="lineNum">     423 </span>            :   // When reading, the interrupt bit needs to adjust to xlen. Spike does</a>
 <a name="424"><span class="lineNum">     424 </span>            :   // not generally support dynamic xlen, but this code was (partly)</a>
 <a name="425"><span class="lineNum">     425 </span>            :   // there since at least 2015 (ea58df8 and c4350ef).</a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineCov">   40893365 :   if (proc-&gt;get_isa().get_max_xlen() &gt; proc-&gt;get_xlen()) // Move interrupt bit to top of xlen</span></a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineCov">         61 :   if (proc-&gt;get_isa().get_max_xlen() &gt; proc-&gt;get_xlen()) // Move interrupt bit to top of xlen</span></a>
 <a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :     return val | ((val &gt;&gt; (proc-&gt;get_isa().get_max_xlen()-1)) &lt;&lt; (proc-&gt;get_xlen()-1));</span></a>
 <a name="428"><span class="lineNum">     428 </span>            :   return val;</a>
 <a name="429"><span class="lineNum">     429 </span>            : }</a>
@@ -516,28 +516,28 @@
 <a name="454"><span class="lineNum">     454 </span>            :     ;</a>
 <a name="455"><span class="lineNum">     455 </span>            : }</a>
 <a name="456"><span class="lineNum">     456 </span>            : </a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineCov">   40893365 : reg_t base_status_csr_t::adjust_sd(const reg_t val) const noexcept {</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineCov">         90 : reg_t base_status_csr_t::adjust_sd(const reg_t val) const noexcept {</span></a>
 <a name="458"><span class="lineNum">     458 </span>            :   // This uses get_const_xlen() instead of get_xlen() not only because</a>
 <a name="459"><span class="lineNum">     459 </span>            :   // the variable is static, so it's only called once, but also</a>
 <a name="460"><span class="lineNum">     460 </span>            :   // because the SD bit moves when XLEN changes, which means we would</a>
 <a name="461"><span class="lineNum">     461 </span>            :   // need to call adjust_sd() on every read, instead of on every</a>
 <a name="462"><span class="lineNum">     462 </span>            :   // write.</a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineCov">   40893365 :   static const reg_t sd_bit = proc-&gt;get_const_xlen() == 64 ? SSTATUS64_SD : SSTATUS32_SD;</span></a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineCov">   40893365 :   if (((val &amp; SSTATUS_FS) == SSTATUS_FS) ||</span></a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineCov">   40893365 :       ((val &amp; SSTATUS_VS) == SSTATUS_VS) ||</span></a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">   40893365 :       ((val &amp; SSTATUS_XS) == SSTATUS_XS)) {</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineCov">         90 :   static const reg_t sd_bit = proc-&gt;get_const_xlen() == 64 ? SSTATUS64_SD : SSTATUS32_SD;</span></a>
+<a name="464"><span class="lineNum">     464 </span><span class="lineCov">         90 :   if (((val &amp; SSTATUS_FS) == SSTATUS_FS) ||</span></a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineCov">         90 :       ((val &amp; SSTATUS_VS) == SSTATUS_VS) ||</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">         90 :       ((val &amp; SSTATUS_XS) == SSTATUS_XS)) {</span></a>
 <a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :     return val | sd_bit;</span></a>
 <a name="468"><span class="lineNum">     468 </span>            :   }</a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">   40893365 :   return val &amp; ~sd_bit;</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">         90 :   return val &amp; ~sd_bit;</span></a>
 <a name="470"><span class="lineNum">     470 </span>            : }</a>
 <a name="471"><span class="lineNum">     471 </span>            : </a>
-<a name="472"><span class="lineNum">     472 </span><span class="lineCov">   40893365 : void base_status_csr_t::maybe_flush_tlb(const reg_t newval) noexcept {</span></a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineCov">   81786730 :   if ((newval ^ read()) &amp;</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineCov">         90 : void base_status_csr_t::maybe_flush_tlb(const reg_t newval) noexcept {</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineCov">        180 :   if ((newval ^ read()) &amp;</span></a>
 <a name="474"><span class="lineNum">     474 </span>            :       (MSTATUS_MPP | MSTATUS_MPRV</a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineCov">   40893365 :        | (has_page ? (MSTATUS_MXR | MSTATUS_SUM) : 0)</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineCov">         90 :        | (has_page ? (MSTATUS_MXR | MSTATUS_SUM) : 0)</span></a>
 <a name="476"><span class="lineNum">     476 </span>            :       ))</a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineCov">         30 :     proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineCov">   40893365 : }</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :     proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">         90 : }</span></a>
 <a name="479"><span class="lineNum">     479 </span>            : </a>
 <a name="480"><span class="lineNum">     480 </span>            : namespace {</a>
 <a name="481"><span class="lineNum">     481 </span><span class="lineCov">        180 :   int xlen_to_uxl(int xlen) {</span></a>
@@ -594,10 +594,10 @@
 <a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 :   return false; // avoid double logging: already logged by mstatus-&gt;write()</span></a>
 <a name="533"><span class="lineNum">     533 </span>            : }</a>
 <a name="534"><span class="lineNum">     534 </span>            : </a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineNoCov">          0 : reg_t sstatus_proxy_csr_t::read() const noexcept {</span></a>
-<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :   const reg_t mDTE = state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE;</span></a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :   const reg_t adj_read_mask = sstatus_read_mask &amp; ~(mDTE ? 0 : SSTATUS_SDT);</span></a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :   return mstatus-&gt;read() &amp; adj_read_mask;</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         28 : reg_t sstatus_proxy_csr_t::read() const noexcept {</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineCov">         28 :   const reg_t mDTE = state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE;</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineCov">         28 :   const reg_t adj_read_mask = sstatus_read_mask &amp; ~(mDTE ? 0 : SSTATUS_SDT);</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineCov">         28 :   return mstatus-&gt;read() &amp; adj_read_mask;</span></a>
 <a name="539"><span class="lineNum">     539 </span>            : }</a>
 <a name="540"><span class="lineNum">     540 </span>            : </a>
 <a name="541"><span class="lineNum">     541 </span>            : // implement class mstatus_csr_t</a>
@@ -606,35 +606,35 @@
 <a name="544"><span class="lineNum">     544 </span><span class="lineCov">         60 :   val(compute_mstatus_initial_value()) {</span></a>
 <a name="545"><span class="lineNum">     545 </span><span class="lineCov">         60 : }</span></a>
 <a name="546"><span class="lineNum">     546 </span>            : </a>
-<a name="547"><span class="lineNum">     547 </span><span class="lineCov">  163573623 : reg_t mstatus_csr_t::read() const noexcept {</span></a>
-<a name="548"><span class="lineNum">     548 </span><span class="lineCov">  163573623 :   return val &amp; ~reg_t(state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE ? 0 : MSTATUS_SDT);</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineCov">        731 : reg_t mstatus_csr_t::read() const noexcept {</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineCov">        731 :   return val &amp; ~reg_t(state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE ? 0 : MSTATUS_SDT);</span></a>
 <a name="549"><span class="lineNum">     549 </span>            : }</a>
 <a name="550"><span class="lineNum">     550 </span>            : </a>
-<a name="551"><span class="lineNum">     551 </span><span class="lineCov">   40893365 : bool mstatus_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">   40893365 :   const bool has_mpv = proc-&gt;extension_enabled('H');</span></a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineCov">   40893365 :   const bool has_gva = has_mpv;</span></a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineCov">   40893365 :   const reg_t adj_write_mask = sstatus_write_mask &amp; ~reg_t(state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE ? 0 : SSTATUS_SDT);</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">         90 : bool mstatus_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">         90 :   const bool has_mpv = proc-&gt;extension_enabled('H');</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">         90 :   const bool has_gva = has_mpv;</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">         90 :   const reg_t adj_write_mask = sstatus_write_mask &amp; ~reg_t(state-&gt;menvcfg-&gt;read() &amp; MENVCFG_DTE ? 0 : SSTATUS_SDT);</span></a>
 <a name="555"><span class="lineNum">     555 </span>            : </a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">   40893365 :   const reg_t mask = adj_write_mask</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">         90 :   const reg_t mask = adj_write_mask</span></a>
 <a name="557"><span class="lineNum">     557 </span>            :                    | MSTATUS_MIE | MSTATUS_MPIE</a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineCov">   40893365 :                    | (proc-&gt;extension_enabled('U') ? MSTATUS_MPRV : 0)</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">         90 :                    | (proc-&gt;extension_enabled('U') ? MSTATUS_MPRV : 0)</span></a>
 <a name="559"><span class="lineNum">     559 </span>            :                    | MSTATUS_MPP | MSTATUS_TW</a>
-<a name="560"><span class="lineNum">     560 </span><span class="lineCov">   40893365 :                    | (proc-&gt;extension_enabled('S') ? MSTATUS_TSR : 0)</span></a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineCov">   40893365 :                    | (has_page ? MSTATUS_TVM : 0)</span></a>
-<a name="562"><span class="lineNum">     562 </span><span class="lineCov">   40893365 :                    | (has_gva ? MSTATUS_GVA : 0)</span></a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">   40893365 :                    | (has_mpv ? MSTATUS_MPV : 0)</span></a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">   40893365 :                    | (proc-&gt;extension_enabled(EXT_SMDBLTRP) ? MSTATUS_MDT : 0)</span></a>
-<a name="565"><span class="lineNum">     565 </span><span class="lineCov">   40893365 :                    | (proc-&gt;extension_enabled(EXT_ZICFILP) ? (MSTATUS_MPELP | (proc-&gt;extension_enabled('S') ? MSTATUS_SPELP : 0)) : 0)</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">         90 :                    | (proc-&gt;extension_enabled('S') ? MSTATUS_TSR : 0)</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineCov">         90 :                    | (has_page ? MSTATUS_TVM : 0)</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">         90 :                    | (has_gva ? MSTATUS_GVA : 0)</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">         90 :                    | (has_mpv ? MSTATUS_MPV : 0)</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">         90 :                    | (proc-&gt;extension_enabled(EXT_SMDBLTRP) ? MSTATUS_MDT : 0)</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineCov">         90 :                    | (proc-&gt;extension_enabled(EXT_ZICFILP) ? (MSTATUS_MPELP | (proc-&gt;extension_enabled('S') ? MSTATUS_SPELP : 0)) : 0)</span></a>
 <a name="566"><span class="lineNum">     566 </span>            :                    ;</a>
 <a name="567"><span class="lineNum">     567 </span>            : </a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineCov">   40893365 :   const reg_t requested_mpp = proc-&gt;legalize_privilege(get_field(val, MSTATUS_MPP));</span></a>
-<a name="569"><span class="lineNum">     569 </span><span class="lineCov">   40893365 :   const reg_t adjusted_val = set_field(val, MSTATUS_MPP, requested_mpp);</span></a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">   40893365 :   reg_t new_mstatus = (this-&gt;val &amp; ~mask) | (adjusted_val &amp; mask);</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">   40893365 :   new_mstatus = (new_mstatus &amp; MSTATUS_MDT) ? (new_mstatus &amp; ~MSTATUS_MIE) : new_mstatus;</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">   40893365 :   new_mstatus = (new_mstatus &amp; MSTATUS_SDT) ? (new_mstatus &amp; ~MSTATUS_SIE) : new_mstatus;</span></a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">   40893365 :   maybe_flush_tlb(new_mstatus);</span></a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">   40893365 :   this-&gt;val = adjust_sd(new_mstatus);</span></a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">   40893365 :   return true;</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">         90 :   const reg_t requested_mpp = proc-&gt;legalize_privilege(get_field(val, MSTATUS_MPP));</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineCov">         90 :   const reg_t adjusted_val = set_field(val, MSTATUS_MPP, requested_mpp);</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">         90 :   reg_t new_mstatus = (this-&gt;val &amp; ~mask) | (adjusted_val &amp; mask);</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         90 :   new_mstatus = (new_mstatus &amp; MSTATUS_MDT) ? (new_mstatus &amp; ~MSTATUS_MIE) : new_mstatus;</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         90 :   new_mstatus = (new_mstatus &amp; MSTATUS_SDT) ? (new_mstatus &amp; ~MSTATUS_SIE) : new_mstatus;</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">         90 :   maybe_flush_tlb(new_mstatus);</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         90 :   this-&gt;val = adjust_sd(new_mstatus);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         90 :   return true;</span></a>
 <a name="576"><span class="lineNum">     576 </span>            : }</a>
 <a name="577"><span class="lineNum">     577 </span>            : </a>
 <a name="578"><span class="lineNum">     578 </span><span class="lineCov">         60 : reg_t mstatus_csr_t::compute_mstatus_initial_value() const noexcept {</span></a>
@@ -857,18 +857,18 @@
 <a name="795"><span class="lineNum">     795 </span><span class="lineCov">        120 :   val(0) {</span></a>
 <a name="796"><span class="lineNum">     796 </span><span class="lineCov">        120 : }</span></a>
 <a name="797"><span class="lineNum">     797 </span>            : </a>
-<a name="798"><span class="lineNum">     798 </span><span class="lineCov">   40893438 : reg_t mip_or_mie_csr_t::read() const noexcept {</span></a>
-<a name="799"><span class="lineNum">     799 </span><span class="lineCov">   40893438 :   return val;</span></a>
+<a name="798"><span class="lineNum">     798 </span><span class="lineCov">       1115 : reg_t mip_or_mie_csr_t::read() const noexcept {</span></a>
+<a name="799"><span class="lineNum">     799 </span><span class="lineCov">       1115 :   return val;</span></a>
 <a name="800"><span class="lineNum">     800 </span>            : }</a>
 <a name="801"><span class="lineNum">     801 </span>            : </a>
-<a name="802"><span class="lineNum">     802 </span><span class="lineNoCov">          0 : void mip_or_mie_csr_t::write_with_mask(const reg_t mask, const reg_t val) noexcept {</span></a>
-<a name="803"><span class="lineNum">     803 </span><span class="lineNoCov">          0 :   this-&gt;val = (this-&gt;val &amp; ~mask) | (val &amp; mask);</span></a>
-<a name="804"><span class="lineNum">     804 </span><span class="lineNoCov">          0 :   log_write();</span></a>
-<a name="805"><span class="lineNum">     805 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="802"><span class="lineNum">     802 </span><span class="lineCov">         30 : void mip_or_mie_csr_t::write_with_mask(const reg_t mask, const reg_t val) noexcept {</span></a>
+<a name="803"><span class="lineNum">     803 </span><span class="lineCov">         30 :   this-&gt;val = (this-&gt;val &amp; ~mask) | (val &amp; mask);</span></a>
+<a name="804"><span class="lineNum">     804 </span><span class="lineCov">         30 :   log_write();</span></a>
+<a name="805"><span class="lineNum">     805 </span><span class="lineCov">         30 : }</span></a>
 <a name="806"><span class="lineNum">     806 </span>            : </a>
-<a name="807"><span class="lineNum">     807 </span><span class="lineNoCov">          0 : bool mip_or_mie_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="808"><span class="lineNum">     808 </span><span class="lineNoCov">          0 :   write_with_mask(write_mask(), val);</span></a>
-<a name="809"><span class="lineNum">     809 </span><span class="lineNoCov">          0 :   return false; // avoid double logging: already logged by write_with_mask()</span></a>
+<a name="807"><span class="lineNum">     807 </span><span class="lineCov">         30 : bool mip_or_mie_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineCov">         30 :   write_with_mask(write_mask(), val);</span></a>
+<a name="809"><span class="lineNum">     809 </span><span class="lineCov">         30 :   return false; // avoid double logging: already logged by write_with_mask()</span></a>
 <a name="810"><span class="lineNum">     810 </span>            : }</a>
 <a name="811"><span class="lineNum">     811 </span>            : </a>
 <a name="812"><span class="lineNum">     812 </span><span class="lineCov">         60 : mip_csr_t::mip_csr_t(processor_t* const proc, const reg_t addr):</span></a>
@@ -881,13 +881,13 @@
 <a name="819"><span class="lineNum">     819 </span><span class="lineNoCov">          0 :   mip_or_mie_csr_t::write_with_mask(mask &amp; ~MIP_SEIP, val);</span></a>
 <a name="820"><span class="lineNum">     820 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="821"><span class="lineNum">     821 </span>            : </a>
-<a name="822"><span class="lineNum">     822 </span><span class="lineCov">   40893438 : reg_t mip_csr_t::read() const noexcept {</span></a>
-<a name="823"><span class="lineNum">     823 </span><span class="lineCov">   40893438 :   return val | state-&gt;hvip-&gt;basic_csr_t::read() | ((state-&gt;mvien-&gt;read() &amp; MIP_SEIP) ? 0 : (state-&gt;mvip-&gt;basic_csr_t::read() &amp; MIP_SEIP));</span></a>
+<a name="822"><span class="lineNum">     822 </span><span class="lineCov">       1055 : reg_t mip_csr_t::read() const noexcept {</span></a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineCov">       1055 :   return val | state-&gt;hvip-&gt;basic_csr_t::read() | ((state-&gt;mvien-&gt;read() &amp; MIP_SEIP) ? 0 : (state-&gt;mvip-&gt;basic_csr_t::read() &amp; MIP_SEIP));</span></a>
 <a name="824"><span class="lineNum">     824 </span>            : }</a>
 <a name="825"><span class="lineNum">     825 </span>            : </a>
-<a name="826"><span class="lineNum">     826 </span><span class="lineCov">   40893393 : void mip_csr_t::backdoor_write_with_mask(const reg_t mask, const reg_t val) noexcept {</span></a>
-<a name="827"><span class="lineNum">     827 </span><span class="lineCov">   40893393 :   this-&gt;val = (this-&gt;val &amp; ~mask) | (val &amp; mask);</span></a>
-<a name="828"><span class="lineNum">     828 </span><span class="lineCov">   40893393 : }</span></a>
+<a name="826"><span class="lineNum">     826 </span><span class="lineCov">         93 : void mip_csr_t::backdoor_write_with_mask(const reg_t mask, const reg_t val) noexcept {</span></a>
+<a name="827"><span class="lineNum">     827 </span><span class="lineCov">         93 :   this-&gt;val = (this-&gt;val &amp; ~mask) | (val &amp; mask);</span></a>
+<a name="828"><span class="lineNum">     828 </span><span class="lineCov">         93 : }</span></a>
 <a name="829"><span class="lineNum">     829 </span>            : </a>
 <a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 : reg_t mip_csr_t::write_mask() const noexcept {</span></a>
 <a name="831"><span class="lineNum">     831 </span>            :   // MIP_STIP is writable unless SSTC exists and STCE is set in MENVCFG</a>
@@ -908,14 +908,14 @@
 <a name="846"><span class="lineNum">     846 </span><span class="lineCov">         60 :   mip_or_mie_csr_t(proc, addr) {</span></a>
 <a name="847"><span class="lineNum">     847 </span><span class="lineCov">         60 : }</span></a>
 <a name="848"><span class="lineNum">     848 </span>            : </a>
-<a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 : reg_t mie_csr_t::write_mask() const noexcept {</span></a>
-<a name="850"><span class="lineNum">     850 </span><span class="lineNoCov">          0 :   const reg_t supervisor_ints = proc-&gt;extension_enabled('S') ? MIP_SSIP | MIP_STIP | MIP_SEIP : 0;</span></a>
-<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 :   const reg_t lscof_int = proc-&gt;extension_enabled(EXT_SSCOFPMF) ? MIP_LCOFIP : 0;</span></a>
-<a name="852"><span class="lineNum">     852 </span><span class="lineNoCov">          0 :   const reg_t hypervisor_ints = proc-&gt;extension_enabled('H') ? MIP_HS_MASK : 0;</span></a>
-<a name="853"><span class="lineNum">     853 </span><span class="lineNoCov">          0 :   const reg_t coprocessor_ints = (reg_t)proc-&gt;any_custom_extensions() &lt;&lt; IRQ_COP;</span></a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :   const reg_t delegable_ints = supervisor_ints | coprocessor_ints | lscof_int;</span></a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineNoCov">          0 :   const reg_t all_ints = delegable_ints | hypervisor_ints | MIP_MSIP | MIP_MTIP | MIP_MEIP;</span></a>
-<a name="856"><span class="lineNum">     856 </span><span class="lineNoCov">          0 :   return all_ints;</span></a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineCov">         30 : reg_t mie_csr_t::write_mask() const noexcept {</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineCov">         30 :   const reg_t supervisor_ints = proc-&gt;extension_enabled('S') ? MIP_SSIP | MIP_STIP | MIP_SEIP : 0;</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineCov">         30 :   const reg_t lscof_int = proc-&gt;extension_enabled(EXT_SSCOFPMF) ? MIP_LCOFIP : 0;</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineCov">         30 :   const reg_t hypervisor_ints = proc-&gt;extension_enabled('H') ? MIP_HS_MASK : 0;</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineCov">         30 :   const reg_t coprocessor_ints = (reg_t)proc-&gt;any_custom_extensions() &lt;&lt; IRQ_COP;</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineCov">         30 :   const reg_t delegable_ints = supervisor_ints | coprocessor_ints | lscof_int;</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineCov">         30 :   const reg_t all_ints = delegable_ints | hypervisor_ints | MIP_MSIP | MIP_MTIP | MIP_MEIP;</span></a>
+<a name="856"><span class="lineNum">     856 </span><span class="lineCov">         30 :   return all_ints;</span></a>
 <a name="857"><span class="lineNum">     857 </span>            : }</a>
 <a name="858"><span class="lineNum">     858 </span>            : </a>
 <a name="859"><span class="lineNum">     859 </span>            : // implement class generic_int_accessor_t</a>
@@ -1011,27 +1011,27 @@
 <a name="949"><span class="lineNum">     949 </span><span class="lineCov">         60 :   basic_csr_t(proc, addr, 0) {</span></a>
 <a name="950"><span class="lineNum">     950 </span><span class="lineCov">         60 : }</span></a>
 <a name="951"><span class="lineNum">     951 </span>            : </a>
-<a name="952"><span class="lineNum">     952 </span><span class="lineNoCov">          0 : reg_t mideleg_csr_t::read() const noexcept {</span></a>
-<a name="953"><span class="lineNum">     953 </span><span class="lineNoCov">          0 :   reg_t val = basic_csr_t::read();</span></a>
-<a name="954"><span class="lineNum">     954 </span><span class="lineNoCov">          0 :   if (proc-&gt;extension_enabled('H')) return val | MIDELEG_FORCED_MASK;</span></a>
+<a name="952"><span class="lineNum">     952 </span><span class="lineCov">         60 : reg_t mideleg_csr_t::read() const noexcept {</span></a>
+<a name="953"><span class="lineNum">     953 </span><span class="lineCov">         60 :   reg_t val = basic_csr_t::read();</span></a>
+<a name="954"><span class="lineNum">     954 </span><span class="lineCov">         60 :   if (proc-&gt;extension_enabled('H')) return val | MIDELEG_FORCED_MASK;</span></a>
 <a name="955"><span class="lineNum">     955 </span>            :   // No need to clear MIDELEG_FORCED_MASK because those bits can never</a>
 <a name="956"><span class="lineNum">     956 </span>            :   // get set in val.</a>
 <a name="957"><span class="lineNum">     957 </span>            :   return val;</a>
 <a name="958"><span class="lineNum">     958 </span>            : }</a>
 <a name="959"><span class="lineNum">     959 </span>            : </a>
-<a name="960"><span class="lineNum">     960 </span><span class="lineNoCov">          0 : void mideleg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="961"><span class="lineNum">     961 </span><span class="lineNoCov">          0 :   basic_csr_t::verify_permissions(insn, write);</span></a>
-<a name="962"><span class="lineNum">     962 </span><span class="lineNoCov">          0 :   if (!proc-&gt;extension_enabled('S'))</span></a>
+<a name="960"><span class="lineNum">     960 </span><span class="lineCov">         30 : void mideleg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="961"><span class="lineNum">     961 </span><span class="lineCov">         30 :   basic_csr_t::verify_permissions(insn, write);</span></a>
+<a name="962"><span class="lineNum">     962 </span><span class="lineCov">         30 :   if (!proc-&gt;extension_enabled('S'))</span></a>
 <a name="963"><span class="lineNum">     963 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
-<a name="964"><span class="lineNum">     964 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="964"><span class="lineNum">     964 </span><span class="lineCov">         30 : }</span></a>
 <a name="965"><span class="lineNum">     965 </span>            : </a>
-<a name="966"><span class="lineNum">     966 </span><span class="lineNoCov">          0 : bool mideleg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="967"><span class="lineNum">     967 </span><span class="lineNoCov">          0 :   const reg_t supervisor_ints = proc-&gt;extension_enabled('S') ? MIP_SSIP | MIP_STIP | MIP_SEIP : 0;</span></a>
-<a name="968"><span class="lineNum">     968 </span><span class="lineNoCov">          0 :   const reg_t lscof_int = proc-&gt;extension_enabled(EXT_SSCOFPMF) ? MIP_LCOFIP : 0;</span></a>
-<a name="969"><span class="lineNum">     969 </span><span class="lineNoCov">          0 :   const reg_t coprocessor_ints = (reg_t)proc-&gt;any_custom_extensions() &lt;&lt; IRQ_COP;</span></a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineNoCov">          0 :   const reg_t delegable_ints = supervisor_ints | coprocessor_ints | lscof_int;</span></a>
+<a name="966"><span class="lineNum">     966 </span><span class="lineCov">         30 : bool mideleg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="967"><span class="lineNum">     967 </span><span class="lineCov">         30 :   const reg_t supervisor_ints = proc-&gt;extension_enabled('S') ? MIP_SSIP | MIP_STIP | MIP_SEIP : 0;</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineCov">         30 :   const reg_t lscof_int = proc-&gt;extension_enabled(EXT_SSCOFPMF) ? MIP_LCOFIP : 0;</span></a>
+<a name="969"><span class="lineNum">     969 </span><span class="lineCov">         30 :   const reg_t coprocessor_ints = (reg_t)proc-&gt;any_custom_extensions() &lt;&lt; IRQ_COP;</span></a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineCov">         30 :   const reg_t delegable_ints = supervisor_ints | coprocessor_ints | lscof_int;</span></a>
 <a name="971"><span class="lineNum">     971 </span>            : </a>
-<a name="972"><span class="lineNum">     972 </span><span class="lineNoCov">          0 :   return basic_csr_t::unlogged_write(val &amp; delegable_ints);</span></a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineCov">         30 :   return basic_csr_t::unlogged_write(val &amp; delegable_ints);</span></a>
 <a name="973"><span class="lineNum">     973 </span>            : }</a>
 <a name="974"><span class="lineNum">     974 </span>            : </a>
 <a name="975"><span class="lineNum">     975 </span>            : // implement class medeleg_csr_t</a>
@@ -1049,14 +1049,14 @@
 <a name="987"><span class="lineNum">     987 </span><span class="lineCov">         60 :                  | (1 &lt;&lt; CAUSE_STORE_PAGE_FAULT)) {</span></a>
 <a name="988"><span class="lineNum">     988 </span><span class="lineCov">         60 : }</span></a>
 <a name="989"><span class="lineNum">     989 </span>            : </a>
-<a name="990"><span class="lineNum">     990 </span><span class="lineNoCov">          0 : void medeleg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="991"><span class="lineNum">     991 </span><span class="lineNoCov">          0 :   basic_csr_t::verify_permissions(insn, write);</span></a>
-<a name="992"><span class="lineNum">     992 </span><span class="lineNoCov">          0 :   if (!proc-&gt;extension_enabled('S'))</span></a>
+<a name="990"><span class="lineNum">     990 </span><span class="lineCov">         30 : void medeleg_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="991"><span class="lineNum">     991 </span><span class="lineCov">         30 :   basic_csr_t::verify_permissions(insn, write);</span></a>
+<a name="992"><span class="lineNum">     992 </span><span class="lineCov">         30 :   if (!proc-&gt;extension_enabled('S'))</span></a>
 <a name="993"><span class="lineNum">     993 </span><span class="lineNoCov">          0 :     throw trap_illegal_instruction(insn.bits());</span></a>
-<a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="994"><span class="lineNum">     994 </span><span class="lineCov">         30 : }</span></a>
 <a name="995"><span class="lineNum">     995 </span>            : </a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 : bool medeleg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="997"><span class="lineNum">     997 </span><span class="lineNoCov">          0 :   const reg_t mask = 0</span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineCov">         30 : bool medeleg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="997"><span class="lineNum">     997 </span><span class="lineCov">         30 :   const reg_t mask = 0</span></a>
 <a name="998"><span class="lineNum">     998 </span>            :     | (1 &lt;&lt; CAUSE_MISALIGNED_FETCH)</a>
 <a name="999"><span class="lineNum">     999 </span>            :     | (1 &lt;&lt; CAUSE_FETCH_ACCESS)</a>
 <a name="1000"><span class="lineNum">    1000 </span>            :     | (1 &lt;&lt; CAUSE_ILLEGAL_INSTRUCTION)</a>
@@ -1067,12 +1067,12 @@
 <a name="1005"><span class="lineNum">    1005 </span>            :     | (1 &lt;&lt; CAUSE_STORE_ACCESS)</a>
 <a name="1006"><span class="lineNum">    1006 </span>            :     | (1 &lt;&lt; CAUSE_USER_ECALL)</a>
 <a name="1007"><span class="lineNum">    1007 </span>            :     | (1 &lt;&lt; CAUSE_SUPERVISOR_ECALL)</a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineNoCov">          0 :     | (proc-&gt;has_mmu() ? mmu_exceptions : 0)</span></a>
-<a name="1009"><span class="lineNum">    1009 </span><span class="lineNoCov">          0 :     | (proc-&gt;extension_enabled('H') ? hypervisor_exceptions : 0)</span></a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">         30 :     | (proc-&gt;has_mmu() ? mmu_exceptions : 0)</span></a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">         30 :     | (proc-&gt;extension_enabled('H') ? hypervisor_exceptions : 0)</span></a>
 <a name="1010"><span class="lineNum">    1010 </span>            :     | (1 &lt;&lt; CAUSE_SOFTWARE_CHECK_FAULT)</a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :     | (1 &lt;&lt; CAUSE_HARDWARE_ERROR_FAULT)</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">         30 :     | (1 &lt;&lt; CAUSE_HARDWARE_ERROR_FAULT)</span></a>
 <a name="1012"><span class="lineNum">    1012 </span>            :     ;</a>
-<a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 :   return basic_csr_t::unlogged_write((read() &amp; ~mask) | (val &amp; mask));</span></a>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineCov">         30 :   return basic_csr_t::unlogged_write((read() &amp; ~mask) | (val &amp; mask));</span></a>
 <a name="1014"><span class="lineNum">    1014 </span>            : }</a>
 <a name="1015"><span class="lineNum">    1015 </span>            : </a>
 <a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">         60 : sip_csr_t::sip_csr_t(processor_t* const proc, const reg_t addr, generic_int_accessor_t_p accr):</span></a>
@@ -1149,22 +1149,22 @@
 <a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">        120 :   basic_csr_t(proc, addr, 0) {</span></a>
 <a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">        120 : }</span></a>
 <a name="1089"><span class="lineNum">    1089 </span>            : </a>
-<a name="1090"><span class="lineNum">    1090 </span><span class="lineNoCov">          0 : bool base_atp_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
-<a name="1091"><span class="lineNum">    1091 </span><span class="lineNoCov">          0 :   const reg_t newval = proc-&gt;has_mmu() ? compute_new_satp(val) : 0;</span></a>
-<a name="1092"><span class="lineNum">    1092 </span><span class="lineNoCov">          0 :   if (newval != read())</span></a>
+<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">         30 : bool base_atp_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="1091"><span class="lineNum">    1091 </span><span class="lineCov">         30 :   const reg_t newval = proc-&gt;has_mmu() ? compute_new_satp(val) : 0;</span></a>
+<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">         30 :   if (newval != read())</span></a>
 <a name="1093"><span class="lineNum">    1093 </span><span class="lineNoCov">          0 :     proc-&gt;get_mmu()-&gt;flush_tlb();</span></a>
-<a name="1094"><span class="lineNum">    1094 </span><span class="lineNoCov">          0 :   return basic_csr_t::unlogged_write(newval);</span></a>
+<a name="1094"><span class="lineNum">    1094 </span><span class="lineCov">         30 :   return basic_csr_t::unlogged_write(newval);</span></a>
 <a name="1095"><span class="lineNum">    1095 </span>            : }</a>
 <a name="1096"><span class="lineNum">    1096 </span>            : </a>
-<a name="1097"><span class="lineNum">    1097 </span><span class="lineNoCov">          0 : bool base_atp_csr_t::satp_valid(reg_t val) const noexcept {</span></a>
-<a name="1098"><span class="lineNum">    1098 </span><span class="lineNoCov">          0 :   if (proc-&gt;get_xlen() == 32) {</span></a>
+<a name="1097"><span class="lineNum">    1097 </span><span class="lineCov">         90 : bool base_atp_csr_t::satp_valid(reg_t val) const noexcept {</span></a>
+<a name="1098"><span class="lineNum">    1098 </span><span class="lineCov">         90 :   if (proc-&gt;get_xlen() == 32) {</span></a>
 <a name="1099"><span class="lineNum">    1099 </span><span class="lineNoCov">          0 :     switch (get_field(val, SATP32_MODE)) {</span></a>
 <a name="1100"><span class="lineNum">    1100 </span>            :       case SATP_MODE_OFF: return true;</a>
 <a name="1101"><span class="lineNum">    1101 </span><span class="lineNoCov">          0 :       case SATP_MODE_SV32: return proc-&gt;get_max_vaddr_bits() &gt;= 32;</span></a>
 <a name="1102"><span class="lineNum">    1102 </span>            :       default: return false;</a>
 <a name="1103"><span class="lineNum">    1103 </span>            :     }</a>
 <a name="1104"><span class="lineNum">    1104 </span>            :   } else {</a>
-<a name="1105"><span class="lineNum">    1105 </span><span class="lineNoCov">          0 :     switch (get_field(val, SATP64_MODE)) {</span></a>
+<a name="1105"><span class="lineNum">    1105 </span><span class="lineCov">         90 :     switch (get_field(val, SATP64_MODE)) {</span></a>
 <a name="1106"><span class="lineNum">    1106 </span>            :       case SATP_MODE_OFF: return true;</a>
 <a name="1107"><span class="lineNum">    1107 </span><span class="lineNoCov">          0 :       case SATP_MODE_SV39: return proc-&gt;get_max_vaddr_bits() &gt;= 39;</span></a>
 <a name="1108"><span class="lineNum">    1108 </span><span class="lineNoCov">          0 :       case SATP_MODE_SV48: return proc-&gt;get_max_vaddr_bits() &gt;= 48;</span></a>
@@ -1174,52 +1174,52 @@
 <a name="1112"><span class="lineNum">    1112 </span>            :   }</a>
 <a name="1113"><span class="lineNum">    1113 </span>            : }</a>
 <a name="1114"><span class="lineNum">    1114 </span>            : </a>
-<a name="1115"><span class="lineNum">    1115 </span><span class="lineNoCov">          0 : reg_t base_atp_csr_t::compute_new_satp(reg_t val) const noexcept {</span></a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineNoCov">          0 :   reg_t rv64_ppn_mask = (reg_t(1) &lt;&lt; (proc-&gt;paddr_bits() - PGSHIFT)) - 1;</span></a>
+<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">         30 : reg_t base_atp_csr_t::compute_new_satp(reg_t val) const noexcept {</span></a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">         30 :   reg_t rv64_ppn_mask = (reg_t(1) &lt;&lt; (proc-&gt;paddr_bits() - PGSHIFT)) - 1;</span></a>
 <a name="1117"><span class="lineNum">    1117 </span>            : </a>
-<a name="1118"><span class="lineNum">    1118 </span><span class="lineNoCov">          0 :   reg_t mode_mask = proc-&gt;get_xlen() == 32 ? SATP32_MODE : SATP64_MODE;</span></a>
-<a name="1119"><span class="lineNum">    1119 </span><span class="lineNoCov">          0 :   reg_t asid_mask_if_enabled = proc-&gt;get_xlen() == 32 ? SATP32_ASID : SATP64_ASID;</span></a>
-<a name="1120"><span class="lineNum">    1120 </span><span class="lineNoCov">          0 :   reg_t asid_mask = proc-&gt;supports_impl(IMPL_MMU_ASID) ? asid_mask_if_enabled : 0;</span></a>
-<a name="1121"><span class="lineNum">    1121 </span><span class="lineNoCov">          0 :   reg_t ppn_mask = proc-&gt;get_xlen() == 32 ? SATP32_PPN : SATP64_PPN &amp; rv64_ppn_mask;</span></a>
-<a name="1122"><span class="lineNum">    1122 </span><span class="lineNoCov">          0 :   reg_t new_mask = (satp_valid(val) ? mode_mask : 0) | asid_mask | ppn_mask;</span></a>
-<a name="1123"><span class="lineNum">    1123 </span><span class="lineNoCov">          0 :   reg_t old_mask = satp_valid(val) ? 0 : mode_mask;</span></a>
+<a name="1118"><span class="lineNum">    1118 </span><span class="lineCov">         30 :   reg_t mode_mask = proc-&gt;get_xlen() == 32 ? SATP32_MODE : SATP64_MODE;</span></a>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">         30 :   reg_t asid_mask_if_enabled = proc-&gt;get_xlen() == 32 ? SATP32_ASID : SATP64_ASID;</span></a>
+<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">         30 :   reg_t asid_mask = proc-&gt;supports_impl(IMPL_MMU_ASID) ? asid_mask_if_enabled : 0;</span></a>
+<a name="1121"><span class="lineNum">    1121 </span><span class="lineCov">         30 :   reg_t ppn_mask = proc-&gt;get_xlen() == 32 ? SATP32_PPN : SATP64_PPN &amp; rv64_ppn_mask;</span></a>
+<a name="1122"><span class="lineNum">    1122 </span><span class="lineCov">         30 :   reg_t new_mask = (satp_valid(val) ? mode_mask : 0) | asid_mask | ppn_mask;</span></a>
+<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">         30 :   reg_t old_mask = satp_valid(val) ? 0 : mode_mask;</span></a>
 <a name="1124"><span class="lineNum">    1124 </span>            : </a>
-<a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :   return (new_mask &amp; val) | (old_mask &amp; read());</span></a>
+<a name="1125"><span class="lineNum">    1125 </span><span class="lineCov">         30 :   return (new_mask &amp; val) | (old_mask &amp; read());</span></a>
 <a name="1126"><span class="lineNum">    1126 </span>            : }</a>
 <a name="1127"><span class="lineNum">    1127 </span>            : </a>
 <a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         60 : satp_csr_t::satp_csr_t(processor_t* const proc, const reg_t addr):</span></a>
 <a name="1129"><span class="lineNum">    1129 </span><span class="lineCov">         60 :   base_atp_csr_t(proc, addr) {</span></a>
 <a name="1130"><span class="lineNum">    1130 </span><span class="lineCov">         60 : }</span></a>
 <a name="1131"><span class="lineNum">    1131 </span>            : </a>
-<a name="1132"><span class="lineNum">    1132 </span><span class="lineNoCov">          0 : void satp_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="1133"><span class="lineNum">    1133 </span><span class="lineNoCov">          0 :   base_atp_csr_t::verify_permissions(insn, write);</span></a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineNoCov">          0 :   if (get_field(state-&gt;mstatus-&gt;read(), MSTATUS_TVM))</span></a>
+<a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">         30 : void satp_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">         30 :   base_atp_csr_t::verify_permissions(insn, write);</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">         30 :   if (get_field(state-&gt;mstatus-&gt;read(), MSTATUS_TVM))</span></a>
 <a name="1135"><span class="lineNum">    1135 </span><span class="lineNoCov">          0 :     require(state-&gt;prv == PRV_M);</span></a>
-<a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1136"><span class="lineNum">    1136 </span><span class="lineCov">         30 : }</span></a>
 <a name="1137"><span class="lineNum">    1137 </span>            : </a>
 <a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">         60 : virtualized_satp_csr_t::virtualized_satp_csr_t(processor_t* const proc, satp_csr_t_p orig, csr_t_p virt):</span></a>
 <a name="1139"><span class="lineNum">    1139 </span>            :   virtualized_csr_t(proc, orig, virt),</a>
 <a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">        300 :   orig_satp(orig) {</span></a>
 <a name="1141"><span class="lineNum">    1141 </span><span class="lineCov">         60 : }</span></a>
 <a name="1142"><span class="lineNum">    1142 </span>            : </a>
-<a name="1143"><span class="lineNum">    1143 </span><span class="lineNoCov">          0 : void virtualized_satp_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineNoCov">          0 :   virtualized_csr_t::verify_permissions(insn, write);</span></a>
+<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">         30 : void virtualized_satp_csr_t::verify_permissions(insn_t insn, bool write) const {</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         30 :   virtualized_csr_t::verify_permissions(insn, write);</span></a>
 <a name="1145"><span class="lineNum">    1145 </span>            : </a>
 <a name="1146"><span class="lineNum">    1146 </span>            :   // If satp is accessed from VS mode, it's really accessing vsatp,</a>
 <a name="1147"><span class="lineNum">    1147 </span>            :   // and the hstatus.VTVM bit controls.</a>
-<a name="1148"><span class="lineNum">    1148 </span><span class="lineNoCov">          0 :   if (state-&gt;v) {</span></a>
+<a name="1148"><span class="lineNum">    1148 </span><span class="lineCov">         30 :   if (state-&gt;v) {</span></a>
 <a name="1149"><span class="lineNum">    1149 </span><span class="lineNoCov">          0 :     if (get_field(state-&gt;hstatus-&gt;read(), HSTATUS_VTVM))</span></a>
 <a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :       throw trap_virtual_instruction(insn.bits());</span></a>
 <a name="1151"><span class="lineNum">    1151 </span>            :   }</a>
 <a name="1152"><span class="lineNum">    1152 </span>            :   else {</a>
-<a name="1153"><span class="lineNum">    1153 </span><span class="lineNoCov">          0 :     orig_csr-&gt;verify_permissions(insn, write);</span></a>
+<a name="1153"><span class="lineNum">    1153 </span><span class="lineCov">         30 :     orig_csr-&gt;verify_permissions(insn, write);</span></a>
 <a name="1154"><span class="lineNum">    1154 </span>            :   }</a>
-<a name="1155"><span class="lineNum">    1155 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1155"><span class="lineNum">    1155 </span><span class="lineCov">         30 : }</span></a>
 <a name="1156"><span class="lineNum">    1156 </span>            : </a>
-<a name="1157"><span class="lineNum">    1157 </span><span class="lineNoCov">          0 : bool virtualized_satp_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
+<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">         30 : bool virtualized_satp_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
 <a name="1158"><span class="lineNum">    1158 </span>            :   // If unsupported Mode field: no change to contents</a>
-<a name="1159"><span class="lineNum">    1159 </span><span class="lineNoCov">          0 :   const reg_t newval = orig_satp-&gt;satp_valid(val) ? val : read();</span></a>
-<a name="1160"><span class="lineNum">    1160 </span><span class="lineNoCov">          0 :   return virtualized_csr_t::unlogged_write(newval);</span></a>
+<a name="1159"><span class="lineNum">    1159 </span><span class="lineCov">         30 :   const reg_t newval = orig_satp-&gt;satp_valid(val) ? val : read();</span></a>
+<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">         30 :   return virtualized_csr_t::unlogged_write(newval);</span></a>
 <a name="1161"><span class="lineNum">    1161 </span>            : }</a>
 <a name="1162"><span class="lineNum">    1162 </span>            : </a>
 <a name="1163"><span class="lineNum">    1163 </span>            : // implement class wide_counter_csr_t</a>
@@ -1234,8 +1234,8 @@
 <a name="1172"><span class="lineNum">    1172 </span><span class="lineNoCov">          0 :   return val;</span></a>
 <a name="1173"><span class="lineNum">    1173 </span>            : }</a>
 <a name="1174"><span class="lineNum">    1174 </span>            : </a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">   81786846 : void wide_counter_csr_t::bump(const reg_t howmuch) noexcept {</span></a>
-<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">   81786846 :   if (written) {</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">       2110 : void wide_counter_csr_t::bump(const reg_t howmuch) noexcept {</span></a>
+<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">       2110 :   if (written) {</span></a>
 <a name="1177"><span class="lineNum">    1177 </span>            :     // Because writing a CSR serializes the simulator, howmuch should</a>
 <a name="1178"><span class="lineNum">    1178 </span>            :     // reflect exactly one instruction: the explicit CSR write.</a>
 <a name="1179"><span class="lineNum">    1179 </span>            :     // If counting is disabled, though, howmuch will be zero.</a>
@@ -1243,12 +1243,12 @@
 <a name="1181"><span class="lineNum">    1181 </span>            :     // The ISA mandates that explicit writes to instret take precedence</a>
 <a name="1182"><span class="lineNum">    1182 </span>            :     // over the instret, so simply skip the increment.</a>
 <a name="1183"><span class="lineNum">    1183 </span><span class="lineNoCov">          0 :     written = false;</span></a>
-<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">   81786846 :   } else if (is_counting_enabled()) {</span></a>
-<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">   81786846 :     val += howmuch;  // to keep log reasonable size, don't log every bump</span></a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">       2110 :   } else if (is_counting_enabled()) {</span></a>
+<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">       2110 :     val += howmuch;  // to keep log reasonable size, don't log every bump</span></a>
 <a name="1186"><span class="lineNum">    1186 </span>            :   }</a>
 <a name="1187"><span class="lineNum">    1187 </span>            :   // Clear cached value</a>
-<a name="1188"><span class="lineNum">    1188 </span><span class="lineCov">   81786846 :   config_csr-&gt;reset_prev();</span></a>
-<a name="1189"><span class="lineNum">    1189 </span><span class="lineCov">   81786846 : }</span></a>
+<a name="1188"><span class="lineNum">    1188 </span><span class="lineCov">       2110 :   config_csr-&gt;reset_prev();</span></a>
+<a name="1189"><span class="lineNum">    1189 </span><span class="lineCov">       2110 : }</span></a>
 <a name="1190"><span class="lineNum">    1190 </span>            : </a>
 <a name="1191"><span class="lineNum">    1191 </span><span class="lineNoCov">          0 : bool wide_counter_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
 <a name="1192"><span class="lineNum">    1192 </span>            :   // Because writing a CSR serializes the simulator and is followed by a</a>
@@ -1262,16 +1262,16 @@
 <a name="1200"><span class="lineNum">    1200 </span>            : </a>
 <a name="1201"><span class="lineNum">    1201 </span>            : // Returns true if counting is not inhibited by Smcntrpmf.</a>
 <a name="1202"><span class="lineNum">    1202 </span>            : // Note that minstretcfg / mcyclecfg / mhpmevent* share the same inhibit bits.</a>
-<a name="1203"><span class="lineNum">    1203 </span><span class="lineCov">   81786846 : bool wide_counter_csr_t::is_counting_enabled() const noexcept {</span></a>
-<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">   81786846 :   auto prv = state-&gt;prv_changed ? state-&gt;prev_prv : state-&gt;prv;</span></a>
-<a name="1205"><span class="lineNum">    1205 </span><span class="lineCov">   81786846 :   auto v = state-&gt;v_changed ? state-&gt;prev_v : state-&gt;v;</span></a>
-<a name="1206"><span class="lineNum">    1206 </span><span class="lineCov">   81786846 :   auto mask = MHPMEVENT_MINH;</span></a>
-<a name="1207"><span class="lineNum">    1207 </span><span class="lineCov">   81786846 :   if (prv == PRV_S) {</span></a>
+<a name="1203"><span class="lineNum">    1203 </span><span class="lineCov">       2110 : bool wide_counter_csr_t::is_counting_enabled() const noexcept {</span></a>
+<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">       2110 :   auto prv = state-&gt;prv_changed ? state-&gt;prev_prv : state-&gt;prv;</span></a>
+<a name="1205"><span class="lineNum">    1205 </span><span class="lineCov">       2110 :   auto v = state-&gt;v_changed ? state-&gt;prev_v : state-&gt;v;</span></a>
+<a name="1206"><span class="lineNum">    1206 </span><span class="lineCov">       2110 :   auto mask = MHPMEVENT_MINH;</span></a>
+<a name="1207"><span class="lineNum">    1207 </span><span class="lineCov">       2110 :   if (prv == PRV_S) {</span></a>
 <a name="1208"><span class="lineNum">    1208 </span><span class="lineNoCov">          0 :     mask = v ? MHPMEVENT_VSINH : MHPMEVENT_SINH;</span></a>
-<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">   81786846 :   } else if (prv == PRV_U) {</span></a>
-<a name="1210"><span class="lineNum">    1210 </span><span class="lineNoCov">          0 :     mask = v ? MHPMEVENT_VUINH : MHPMEVENT_UINH;</span></a>
+<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">       2110 :   } else if (prv == PRV_U) {</span></a>
+<a name="1210"><span class="lineNum">    1210 </span><span class="lineCov">         66 :     mask = v ? MHPMEVENT_VUINH : MHPMEVENT_UINH;</span></a>
 <a name="1211"><span class="lineNum">    1211 </span>            :   }</a>
-<a name="1212"><span class="lineNum">    1212 </span><span class="lineCov">   81786846 :   return (config_csr-&gt;read_prev() &amp; mask) == 0;</span></a>
+<a name="1212"><span class="lineNum">    1212 </span><span class="lineCov">       2110 :   return (config_csr-&gt;read_prev() &amp; mask) == 0;</span></a>
 <a name="1213"><span class="lineNum">    1213 </span>            : }</a>
 <a name="1214"><span class="lineNum">    1214 </span>            : </a>
 <a name="1215"><span class="lineNum">    1215 </span>            : // implement class time_counter_csr_t</a>
@@ -1289,20 +1289,20 @@
 <a name="1227"><span class="lineNum">    1227 </span><span class="lineNoCov">          0 :     return shadow_val;</span></a>
 <a name="1228"><span class="lineNum">    1228 </span>            : }</a>
 <a name="1229"><span class="lineNum">    1229 </span>            : </a>
-<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">   40893393 : void time_counter_csr_t::sync(const reg_t val) noexcept {</span></a>
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">   40893393 :   shadow_val = val;</span></a>
-<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">   40893393 :   if (proc-&gt;extension_enabled(EXT_SSTC)) {</span></a>
+<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">         93 : void time_counter_csr_t::sync(const reg_t val) noexcept {</span></a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">         93 :   shadow_val = val;</span></a>
+<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">         93 :   if (proc-&gt;extension_enabled(EXT_SSTC)) {</span></a>
 <a name="1233"><span class="lineNum">    1233 </span><span class="lineNoCov">          0 :     const reg_t mip_val = (shadow_val &gt;= state-&gt;stimecmp-&gt;read() ? MIP_STIP : 0) |</span></a>
 <a name="1234"><span class="lineNum">    1234 </span><span class="lineNoCov">          0 :       (shadow_val + state-&gt;htimedelta-&gt;read() &gt;= state-&gt;vstimecmp-&gt;read() ? MIP_VSTIP : 0);</span></a>
 <a name="1235"><span class="lineNum">    1235 </span><span class="lineNoCov">          0 :     const reg_t mask = ((state-&gt;menvcfg-&gt;read() &amp; MENVCFG_STCE) ? MIP_STIP : 0) | ((state-&gt;henvcfg-&gt;read() &amp; HENVCFG_STCE) ? MIP_VSTIP : 0);</span></a>
 <a name="1236"><span class="lineNum">    1236 </span><span class="lineNoCov">          0 :     state-&gt;mip-&gt;backdoor_write_with_mask(mask, mip_val);</span></a>
 <a name="1237"><span class="lineNum">    1237 </span>            :   }</a>
-<a name="1238"><span class="lineNum">    1238 </span><span class="lineCov">   40893393 : }</span></a>
+<a name="1238"><span class="lineNum">    1238 </span><span class="lineCov">         93 : }</span></a>
 <a name="1239"><span class="lineNum">    1239 </span>            : </a>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">       1800 : proxy_csr_t::proxy_csr_t(processor_t* const proc, const reg_t addr, csr_t_p delegate):</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">       1980 : proxy_csr_t::proxy_csr_t(processor_t* const proc, const reg_t addr, csr_t_p delegate):</span></a>
 <a name="1241"><span class="lineNum">    1241 </span>            :   csr_t(proc, addr),</a>
-<a name="1242"><span class="lineNum">    1242 </span><span class="lineCov">       1800 :   delegate(delegate) {</span></a>
-<a name="1243"><span class="lineNum">    1243 </span><span class="lineCov">       1800 : }</span></a>
+<a name="1242"><span class="lineNum">    1242 </span><span class="lineCov">       1980 :   delegate(delegate) {</span></a>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineCov">       1980 : }</span></a>
 <a name="1244"><span class="lineNum">    1244 </span>            : </a>
 <a name="1245"><span class="lineNum">    1245 </span><span class="lineNoCov">          0 : reg_t proxy_csr_t::read() const noexcept {</span></a>
 <a name="1246"><span class="lineNum">    1246 </span><span class="lineNoCov">          0 :   return delegate-&gt;read();</span></a>
@@ -1318,17 +1318,17 @@
 <a name="1256"><span class="lineNum">    1256 </span><span class="lineCov">       2160 :   val(val) {</span></a>
 <a name="1257"><span class="lineNum">    1257 </span><span class="lineCov">       2160 : }</span></a>
 <a name="1258"><span class="lineNum">    1258 </span>            : </a>
-<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">         30 : reg_t const_csr_t::read() const noexcept {</span></a>
-<a name="1260"><span class="lineNum">    1260 </span><span class="lineCov">         30 :   return val;</span></a>
+<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">         90 : reg_t const_csr_t::read() const noexcept {</span></a>
+<a name="1260"><span class="lineNum">    1260 </span><span class="lineCov">         90 :   return val;</span></a>
 <a name="1261"><span class="lineNum">    1261 </span>            : }</a>
 <a name="1262"><span class="lineNum">    1262 </span>            : </a>
 <a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 : bool const_csr_t::unlogged_write(const reg_t UNUSED val) noexcept {</span></a>
 <a name="1264"><span class="lineNum">    1264 </span><span class="lineNoCov">          0 :   return false;</span></a>
 <a name="1265"><span class="lineNum">    1265 </span>            : }</a>
 <a name="1266"><span class="lineNum">    1266 </span>            : </a>
-<a name="1267"><span class="lineNum">    1267 </span><span class="lineCov">       1740 : counter_proxy_csr_t::counter_proxy_csr_t(processor_t* const proc, const reg_t addr, csr_t_p delegate):</span></a>
-<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">       3480 :   proxy_csr_t(proc, addr, delegate) {</span></a>
-<a name="1269"><span class="lineNum">    1269 </span><span class="lineCov">       1740 : }</span></a>
+<a name="1267"><span class="lineNum">    1267 </span><span class="lineCov">       1920 : counter_proxy_csr_t::counter_proxy_csr_t(processor_t* const proc, const reg_t addr, csr_t_p delegate):</span></a>
+<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">       3840 :   proxy_csr_t(proc, addr, delegate) {</span></a>
+<a name="1269"><span class="lineNum">    1269 </span><span class="lineCov">       1920 : }</span></a>
 <a name="1270"><span class="lineNum">    1270 </span>            : </a>
 <a name="1271"><span class="lineNum">    1271 </span><span class="lineNoCov">          0 : bool counter_proxy_csr_t::myenable(csr_t_p counteren) const noexcept {</span></a>
 <a name="1272"><span class="lineNum">    1272 </span><span class="lineNoCov">          0 :   return 1 &amp; (counteren-&gt;read() &gt;&gt; (address &amp; 31));</span></a>
@@ -1764,9 +1764,9 @@
 <a name="1702"><span class="lineNum">    1702 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1703"><span class="lineNum">    1703 </span>            : </a>
 <a name="1704"><span class="lineNum">    1704 </span>            : // senvcfg.sse is read_only 0 when menvcfg.sse = 0</a>
-<a name="1705"><span class="lineNum">    1705 </span><span class="lineNoCov">          0 : reg_t senvcfg_csr_t::read() const noexcept {</span></a>
-<a name="1706"><span class="lineNum">    1706 </span><span class="lineNoCov">          0 :   reg_t envcfg = state-&gt;v ? state-&gt;henvcfg-&gt;read() : state-&gt;menvcfg-&gt;read();</span></a>
-<a name="1707"><span class="lineNum">    1707 </span><span class="lineNoCov">          0 :   return masked_csr_t::read() &amp; ~(envcfg &amp; MENVCFG_SSE ? 0 : MENVCFG_SSE);</span></a>
+<a name="1705"><span class="lineNum">    1705 </span><span class="lineCov">         14 : reg_t senvcfg_csr_t::read() const noexcept {</span></a>
+<a name="1706"><span class="lineNum">    1706 </span><span class="lineCov">         14 :   reg_t envcfg = state-&gt;v ? state-&gt;henvcfg-&gt;read() : state-&gt;menvcfg-&gt;read();</span></a>
+<a name="1707"><span class="lineNum">    1707 </span><span class="lineCov">         14 :   return masked_csr_t::read() &amp; ~(envcfg &amp; MENVCFG_SSE ? 0 : MENVCFG_SSE);</span></a>
 <a name="1708"><span class="lineNum">    1708 </span>            : }</a>
 <a name="1709"><span class="lineNum">    1709 </span>            : </a>
 <a name="1710"><span class="lineNum">    1710 </span><span class="lineNoCov">          0 : bool senvcfg_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
@@ -2030,14 +2030,14 @@
 <a name="1968"><span class="lineNum">    1968 </span><span class="lineCov">        120 : smcntrpmf_csr_t::smcntrpmf_csr_t(processor_t* const proc, const reg_t addr, const reg_t mask, const reg_t init) : masked_csr_t(proc, addr, mask, init) {</span></a>
 <a name="1969"><span class="lineNum">    1969 </span><span class="lineCov">        120 : }</span></a>
 <a name="1970"><span class="lineNum">    1970 </span>            : </a>
-<a name="1971"><span class="lineNum">    1971 </span><span class="lineCov">   81786846 : reg_t smcntrpmf_csr_t::read_prev() const noexcept {</span></a>
-<a name="1972"><span class="lineNum">    1972 </span><span class="lineCov">   81786846 :   reg_t val = prev_val.value_or(read());</span></a>
-<a name="1973"><span class="lineNum">    1973 </span><span class="lineCov">   81786846 :   return val;</span></a>
+<a name="1971"><span class="lineNum">    1971 </span><span class="lineCov">       2110 : reg_t smcntrpmf_csr_t::read_prev() const noexcept {</span></a>
+<a name="1972"><span class="lineNum">    1972 </span><span class="lineCov">       2110 :   reg_t val = prev_val.value_or(read());</span></a>
+<a name="1973"><span class="lineNum">    1973 </span><span class="lineCov">       2110 :   return val;</span></a>
 <a name="1974"><span class="lineNum">    1974 </span>            : }</a>
 <a name="1975"><span class="lineNum">    1975 </span>            : </a>
-<a name="1976"><span class="lineNum">    1976 </span><span class="lineCov">   81786846 : void smcntrpmf_csr_t::reset_prev() noexcept {</span></a>
-<a name="1977"><span class="lineNum">    1977 </span><span class="lineCov">   81786846 :   prev_val.reset();</span></a>
-<a name="1978"><span class="lineNum">    1978 </span><span class="lineCov">   81786846 : }</span></a>
+<a name="1976"><span class="lineNum">    1976 </span><span class="lineCov">       2110 : void smcntrpmf_csr_t::reset_prev() noexcept {</span></a>
+<a name="1977"><span class="lineNum">    1977 </span><span class="lineCov">       2110 :   prev_val.reset();</span></a>
+<a name="1978"><span class="lineNum">    1978 </span><span class="lineCov">       2110 : }</span></a>
 <a name="1979"><span class="lineNum">    1979 </span>            : </a>
 <a name="1980"><span class="lineNum">    1980 </span><span class="lineNoCov">          0 : bool smcntrpmf_csr_t::unlogged_write(const reg_t val) noexcept {</span></a>
 <a name="1981"><span class="lineNum">    1981 </span><span class="lineNoCov">          0 :   prev_val = read();</span></a>

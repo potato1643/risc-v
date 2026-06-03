@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/insns/mret.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/insns/mret.h</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">21</td>
             <td class="headerCovTableEntry">23</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryHi">91.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -60,30 +60,30 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span><span class="lineNoCov">          0 : require_privilege(PRV_M);</span></a>
-<a name="2"><span class="lineNum">       2 </span><span class="lineNoCov">          0 : set_pc_and_serialize(p-&gt;get_state()-&gt;mepc-&gt;read());</span></a>
-<a name="3"><span class="lineNum">       3 </span><span class="lineNoCov">          0 : reg_t s = STATE.mstatus-&gt;read();</span></a>
-<a name="4"><span class="lineNum">       4 </span><span class="lineNoCov">          0 : reg_t prev_prv = get_field(s, MSTATUS_MPP);</span></a>
-<a name="5"><span class="lineNum">       5 </span><span class="lineNoCov">          0 : reg_t prev_virt = get_field(s, MSTATUS_MPV);</span></a>
-<a name="6"><span class="lineNum">       6 </span><span class="lineNoCov">          0 : if (prev_prv != PRV_M)</span></a>
-<a name="7"><span class="lineNum">       7 </span><span class="lineNoCov">          0 :   s = set_field(s, MSTATUS_MPRV, 0);</span></a>
-<a name="8"><span class="lineNum">       8 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MIE, get_field(s, MSTATUS_MPIE));</span></a>
-<a name="9"><span class="lineNum">       9 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MPIE, 1);</span></a>
-<a name="10"><span class="lineNum">      10 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MPP, p-&gt;extension_enabled('U') ? PRV_U : PRV_M);</span></a>
-<a name="11"><span class="lineNum">      11 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MPV, 0);</span></a>
-<a name="12"><span class="lineNum">      12 </span><span class="lineNoCov">          0 : if (ZICFILP_xLPE(prev_virt, prev_prv)) {</span></a>
+<a name="1"><span class="lineNum">       1 </span><span class="lineCov">         30 : require_privilege(PRV_M);</span></a>
+<a name="2"><span class="lineNum">       2 </span><span class="lineCov">         30 : set_pc_and_serialize(p-&gt;get_state()-&gt;mepc-&gt;read());</span></a>
+<a name="3"><span class="lineNum">       3 </span><span class="lineCov">         30 : reg_t s = STATE.mstatus-&gt;read();</span></a>
+<a name="4"><span class="lineNum">       4 </span><span class="lineCov">         30 : reg_t prev_prv = get_field(s, MSTATUS_MPP);</span></a>
+<a name="5"><span class="lineNum">       5 </span><span class="lineCov">         30 : reg_t prev_virt = get_field(s, MSTATUS_MPV);</span></a>
+<a name="6"><span class="lineNum">       6 </span><span class="lineCov">         30 : if (prev_prv != PRV_M)</span></a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineCov">         30 :   s = set_field(s, MSTATUS_MPRV, 0);</span></a>
+<a name="8"><span class="lineNum">       8 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MIE, get_field(s, MSTATUS_MPIE));</span></a>
+<a name="9"><span class="lineNum">       9 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MPIE, 1);</span></a>
+<a name="10"><span class="lineNum">      10 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MPP, p-&gt;extension_enabled('U') ? PRV_U : PRV_M);</span></a>
+<a name="11"><span class="lineNum">      11 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MPV, 0);</span></a>
+<a name="12"><span class="lineNum">      12 </span><span class="lineCov">         30 : if (ZICFILP_xLPE(prev_virt, prev_prv)) {</span></a>
 <a name="13"><span class="lineNum">      13 </span><span class="lineNoCov">          0 :   STATE.elp = static_cast&lt;elp_t&gt;(get_field(s, MSTATUS_MPELP));</span></a>
 <a name="14"><span class="lineNum">      14 </span>            : }</a>
-<a name="15"><span class="lineNum">      15 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MPELP, elp_t::NO_LP_EXPECTED);</span></a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineNoCov">          0 : s = set_field(s, MSTATUS_MDT, 0);</span></a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineNoCov">          0 : if (prev_prv == PRV_U || (prev_virt &amp;&amp; prev_prv != PRV_M))</span></a>
-<a name="18"><span class="lineNum">      18 </span><span class="lineNoCov">          0 :   s = set_field(s, MSTATUS_SDT, 0);</span></a>
-<a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 : if (prev_virt &amp;&amp; prev_prv == PRV_U)</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MPELP, elp_t::NO_LP_EXPECTED);</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineCov">         30 : s = set_field(s, MSTATUS_MDT, 0);</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         30 : if (prev_prv == PRV_U || (prev_virt &amp;&amp; prev_prv != PRV_M))</span></a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineCov">         30 :   s = set_field(s, MSTATUS_SDT, 0);</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineCov">         30 : if (prev_virt &amp;&amp; prev_prv == PRV_U)</span></a>
 <a name="20"><span class="lineNum">      20 </span><span class="lineNoCov">          0 :   STATE.vsstatus-&gt;write(STATE.vsstatus-&gt;read() &amp; ~SSTATUS_SDT);</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineNoCov">          0 : STATE.mstatus-&gt;write(s);</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 : if (STATE.mstatush) STATE.mstatush-&gt;write(s &gt;&gt; 32); // log mstatush change</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 : if (STATE.tcontrol) STATE.tcontrol-&gt;write((STATE.tcontrol-&gt;read() &amp; CSR_TCONTROL_MPTE) ? (CSR_TCONTROL_MPTE | CSR_TCONTROL_MTE) : 0);</span></a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 : p-&gt;set_privilege(prev_prv, prev_virt);</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         30 : STATE.mstatus-&gt;write(s);</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         30 : if (STATE.mstatush) STATE.mstatush-&gt;write(s &gt;&gt; 32); // log mstatush change</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         30 : if (STATE.tcontrol) STATE.tcontrol-&gt;write((STATE.tcontrol-&gt;read() &amp; CSR_TCONTROL_MPTE) ? (CSR_TCONTROL_MPTE | CSR_TCONTROL_MTE) : 0);</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">         30 : p-&gt;set_privilege(prev_prv, prev_virt);</span></a>
 </pre>
       </td>
     </tr>

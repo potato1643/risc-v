@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - /usr/include/c++/11/bits/unordered_map.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - /usr/include/c++/11/bits/unordered_map.h</title>
   <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">14</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -161,7 +161,7 @@
 <a name="99"><span class="lineNum">      99 </span>            :            typename _Hash = hash&lt;_Key&gt;,</a>
 <a name="100"><span class="lineNum">     100 </span>            :            typename _Pred = equal_to&lt;_Key&gt;,</a>
 <a name="101"><span class="lineNum">     101 </span>            :            typename _Alloc = allocator&lt;std::pair&lt;const _Key, _Tp&gt;&gt;&gt;</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">         78 :     class unordered_map</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">        300 :     class unordered_map</span></a>
 <a name="103"><span class="lineNum">     103 </span>            :     {</a>
 <a name="104"><span class="lineNum">     104 </span>            :       typedef __umap_hashtable&lt;_Key, _Tp, _Hash, _Pred, _Alloc&gt;  _Hashtable;</a>
 <a name="105"><span class="lineNum">     105 </span>            :       _Hashtable _M_h;</a>
@@ -406,8 +406,8 @@
 <a name="344"><span class="lineNum">     344 </span>            :        *  the %unordered_map.</a>
 <a name="345"><span class="lineNum">     345 </span>            :        */</a>
 <a name="346"><span class="lineNum">     346 </span>            :       iterator</a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">   67360724 :       end() noexcept</span></a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">   67360724 :       { return _M_h.end(); }</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">       2393 :       end() noexcept</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">       2393 :       { return _M_h.end(); }</span></a>
 <a name="349"><span class="lineNum">     349 </span>            : </a>
 <a name="350"><span class="lineNum">     350 </span>            :       ///@{</a>
 <a name="351"><span class="lineNum">     351 </span>            :       /**</a>
@@ -927,8 +927,8 @@
 <a name="865"><span class="lineNum">     865 </span>            :        *  past-the-end ( @c end() ) iterator.</a>
 <a name="866"><span class="lineNum">     866 </span>            :        */</a>
 <a name="867"><span class="lineNum">     867 </span>            :       iterator</a>
-<a name="868"><span class="lineNum">     868 </span><span class="lineCov">   67360574 :       find(const key_type&amp; __x)</span></a>
-<a name="869"><span class="lineNum">     869 </span><span class="lineCov">   67360574 :       { return _M_h.find(__x); }</span></a>
+<a name="868"><span class="lineNum">     868 </span><span class="lineCov">       2243 :       find(const key_type&amp; __x)</span></a>
+<a name="869"><span class="lineNum">     869 </span><span class="lineCov">       2243 :       { return _M_h.find(__x); }</span></a>
 <a name="870"><span class="lineNum">     870 </span>            : </a>
 <a name="871"><span class="lineNum">     871 </span>            : #if __cplusplus &gt; 201703L</a>
 <a name="872"><span class="lineNum">     872 </span>            :       template&lt;typename _Kt&gt;</a>
@@ -1038,8 +1038,8 @@
 <a name="976"><span class="lineNum">     976 </span>            :        *  Lookup requires constant time.</a>
 <a name="977"><span class="lineNum">     977 </span>            :        */</a>
 <a name="978"><span class="lineNum">     978 </span>            :       mapped_type&amp;</a>
-<a name="979"><span class="lineNum">     979 </span><span class="lineCov">      17700 :       operator[](const key_type&amp; __k)</span></a>
-<a name="980"><span class="lineNum">     980 </span><span class="lineCov">      17700 :       { return _M_h[__k]; }</span></a>
+<a name="979"><span class="lineNum">     979 </span><span class="lineCov">      20900 :       operator[](const key_type&amp; __k)</span></a>
+<a name="980"><span class="lineNum">     980 </span><span class="lineCov">      20900 :       { return _M_h[__k]; }</span></a>
 <a name="981"><span class="lineNum">     981 </span>            : </a>
 <a name="982"><span class="lineNum">     982 </span>            :       mapped_type&amp;</a>
 <a name="983"><span class="lineNum">     983 </span><span class="lineNoCov">          0 :       operator[](key_type&amp;&amp; __k)</span></a>

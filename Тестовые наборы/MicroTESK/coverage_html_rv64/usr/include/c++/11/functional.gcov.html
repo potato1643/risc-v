@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - /usr/include/c++/11/functional</title>
+  <title>LCOV - microtesk_coverage.info - /usr/include/c++/11/functional</title>
   <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">12</td>
             <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntryLo">46.7 %</td>
+            <td class="headerCovTableEntryMed">80.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -477,10 +477,10 @@
 <a name="415"><span class="lineNum">     415 </span>            :       template&lt;typename _Result, typename... _Args, std::size_t... _Indexes&gt;</a>
 <a name="416"><span class="lineNum">     416 </span>            :         _GLIBCXX20_CONSTEXPR</a>
 <a name="417"><span class="lineNum">     417 </span>            :         _Result</a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :         __call(tuple&lt;_Args...&gt;&amp;&amp; __args, _Index_tuple&lt;_Indexes...&gt;)</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">         30 :         __call(tuple&lt;_Args...&gt;&amp;&amp; __args, _Index_tuple&lt;_Indexes...&gt;)</span></a>
 <a name="419"><span class="lineNum">     419 </span>            :         {</a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :           return std::__invoke(_M_f,</span></a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :               _Mu&lt;_Bound_args&gt;()(std::get&lt;_Indexes&gt;(_M_bound_args), __args)...</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">         60 :           return std::__invoke(_M_f,</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">         30 :               _Mu&lt;_Bound_args&gt;()(std::get&lt;_Indexes&gt;(_M_bound_args), __args)...</span></a>
 <a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :               );</span></a>
 <a name="423"><span class="lineNum">     423 </span>            :         }</a>
 <a name="424"><span class="lineNum">     424 </span>            : </a>
@@ -560,9 +560,9 @@
 <a name="498"><span class="lineNum">     498 </span>            :                typename _Result = _Res_type&lt;tuple&lt;_Args...&gt;&gt;&gt;</a>
 <a name="499"><span class="lineNum">     499 </span>            :         _GLIBCXX20_CONSTEXPR</a>
 <a name="500"><span class="lineNum">     500 </span>            :         _Result</a>
-<a name="501"><span class="lineNum">     501 </span><span class="lineNoCov">          0 :         operator()(_Args&amp;&amp;... __args)</span></a>
+<a name="501"><span class="lineNum">     501 </span><span class="lineCov">         30 :         operator()(_Args&amp;&amp;... __args)</span></a>
 <a name="502"><span class="lineNum">     502 </span>            :         {</a>
-<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 :           return this-&gt;__call&lt;_Result&gt;(</span></a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineCov">         30 :           return this-&gt;__call&lt;_Result&gt;(</span></a>
 <a name="504"><span class="lineNum">     504 </span>            :               std::forward_as_tuple(std::forward&lt;_Args&gt;(__args)...),</a>
 <a name="505"><span class="lineNum">     505 </span>            :               _Bound_indexes());</a>
 <a name="506"><span class="lineNum">     506 </span>            :         }</a>

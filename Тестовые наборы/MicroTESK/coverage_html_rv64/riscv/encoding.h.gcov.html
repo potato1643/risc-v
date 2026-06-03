@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/encoding.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/encoding.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">979</td>
+            <td class="headerCovTableEntry">989</td>
             <td class="headerCovTableEntry">1433</td>
-            <td class="headerCovTableEntryLo">68.3 %</td>
+            <td class="headerCovTableEntryLo">69.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -4231,7 +4231,7 @@
 <a name="4169"><span class="lineNum">    4169 </span><span class="lineNoCov">          0 : DECLARE_CSR(sireg6, CSR_SIREG6)</span></a>
 <a name="4170"><span class="lineNum">    4170 </span><span class="lineNoCov">          0 : DECLARE_CSR(stopei, CSR_STOPEI)</span></a>
 <a name="4171"><span class="lineNum">    4171 </span><span class="lineNoCov">          0 : DECLARE_CSR(sctrdepth, CSR_SCTRDEPTH)</span></a>
-<a name="4172"><span class="lineNum">    4172 </span><span class="lineNoCov">          0 : DECLARE_CSR(satp, CSR_SATP)</span></a>
+<a name="4172"><span class="lineNum">    4172 </span><span class="lineCov">         30 : DECLARE_CSR(satp, CSR_SATP)</span></a>
 <a name="4173"><span class="lineNum">    4173 </span><span class="lineNoCov">          0 : DECLARE_CSR(srmcfg, CSR_SRMCFG)</span></a>
 <a name="4174"><span class="lineNum">    4174 </span><span class="lineNoCov">          0 : DECLARE_CSR(scontext, CSR_SCONTEXT)</span></a>
 <a name="4175"><span class="lineNum">    4175 </span><span class="lineNoCov">          0 : DECLARE_CSR(vsstatus, CSR_VSSTATUS)</span></a>
@@ -4294,12 +4294,12 @@
 <a name="4232"><span class="lineNum">    4232 </span><span class="lineNoCov">          0 : DECLARE_CSR(mintstatus, CSR_MINTSTATUS)</span></a>
 <a name="4233"><span class="lineNum">    4233 </span><span class="lineNoCov">          0 : DECLARE_CSR(mscratchcsw, CSR_MSCRATCHCSW)</span></a>
 <a name="4234"><span class="lineNum">    4234 </span><span class="lineNoCov">          0 : DECLARE_CSR(mscratchcswl, CSR_MSCRATCHCSWL)</span></a>
-<a name="4235"><span class="lineNum">    4235 </span><span class="lineNoCov">          0 : DECLARE_CSR(mstatus, CSR_MSTATUS)</span></a>
+<a name="4235"><span class="lineNum">    4235 </span><span class="lineCov">         30 : DECLARE_CSR(mstatus, CSR_MSTATUS)</span></a>
 <a name="4236"><span class="lineNum">    4236 </span><span class="lineNoCov">          0 : DECLARE_CSR(misa, CSR_MISA)</span></a>
-<a name="4237"><span class="lineNum">    4237 </span><span class="lineNoCov">          0 : DECLARE_CSR(medeleg, CSR_MEDELEG)</span></a>
-<a name="4238"><span class="lineNum">    4238 </span><span class="lineNoCov">          0 : DECLARE_CSR(mideleg, CSR_MIDELEG)</span></a>
-<a name="4239"><span class="lineNum">    4239 </span><span class="lineNoCov">          0 : DECLARE_CSR(mie, CSR_MIE)</span></a>
-<a name="4240"><span class="lineNum">    4240 </span><span class="lineNoCov">          0 : DECLARE_CSR(mtvec, CSR_MTVEC)</span></a>
+<a name="4237"><span class="lineNum">    4237 </span><span class="lineCov">         30 : DECLARE_CSR(medeleg, CSR_MEDELEG)</span></a>
+<a name="4238"><span class="lineNum">    4238 </span><span class="lineCov">         30 : DECLARE_CSR(mideleg, CSR_MIDELEG)</span></a>
+<a name="4239"><span class="lineNum">    4239 </span><span class="lineCov">         30 : DECLARE_CSR(mie, CSR_MIE)</span></a>
+<a name="4240"><span class="lineNum">    4240 </span><span class="lineCov">        120 : DECLARE_CSR(mtvec, CSR_MTVEC)</span></a>
 <a name="4241"><span class="lineNum">    4241 </span><span class="lineNoCov">          0 : DECLARE_CSR(mcounteren, CSR_MCOUNTEREN)</span></a>
 <a name="4242"><span class="lineNum">    4242 </span><span class="lineNoCov">          0 : DECLARE_CSR(mvien, CSR_MVIEN)</span></a>
 <a name="4243"><span class="lineNum">    4243 </span><span class="lineNoCov">          0 : DECLARE_CSR(mvip, CSR_MVIP)</span></a>
@@ -4310,8 +4310,8 @@
 <a name="4248"><span class="lineNum">    4248 </span><span class="lineNoCov">          0 : DECLARE_CSR(mstateen3, CSR_MSTATEEN3)</span></a>
 <a name="4249"><span class="lineNum">    4249 </span><span class="lineNoCov">          0 : DECLARE_CSR(mcountinhibit, CSR_MCOUNTINHIBIT)</span></a>
 <a name="4250"><span class="lineNum">    4250 </span><span class="lineNoCov">          0 : DECLARE_CSR(mscratch, CSR_MSCRATCH)</span></a>
-<a name="4251"><span class="lineNum">    4251 </span><span class="lineNoCov">          0 : DECLARE_CSR(mepc, CSR_MEPC)</span></a>
-<a name="4252"><span class="lineNum">    4252 </span><span class="lineNoCov">          0 : DECLARE_CSR(mcause, CSR_MCAUSE)</span></a>
+<a name="4251"><span class="lineNum">    4251 </span><span class="lineCov">         30 : DECLARE_CSR(mepc, CSR_MEPC)</span></a>
+<a name="4252"><span class="lineNum">    4252 </span><span class="lineCov">         31 : DECLARE_CSR(mcause, CSR_MCAUSE)</span></a>
 <a name="4253"><span class="lineNum">    4253 </span><span class="lineNoCov">          0 : DECLARE_CSR(mtval, CSR_MTVAL)</span></a>
 <a name="4254"><span class="lineNum">    4254 </span><span class="lineNoCov">          0 : DECLARE_CSR(mip, CSR_MIP)</span></a>
 <a name="4255"><span class="lineNum">    4255 </span><span class="lineNoCov">          0 : DECLARE_CSR(mtinst, CSR_MTINST)</span></a>
@@ -4325,7 +4325,7 @@
 <a name="4263"><span class="lineNum">    4263 </span><span class="lineNoCov">          0 : DECLARE_CSR(mireg5, CSR_MIREG5)</span></a>
 <a name="4264"><span class="lineNum">    4264 </span><span class="lineNoCov">          0 : DECLARE_CSR(mireg6, CSR_MIREG6)</span></a>
 <a name="4265"><span class="lineNum">    4265 </span><span class="lineNoCov">          0 : DECLARE_CSR(mtopei, CSR_MTOPEI)</span></a>
-<a name="4266"><span class="lineNum">    4266 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg0, CSR_PMPCFG0)</span></a>
+<a name="4266"><span class="lineNum">    4266 </span><span class="lineCov">         30 : DECLARE_CSR(pmpcfg0, CSR_PMPCFG0)</span></a>
 <a name="4267"><span class="lineNum">    4267 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg1, CSR_PMPCFG1)</span></a>
 <a name="4268"><span class="lineNum">    4268 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg2, CSR_PMPCFG2)</span></a>
 <a name="4269"><span class="lineNum">    4269 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg3, CSR_PMPCFG3)</span></a>
@@ -4341,7 +4341,7 @@
 <a name="4279"><span class="lineNum">    4279 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg13, CSR_PMPCFG13)</span></a>
 <a name="4280"><span class="lineNum">    4280 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg14, CSR_PMPCFG14)</span></a>
 <a name="4281"><span class="lineNum">    4281 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpcfg15, CSR_PMPCFG15)</span></a>
-<a name="4282"><span class="lineNum">    4282 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpaddr0, CSR_PMPADDR0)</span></a>
+<a name="4282"><span class="lineNum">    4282 </span><span class="lineCov">         30 : DECLARE_CSR(pmpaddr0, CSR_PMPADDR0)</span></a>
 <a name="4283"><span class="lineNum">    4283 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpaddr1, CSR_PMPADDR1)</span></a>
 <a name="4284"><span class="lineNum">    4284 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpaddr2, CSR_PMPADDR2)</span></a>
 <a name="4285"><span class="lineNum">    4285 </span><span class="lineNoCov">          0 : DECLARE_CSR(pmpaddr3, CSR_PMPADDR3)</span></a>
@@ -4483,7 +4483,7 @@
 <a name="4421"><span class="lineNum">    4421 </span><span class="lineNoCov">          0 : DECLARE_CSR(mvendorid, CSR_MVENDORID)</span></a>
 <a name="4422"><span class="lineNum">    4422 </span><span class="lineNoCov">          0 : DECLARE_CSR(marchid, CSR_MARCHID)</span></a>
 <a name="4423"><span class="lineNum">    4423 </span><span class="lineNoCov">          0 : DECLARE_CSR(mimpid, CSR_MIMPID)</span></a>
-<a name="4424"><span class="lineNum">    4424 </span><span class="lineCov">         30 : DECLARE_CSR(mhartid, CSR_MHARTID)</span></a>
+<a name="4424"><span class="lineNum">    4424 </span><span class="lineCov">         90 : DECLARE_CSR(mhartid, CSR_MHARTID)</span></a>
 <a name="4425"><span class="lineNum">    4425 </span><span class="lineNoCov">          0 : DECLARE_CSR(mconfigptr, CSR_MCONFIGPTR)</span></a>
 <a name="4426"><span class="lineNum">    4426 </span><span class="lineNoCov">          0 : DECLARE_CSR(mtopi, CSR_MTOPI)</span></a>
 <a name="4427"><span class="lineNum">    4427 </span><span class="lineNoCov">          0 : DECLARE_CSR(sieh, CSR_SIEH)</span></a>

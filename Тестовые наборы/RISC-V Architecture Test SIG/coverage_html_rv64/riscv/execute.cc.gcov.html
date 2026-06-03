@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - riscv/execute.cc</title>
+  <title>LCOV - riscof_rv64_coverage.info - riscv/execute.cc</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">57</td>
+            <td class="headerCovTableEntry">45</td>
             <td class="headerCovTableEntry">217</td>
-            <td class="headerCovTableEntryLo">26.3 %</td>
+            <td class="headerCovTableEntryLo">20.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -212,34 +212,34 @@
 <a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :   fprintf(log_file, &quot;\n&quot;);</span></a>
 <a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">      10953 : inline void processor_t::update_histogram(reg_t pc)</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">     360050 : inline void processor_t::update_histogram(reg_t pc)</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : {</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">      10953 :   if (histogram_enabled)</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">     360050 :   if (histogram_enabled)</span></a>
 <a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :     pc_histogram[pc]++;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">      10953 : }</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">     360050 : }</span></a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
 <a name="159"><span class="lineNum">     159 </span>            : // These two functions are expected to be inlined by the compiler separately in</a>
 <a name="160"><span class="lineNum">     160 </span>            : // the processor_t::step() loop. The logged variant is used in the slow path</a>
 <a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 : static inline reg_t execute_insn_fast(processor_t* p, reg_t pc, insn_fetch_t fetch) {</span></a>
 <a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :   return fetch.func(p, fetch.insn, pc);</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : }</a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">      11003 : static inline reg_t execute_insn_logged(processor_t* p, reg_t pc, insn_fetch_t fetch)</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">     360050 : static inline reg_t execute_insn_logged(processor_t* p, reg_t pc, insn_fetch_t fetch)</span></a>
 <a name="165"><span class="lineNum">     165 </span>            : {</a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">      11003 :   if (p-&gt;get_log_commits_enabled()) {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">     360050 :   if (p-&gt;get_log_commits_enabled()) {</span></a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :     commit_log_reset(p);</span></a>
 <a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :     commit_log_stash_privilege(p);</span></a>
 <a name="169"><span class="lineNum">     169 </span>            :   }</a>
 <a name="170"><span class="lineNum">     170 </span>            : </a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">      11003 :   reg_t npc;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">     360050 :   reg_t npc;</span></a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">      11003 :   try {</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">      11003 :     npc = fetch.func(p, fetch.insn, pc);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">      10953 :     if (npc != PC_SERIALIZE_BEFORE) {</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">      10903 :       if (p-&gt;get_log_commits_enabled()) {</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">     360050 :   try {</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">     360050 :     npc = fetch.func(p, fetch.insn, pc);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">     360050 :     if (npc != PC_SERIALIZE_BEFORE) {</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">     360000 :       if (p-&gt;get_log_commits_enabled()) {</span></a>
 <a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         commit_log_print_insn(p, pc, fetch.insn);</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :       }</a>
 <a name="179"><span class="lineNum">     179 </span>            :      }</a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         50 :   } catch (wait_for_interrupt_t &amp;t) {</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :   } catch (wait_for_interrupt_t &amp;t) {</span></a>
 <a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :       if (p-&gt;get_log_commits_enabled()) {</span></a>
 <a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :         commit_log_print_insn(p, pc, fetch.insn);</span></a>
 <a name="183"><span class="lineNum">     183 </span>            :       }</a>
@@ -255,41 +255,41 @@
 <a name="193"><span class="lineNum">     193 </span>            :         }</a>
 <a name="194"><span class="lineNum">     194 </span>            :       }</a>
 <a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :       throw;</span></a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">         50 :   } catch(...) {</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         50 :     throw;</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         50 :   }</span></a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">      10953 :   p-&gt;update_histogram(pc);</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :   } catch(...) {</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :     throw;</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :   }</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">     360050 :   p-&gt;update_histogram(pc);</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">      10953 :   return npc;</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">     360050 :   return npc;</span></a>
 <a name="202"><span class="lineNum">     202 </span>            : }</a>
 <a name="203"><span class="lineNum">     203 </span>            : </a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">   67359120 : bool processor_t::slow_path() const</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">        172 : bool processor_t::slow_path() const</span></a>
 <a name="205"><span class="lineNum">     205 </span>            : {</a>
 <a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :   return debug || state.single_step != state.STEP_NONE || state.debug_mode ||</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">   67359120 :          log_commits_enabled || histogram_enabled || in_wfi || check_triggers_icount;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">        172 :          log_commits_enabled || histogram_enabled || in_wfi || check_triggers_icount;</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : }</a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
 <a name="210"><span class="lineNum">     210 </span>            : // fetch/decode/execute loop</a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">   67359021 : void processor_t::step(size_t n)</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         72 : void processor_t::step(size_t n)</span></a>
 <a name="212"><span class="lineNum">     212 </span>            : {</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">   67359021 :   mmu_t* _mmu = mmu;</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         72 :   mmu_t* _mmu = mmu;</span></a>
 <a name="214"><span class="lineNum">     214 </span>            : </a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">   67359021 :   if (!state.debug_mode) {</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">   67359021 :     if (halt_request == HR_REGULAR) {</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         72 :   if (!state.debug_mode) {</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         72 :     if (halt_request == HR_REGULAR) {</span></a>
 <a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :       enter_debug_mode(DCSR_CAUSE_DEBUGINT, 0);</span></a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">   67359021 :     } else if (halt_request == HR_GROUP) {</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         72 :     } else if (halt_request == HR_GROUP) {</span></a>
 <a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :       enter_debug_mode(DCSR_CAUSE_GROUP, 0);</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">   67359021 :     } else if (halt_on_reset) {</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         72 :     } else if (halt_on_reset) {</span></a>
 <a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :       halt_on_reset = false;</span></a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :       enter_debug_mode(DCSR_CAUSE_HALT, 0);</span></a>
 <a name="223"><span class="lineNum">     223 </span>            :     }</a>
 <a name="224"><span class="lineNum">     224 </span>            :   }</a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">  134718118 :   while (n &gt; 0) {</span></a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">   67359121 :     size_t instret = 0;</span></a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">   67359121 :     reg_t pc = state.pc;</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">   67359121 :     state.prv_changed = false;</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">   67359121 :     state.v_changed = false;</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        244 :   while (n &gt; 0) {</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">        172 :     size_t instret = 0;</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">        172 :     reg_t pc = state.pc;</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">        172 :     state.prv_changed = false;</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">        172 :     state.v_changed = false;</span></a>
 <a name="231"><span class="lineNum">     231 </span>            : </a>
 <a name="232"><span class="lineNum">     232 </span>            :     #define advance_pc() { \</a>
 <a name="233"><span class="lineNum">     233 </span>            :       if (unlikely(invalid_pc(pc))) { \</a>
@@ -305,18 +305,18 @@
 <a name="243"><span class="lineNum">     243 </span>            :         instret++; \</a>
 <a name="244"><span class="lineNum">     244 </span>            :       }}</a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">   67359121 :     try</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        172 :     try</span></a>
 <a name="247"><span class="lineNum">     247 </span>            :     {</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">   67359121 :       take_pending_interrupt();</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">        172 :       take_pending_interrupt();</span></a>
 <a name="249"><span class="lineNum">     249 </span>            : </a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">   67359120 :       check_if_lpad_required();</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        172 :       check_if_lpad_required();</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : </a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">   67359120 :       if (unlikely(slow_path()))</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        172 :       if (unlikely(slow_path()))</span></a>
 <a name="253"><span class="lineNum">     253 </span>            :       {</a>
 <a name="254"><span class="lineNum">     254 </span>            :         // Main simulation loop, slow path.</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">   67369973 :         while (instret &lt; n)</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">     360122 :         while (instret &lt; n)</span></a>
 <a name="256"><span class="lineNum">     256 </span>            :         {</a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">   67369973 :           if (unlikely(!state.serialized &amp;&amp; state.single_step == state.STEP_STEPPED)) {</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">     360050 :           if (unlikely(!state.serialized &amp;&amp; state.single_step == state.STEP_STEPPED)) {</span></a>
 <a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :             state.single_step = state.STEP_NONE;</span></a>
 <a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :             if (!state.debug_mode) {</span></a>
 <a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :               enter_debug_mode(DCSR_CAUSE_STEP, 0);</span></a>
@@ -325,11 +325,11 @@
 <a name="263"><span class="lineNum">     263 </span>            :             }</a>
 <a name="264"><span class="lineNum">     264 </span>            :           }</a>
 <a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">   67369973 :           if (unlikely(state.single_step == state.STEP_STEPPING)) {</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">     360050 :           if (unlikely(state.single_step == state.STEP_STEPPING)) {</span></a>
 <a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :             state.single_step = state.STEP_STEPPED;</span></a>
 <a name="268"><span class="lineNum">     268 </span>            :           }</a>
 <a name="269"><span class="lineNum">     269 </span>            : </a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">   67369973 :           if (!state.serialized &amp;&amp; check_triggers_icount) {</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">     360050 :           if (!state.serialized &amp;&amp; check_triggers_icount) {</span></a>
 <a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :             auto match = TM.detect_icount_match();</span></a>
 <a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :             if (match.has_value()) {</span></a>
 <a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :               assert(match-&gt;timing == triggers::TIMING_BEFORE);</span></a>
@@ -338,19 +338,19 @@
 <a name="276"><span class="lineNum">     276 </span>            :           }</a>
 <a name="277"><span class="lineNum">     277 </span>            : </a>
 <a name="278"><span class="lineNum">     278 </span>            :           // debug mode wfis must nop</a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">   67369973 :           if (unlikely(in_wfi &amp;&amp; !state.debug_mode)) {</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">     360050 :           if (unlikely(in_wfi &amp;&amp; !state.debug_mode)) {</span></a>
 <a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :             throw wait_for_interrupt_t();</span></a>
 <a name="281"><span class="lineNum">     281 </span>            :           }</a>
 <a name="282"><span class="lineNum">     282 </span>            : </a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">   67369973 :           in_wfi = false;</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">   67369973 :           insn_fetch_t fetch = mmu-&gt;load_insn(pc);</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">      11003 :           if (debug &amp;&amp; !state.serialized)</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">      10953 :             disasm(fetch.insn);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">      11003 :           pc = execute_insn_logged(this, pc, fetch);</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">      10953 :           advance_pc();</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">     360050 :           in_wfi = false;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">     360050 :           insn_fetch_t fetch = mmu-&gt;load_insn(pc);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">     360050 :           if (debug &amp;&amp; !state.serialized)</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">     360000 :             disasm(fetch.insn);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">     360050 :           pc = execute_insn_logged(this, pc, fetch);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">     360050 :           advance_pc();</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : </a>
 <a name="290"><span class="lineNum">     290 </span>            :           // Resume from debug mode in critical error</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">      10853 :           if (state.critical_error &amp;&amp; !state.debug_mode) {</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">     359950 :           if (state.critical_error &amp;&amp; !state.debug_mode) {</span></a>
 <a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :             if (state.dcsr-&gt;read() &amp; DCSR_CETRIG) {</span></a>
 <a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :               enter_debug_mode(DCSR_CAUSE_EXTCAUSE, DCSR_EXTCAUSE_CRITERR);</span></a>
 <a name="294"><span class="lineNum">     294 </span>            :             } else {</a>
@@ -381,13 +381,13 @@
 <a name="319"><span class="lineNum">     319 </span>            :         }</a>
 <a name="320"><span class="lineNum">     320 </span>            :       }</a>
 <a name="321"><span class="lineNum">     321 </span>            :     }</a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">   67359013 :     catch(trap_t&amp; t)</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :     catch(trap_t&amp; t)</span></a>
 <a name="323"><span class="lineNum">     323 </span>            :     {</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">   67359013 :       take_trap(t, pc);</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">   67358999 :       n = instret;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :       take_trap(t, pc);</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :       n = instret;</span></a>
 <a name="326"><span class="lineNum">     326 </span>            : </a>
 <a name="327"><span class="lineNum">     327 </span>            :       // If critical error then enter debug mode critical error trigger enabled</a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">   67358999 :       if (state.critical_error) {</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :       if (state.critical_error) {</span></a>
 <a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         if (state.dcsr-&gt;read() &amp; DCSR_CETRIG) {</span></a>
 <a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :           enter_debug_mode(DCSR_CAUSE_EXTCAUSE, DCSR_EXTCAUSE_CRITERR);</span></a>
 <a name="331"><span class="lineNum">     331 </span>            :         } else {</a>
@@ -397,14 +397,14 @@
 <a name="335"><span class="lineNum">     335 </span>            :         }</a>
 <a name="336"><span class="lineNum">     336 </span>            :       }</a>
 <a name="337"><span class="lineNum">     337 </span>            :       // Trigger action takes priority over single step</a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">   67358999 :       auto match = TM.detect_trap_match(t);</span></a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">   67358999 :       if (match.has_value())</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :       auto match = TM.detect_trap_match(t);</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :       if (match.has_value())</span></a>
 <a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :         take_trigger_action(match-&gt;action, 0, state.pc, 0);</span></a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">   67358999 :       else if (unlikely(state.single_step == state.STEP_STEPPED)) {</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :       else if (unlikely(state.single_step == state.STEP_STEPPED)) {</span></a>
 <a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :         state.single_step = state.STEP_NONE;</span></a>
 <a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :         enter_debug_mode(DCSR_CAUSE_STEP, 0);</span></a>
 <a name="344"><span class="lineNum">     344 </span>            :       }</a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">   67358999 :     }</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :     catch (triggers::matched_t&amp; t)</span></a>
 <a name="347"><span class="lineNum">     347 </span>            :     {</a>
 <a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :       take_trigger_action(t.action, t.address, pc, t.gva);</span></a>
@@ -426,14 +426,14 @@
 <a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :     }</span></a>
 <a name="365"><span class="lineNum">     365 </span>            : </a>
 <a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 : serialize:</span></a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">  134718194 :     state.minstret-&gt;bump((state.mcountinhibit-&gt;read() &amp; MCOUNTINHIBIT_IR) ? 0 : instret);</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">        344 :     state.minstret-&gt;bump((state.mcountinhibit-&gt;read() &amp; MCOUNTINHIBIT_IR) ? 0 : instret);</span></a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
 <a name="369"><span class="lineNum">     369 </span>            :     // Model a hart whose CPI is 1.</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">  134718194 :     state.mcycle-&gt;bump((state.mcountinhibit-&gt;read() &amp; MCOUNTINHIBIT_CY) ? 0 : instret);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">        344 :     state.mcycle-&gt;bump((state.mcountinhibit-&gt;read() &amp; MCOUNTINHIBIT_CY) ? 0 : instret);</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">   67359097 :     n -= instret;</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">        172 :     n -= instret;</span></a>
 <a name="373"><span class="lineNum">     373 </span>            :   }</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">   67358997 : }</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">         72 : }</span></a>
 </pre>
       </td>
     </tr>

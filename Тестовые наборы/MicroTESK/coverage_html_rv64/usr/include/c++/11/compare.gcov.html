@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - /usr/include/c++/11/compare</title>
+  <title>LCOV - microtesk_coverage.info - /usr/include/c++/11/compare</title>
   <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">5</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -118,7 +118,7 @@
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span>            :     struct __unspec</a>
 <a name="58"><span class="lineNum">      58 </span>            :     {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">      60606 :       constexpr __unspec(__unspec*) noexcept { }</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">      63366 :       constexpr __unspec(__unspec*) noexcept { }</span></a>
 <a name="60"><span class="lineNum">      60 </span>            :     };</a>
 <a name="61"><span class="lineNum">      61 </span>            :   }</a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
@@ -949,7 +949,7 @@
 <a name="887"><span class="lineNum">     887 </span>            : </a>
 <a name="888"><span class="lineNum">     888 </span>            :       template&lt;typename _Tp, typename _Up&gt;</a>
 <a name="889"><span class="lineNum">     889 </span>            :         constexpr auto</a>
-<a name="890"><span class="lineNum">     890 </span><span class="lineCov">      43080 :         operator()(const _Tp&amp; __t, const _Up&amp; __u) const</span></a>
+<a name="890"><span class="lineNum">     890 </span><span class="lineCov">      45840 :         operator()(const _Tp&amp; __t, const _Up&amp; __u) const</span></a>
 <a name="891"><span class="lineNum">     891 </span>            :         noexcept(_S_noexcept&lt;_Tp, _Up&gt;())</a>
 <a name="892"><span class="lineNum">     892 </span>            :         requires requires</a>
 <a name="893"><span class="lineNum">     893 </span>            :         {</a>
@@ -958,7 +958,7 @@
 <a name="896"><span class="lineNum">     896 </span>            :         }</a>
 <a name="897"><span class="lineNum">     897 </span>            :         {</a>
 <a name="898"><span class="lineNum">     898 </span>            :           if constexpr (three_way_comparable_with&lt;_Tp, _Up&gt;)</a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineCov">      43080 :             return __t &lt;=&gt; __u;</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineCov">      45840 :             return __t &lt;=&gt; __u;</span></a>
 <a name="900"><span class="lineNum">     900 </span>            :           else</a>
 <a name="901"><span class="lineNum">     901 </span>            :             {</a>
 <a name="902"><span class="lineNum">     902 </span>            :               if (__t &lt; __u)</a>

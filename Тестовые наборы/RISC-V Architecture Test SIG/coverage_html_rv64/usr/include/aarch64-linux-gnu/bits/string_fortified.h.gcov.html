@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - /usr/include/aarch64-linux-gnu/bits/string_fortified.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - /usr/include/aarch64-linux-gnu/bits/string_fortified.h</title>
   <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">5</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -85,11 +85,11 @@
 <a name="23"><span class="lineNum">      23 </span>            : #endif</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
 <a name="25"><span class="lineNum">      25 </span>            : __fortify_function void *</a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">   67360984 : __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">       2723 : __NTH (memcpy (void *__restrict __dest, const void *__restrict __src,</span></a>
 <a name="27"><span class="lineNum">      27 </span>            :                size_t __len))</a>
 <a name="28"><span class="lineNum">      28 </span>            : {</a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">   67360984 :   return __builtin___memcpy_chk (__dest, __src, __len,</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">       1255 :                                  __glibc_objsize0 (__dest));</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">       2723 :   return __builtin___memcpy_chk (__dest, __src, __len,</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">       1893 :                                  __glibc_objsize0 (__dest));</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : }</a>
 <a name="32"><span class="lineNum">      32 </span>            : </a>
 <a name="33"><span class="lineNum">      33 </span>            : __fortify_function void *</a>
@@ -116,9 +116,9 @@
 <a name="54"><span class="lineNum">      54 </span>            :    case no work is done at all.  We detect these problems by referring</a>
 <a name="55"><span class="lineNum">      55 </span>            :    non-existing functions.  */</a>
 <a name="56"><span class="lineNum">      56 </span>            : __fortify_function void *</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">   67359807 : __NTH (memset (void *__dest, int __ch, size_t __len))</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        750 : __NTH (memset (void *__dest, int __ch, size_t __len))</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">   67359807 :   return __builtin___memset_chk (__dest, __ch, __len,</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        750 :   return __builtin___memset_chk (__dest, __ch, __len,</span></a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :                                  __glibc_objsize0 (__dest));</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : }</a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>

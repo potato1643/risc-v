@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - riscv/isa_parser.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - riscv/isa_parser.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">13</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -184,8 +184,8 @@
 <a name="122"><span class="lineNum">     122 </span>            : class isa_parser_t {</a>
 <a name="123"><span class="lineNum">     123 </span>            : public:</a>
 <a name="124"><span class="lineNum">     124 </span>            :   isa_parser_t(const char* str, const char *priv);</a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        113 :   ~isa_parser_t() {};</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">  134731123 :   unsigned get_max_xlen() const { return max_xlen; }</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        150 :   ~isa_parser_t() {};</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">     362600 :   unsigned get_max_xlen() const { return max_xlen; }</span></a>
 <a name="127"><span class="lineNum">     127 </span><span class="lineCov">        100 :   reg_t get_max_isa() const { return max_isa; }</span></a>
 <a name="128"><span class="lineNum">     128 </span><span class="lineCov">        100 :   std::string get_isa_string() const { return isa_string; }</span></a>
 <a name="129"><span class="lineNum">     129 </span><span class="lineCov">         50 :   reg_t get_vlen() const { return vlen; }</span></a>
@@ -195,8 +195,8 @@
 <a name="133"><span class="lineNum">     133 </span><span class="lineCov">        900 :   bool extension_enabled(unsigned char ext) const {</span></a>
 <a name="134"><span class="lineNum">     134 </span><span class="lineCov">        900 :     return extension_enabled(isa_extension_t(ext));</span></a>
 <a name="135"><span class="lineNum">     135 </span>            :   }</a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       7700 :   bool extension_enabled(isa_extension_t ext) const {</span></a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       6400 :     return extension_table[ext];</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       7600 :   bool extension_enabled(isa_extension_t ext) const {</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       6550 :     return extension_table[ext];</span></a>
 <a name="138"><span class="lineNum">     138 </span>            :   }</a>
 <a name="139"><span class="lineNum">     139 </span><span class="lineCov">        100 :   bool has_any_vector() const { return vlen &gt; 0; }</span></a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>

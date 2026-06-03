@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - fesvr/byteorder.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - fesvr/byteorder.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,21 +28,21 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntry">23</td>
-            <td class="headerCovTableEntryLo">34.8 %</td>
+            <td class="headerCovTableEntryLo">43.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">22.2 %</td>
+            <td class="headerCovTableEntryLo">55.6 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -97,11 +97,11 @@
 <a name="35"><span class="lineNum">      35 </span>            :  protected:</a>
 <a name="36"><span class="lineNum">      36 </span>            :   T value;</a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">   67876538 :   base_endian(T n) : value(n) {}</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">     586906 :   base_endian(T n) : value(n) {}</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
 <a name="40"><span class="lineNum">      40 </span>            :  public:</a>
 <a name="41"><span class="lineNum">      41 </span>            :   // Setting to and testing against zero never needs swapping</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">  135234764 :   base_endian() : value(0) {}</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">     517241 :   base_endian() : value(0) {}</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :   bool operator!() { return !value; }</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            :   // Bitwise logic operations can be performed without swapping</a>
@@ -110,18 +110,18 @@
 <a name="48"><span class="lineNum">      48 </span>            :   base_endian&amp; operator^=(const base_endian&amp; rhs) { value ^= rhs.value; return *this; }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :   inline T from_be() { return ::from_be(value); }</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         52 :   inline T from_le() { return ::from_le(value); }</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">        277 :   inline T from_le() { return ::from_le(value); }</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : };</a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
 <a name="54"><span class="lineNum">      54 </span>            : template&lt;typename T&gt; class target_endian : public base_endian&lt;T&gt; {</a>
 <a name="55"><span class="lineNum">      55 </span>            :  protected:</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">   67876515 :   target_endian(T n) : base_endian&lt;T&gt;(n) {}</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">     586771 :   target_endian(T n) : base_endian&lt;T&gt;(n) {}</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            :  public:</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">  135234712 :   target_endian() {}</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">     516964 :   target_endian() {}</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :   static inline target_endian to_be(T n) { return target_endian(::to_be(n)); }</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">   67876515 :   static inline target_endian to_le(T n) { return target_endian(::to_le(n)); }</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">     586771 :   static inline target_endian to_le(T n) { return target_endian(::to_le(n)); }</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span>            :   // Useful values over which swapping is identity</a>
 <a name="65"><span class="lineNum">      65 </span>            :   static const target_endian zero;</a>
@@ -136,17 +136,17 @@
 <a name="74"><span class="lineNum">      74 </span>            : </a>
 <a name="75"><span class="lineNum">      75 </span>            : template&lt;&gt; class target_endian&lt;uint8_t&gt; : public base_endian&lt;uint8_t&gt; {</a>
 <a name="76"><span class="lineNum">      76 </span>            :  public:</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :   target_endian() {}</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         23 :   target_endian(uint8_t n) : base_endian&lt;uint8_t&gt;(n) {}</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         33 :   target_endian() {}</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">        135 :   target_endian(uint8_t n) : base_endian&lt;uint8_t&gt;(n) {}</span></a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :   operator uint8_t() { return value; }</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
 <a name="81"><span class="lineNum">      81 </span>            :   static inline target_endian to_be(uint8_t n) { return target_endian(n); }</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         23 :   static inline target_endian to_le(uint8_t n) { return target_endian(n); }</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        135 :   static inline target_endian to_le(uint8_t n) { return target_endian(n); }</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : };</a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
 <a name="85"><span class="lineNum">      85 </span>            : template&lt;&gt; class target_endian&lt;int8_t&gt; : public base_endian&lt;int8_t&gt; {</a>
 <a name="86"><span class="lineNum">      86 </span>            :  public:</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :   target_endian() {}</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         32 :   target_endian() {}</span></a>
 <a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :   target_endian(int8_t n) : base_endian&lt;int8_t&gt;(n) {}</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :   operator int8_t() { return value; }</a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>

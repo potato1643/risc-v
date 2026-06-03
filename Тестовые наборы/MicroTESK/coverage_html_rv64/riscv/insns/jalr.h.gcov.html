@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/insns/jalr.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/insns/jalr.h</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">4</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -62,7 +62,7 @@
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span><span class="lineNoCov">          0 : CHECK_RD();</span></a>
 <a name="2"><span class="lineNum">       2 </span><span class="lineCov">         30 : reg_t tmp = npc;</span></a>
-<a name="3"><span class="lineNum">       3 </span><span class="lineCov">         60 : set_pc((RS1 + insn.i_imm()) &amp; ~reg_t(1));</span></a>
+<a name="3"><span class="lineNum">       3 </span><span class="lineCov">         30 : set_pc((RS1 + insn.i_imm()) &amp; ~reg_t(1));</span></a>
 <a name="4"><span class="lineNum">       4 </span><span class="lineCov">         30 : WRITE_RD(tmp);</span></a>
 <a name="5"><span class="lineNum">       5 </span>            : </a>
 <a name="6"><span class="lineNum">       6 </span><span class="lineCov">         30 : maybe_set_elp(insn.rs1());</span></a>

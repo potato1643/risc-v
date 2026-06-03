@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/trap.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/trap.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">16</td>
             <td class="headerCovTableEntry">50</td>
-            <td class="headerCovTableEntryLo">36.0 %</td>
+            <td class="headerCovTableEntryLo">32.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">12</td>
@@ -79,15 +79,15 @@
 <a name="17"><span class="lineNum">      17 </span>            : class trap_t</a>
 <a name="18"><span class="lineNum">      18 </span>            : {</a>
 <a name="19"><span class="lineNum">      19 </span>            :  public:</a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">   40893347 :   trap_t(reg_t which) : which(which) {}</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineNoCov">          0 :   virtual bool has_gva() { return false; }</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineNoCov">          0 :   virtual bool has_tval() { return false; }</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :   virtual reg_t get_tval() { return 0; }</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">         30 :   trap_t(reg_t which) : which(which) {}</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         29 :   virtual bool has_gva() { return false; }</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         29 :   virtual bool has_tval() { return false; }</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         29 :   virtual reg_t get_tval() { return 0; }</span></a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :   virtual bool has_tval2() { return false; }</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         30 :   virtual reg_t get_tval2() { return 0; }</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         29 :   virtual reg_t get_tval2() { return 0; }</span></a>
 <a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 :   virtual bool has_tinst() { return false; }</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">         30 :   virtual reg_t get_tinst() { return 0; }</span></a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">   81786730 :   reg_t cause() const { return which; }</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">         29 :   virtual reg_t get_tinst() { return 0; }</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         60 :   reg_t cause() const { return which; }</span></a>
 <a name="29"><span class="lineNum">      29 </span>            : </a>
 <a name="30"><span class="lineNum">      30 </span><span class="lineNoCov">          0 :   virtual std::string name()</span></a>
 <a name="31"><span class="lineNum">      31 </span>            :   {</a>
@@ -105,11 +105,11 @@
 <a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 : class insn_trap_t : public trap_t</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : {</a>
 <a name="45"><span class="lineNum">      45 </span>            :  public:</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         30 :   insn_trap_t(reg_t which, bool gva, reg_t tval)</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         30 :     : trap_t(which), gva(gva), tval(tval) {}</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         30 :   bool has_gva() override { return gva; }</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         30 :   bool has_tval() override { return true; }</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         60 :   reg_t get_tval() override { return tval; }</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :   insn_trap_t(reg_t which, bool gva, reg_t tval)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :     : trap_t(which), gva(gva), tval(tval) {}</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :   bool has_gva() override { return gva; }</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :   bool has_tval() override { return true; }</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :   reg_t get_tval() override { return tval; }</span></a>
 <a name="51"><span class="lineNum">      51 </span>            :  private:</a>
 <a name="52"><span class="lineNum">      52 </span>            :   bool gva;</a>
 <a name="53"><span class="lineNum">      53 </span>            :   reg_t tval;</a>
@@ -118,15 +118,15 @@
 <a name="56"><span class="lineNum">      56 </span>            : class mem_trap_t : public trap_t</a>
 <a name="57"><span class="lineNum">      57 </span>            : {</a>
 <a name="58"><span class="lineNum">      58 </span>            :  public:</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">   40893347 :   mem_trap_t(reg_t which, bool gva, reg_t tval, reg_t tval2, reg_t tinst)</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">   40893347 :     : trap_t(which), gva(gva), tval(tval), tval2(tval2), tinst(tinst) {}</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">   40893335 :   bool has_gva() override { return gva; }</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">   40893339 :   bool has_tval() override { return true; }</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">   81786674 :   reg_t get_tval() override { return tval; }</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          1 :   mem_trap_t(reg_t which, bool gva, reg_t tval, reg_t tval2, reg_t tinst)</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :     : trap_t(which), gva(gva), tval(tval), tval2(tval2), tinst(tinst) {}</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          1 :   bool has_gva() override { return gva; }</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :   bool has_tval() override { return true; }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 :   reg_t get_tval() override { return tval; }</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :   bool has_tval2() override { return true; }</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">   40893335 :   reg_t get_tval2() override { return tval2; }</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 :   reg_t get_tval2() override { return tval2; }</span></a>
 <a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :   bool has_tinst() override { return true; }</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">   40893335 :   reg_t get_tinst() override { return tinst; }</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :   reg_t get_tinst() override { return tinst; }</span></a>
 <a name="68"><span class="lineNum">      68 </span>            :  private:</a>
 <a name="69"><span class="lineNum">      69 </span>            :   bool gva;</a>
 <a name="70"><span class="lineNum">      70 </span>            :   reg_t tval, tval2, tinst;</a>
@@ -163,14 +163,14 @@
 <a name="101"><span class="lineNum">     101 </span>            : };</a>
 <a name="102"><span class="lineNum">     102 </span>            : </a>
 <a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_MISALIGNED_FETCH, instruction_address_misaligned)</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">   81786686 : DECLARE_MEM_TRAP(CAUSE_FETCH_ACCESS, instruction_access_fault)</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         30 : DECLARE_INST_TRAP(CAUSE_ILLEGAL_INSTRUCTION, illegal_instruction)</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_FETCH_ACCESS, instruction_access_fault)</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 : DECLARE_INST_TRAP(CAUSE_ILLEGAL_INSTRUCTION, illegal_instruction)</span></a>
 <a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : DECLARE_INST_WITH_GVA_TRAP(CAUSE_BREAKPOINT, breakpoint)</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_MISALIGNED_LOAD, load_address_misaligned)</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          2 : DECLARE_MEM_TRAP(CAUSE_MISALIGNED_LOAD, load_address_misaligned)</span></a>
 <a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_MISALIGNED_STORE, store_address_misaligned)</span></a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_LOAD_ACCESS, load_access_fault)</span></a>
 <a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 : DECLARE_MEM_TRAP(CAUSE_STORE_ACCESS, store_access_fault)</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 : DECLARE_TRAP(CAUSE_USER_ECALL, user_ecall)</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         58 : DECLARE_TRAP(CAUSE_USER_ECALL, user_ecall)</span></a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 : DECLARE_TRAP(CAUSE_SUPERVISOR_ECALL, supervisor_ecall)</span></a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 : DECLARE_TRAP(CAUSE_VIRTUAL_SUPERVISOR_ECALL, virtual_supervisor_ecall)</span></a>
 <a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : DECLARE_TRAP(CAUSE_MACHINE_ECALL, machine_ecall)</span></a>

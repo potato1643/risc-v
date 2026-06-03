@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/arith.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/arith.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">9</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -216,19 +216,19 @@
 <a name="154"><span class="lineNum">     154 </span>            :   return val;</a>
 <a name="155"><span class="lineNum">     155 </span>            : }</a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">      26910 : static inline int ctz(uint64_t val)</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">      27000 : static inline int ctz(uint64_t val)</span></a>
 <a name="158"><span class="lineNum">     158 </span>            : {</a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">      26910 :   if (!val)</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">      27000 :   if (!val)</span></a>
 <a name="160"><span class="lineNum">     160 </span>            :     return 0;</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">      26910 :   int res = 0;</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">      27000 :   int res = 0;</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 32) == 0) res += 32, val &gt;&gt;= 32;</span></a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 48) == 0) res += 16, val &gt;&gt;= 16;</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 56) == 0) res += 8, val &gt;&gt;= 8;</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 60) == 0) res += 4, val &gt;&gt;= 4;</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 62) == 0) res += 2, val &gt;&gt;= 2;</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">      26910 :   if ((val &lt;&lt; 63) == 0) res += 1, val &gt;&gt;= 1;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 32) == 0) res += 32, val &gt;&gt;= 32;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 48) == 0) res += 16, val &gt;&gt;= 16;</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 56) == 0) res += 8, val &gt;&gt;= 8;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 60) == 0) res += 4, val &gt;&gt;= 4;</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 62) == 0) res += 2, val &gt;&gt;= 2;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">      27000 :   if ((val &lt;&lt; 63) == 0) res += 1, val &gt;&gt;= 1;</span></a>
 <a name="170"><span class="lineNum">     170 </span>            : </a>
 <a name="171"><span class="lineNum">     171 </span>            :   return res;</a>
 <a name="172"><span class="lineNum">     172 </span>            : }</a>

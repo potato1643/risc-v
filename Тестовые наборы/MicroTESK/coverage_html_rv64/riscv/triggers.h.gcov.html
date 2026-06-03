@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/triggers.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/triggers.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">3</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -156,7 +156,7 @@
 <a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :       operation_t UNUSED operation, reg_t UNUSED address, std::size_t UNUSED len, std::optional&lt;reg_t&gt; UNUSED data) noexcept { return std::nullopt; }</span></a>
 <a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :   virtual std::optional&lt;match_result_t&gt; detect_icount_fire(processor_t UNUSED * const proc) { return std::nullopt; }</span></a>
 <a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :   virtual void detect_icount_decrement(processor_t UNUSED * const proc) {}</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">  163573452 :   virtual std::optional&lt;match_result_t&gt; detect_trap_match(processor_t UNUSED * const proc, const trap_t UNUSED &amp; t) noexcept { return std::nullopt; }</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">        120 :   virtual std::optional&lt;match_result_t&gt; detect_trap_match(processor_t UNUSED * const proc, const trap_t UNUSED &amp; t) noexcept { return std::nullopt; }</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
 <a name="99"><span class="lineNum">      99 </span>            : protected:</a>
 <a name="100"><span class="lineNum">     100 </span>            :   static action_t legalize_action(reg_t val, reg_t action_mask, reg_t dmode_mask) noexcept;</a>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - riscof_rv64i_coverage.info - riscv/mmu.h</title>
+  <title>LCOV - riscof_rv64_coverage.info - riscv/mmu.h</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">riscof_rv64i_coverage.info</td>
+            <td class="headerValue">riscof_rv64_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">61</td>
@@ -37,12 +37,12 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:27:45</td>
+            <td class="headerValue">2026-06-03 20:36:54</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">16</td>
             <td class="headerCovTableEntry">312</td>
-            <td class="headerCovTableEntryLo">3.5 %</td>
+            <td class="headerCovTableEntryLo">5.1 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -134,8 +134,8 @@
 <a name="72"><span class="lineNum">      72 </span>            :   const bool ss_access : 1 {false};</a>
 <a name="73"><span class="lineNum">      73 </span>            :   const bool clean_inval : 1 {false};</a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">   67879074 :   bool is_special_access() const {</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">   67879074 :     return forced_virt || hlvx || lr || ss_access || clean_inval;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">     589843 :   bool is_special_access() const {</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">     589843 :     return forced_virt || hlvx || lr || ss_access || clean_inval;</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :   }</a>
 <a name="78"><span class="lineNum">      78 </span>            : };</a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
@@ -164,20 +164,20 @@
 <a name="102"><span class="lineNum">     102 </span>            :   ~mmu_t();</a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            :   template&lt;typename T&gt;</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">   67359050 :   T ALWAYS_INLINE load(reg_t addr, xlate_flags_t xlate_flags = {}) {</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">   67359102 :     target_endian&lt;T&gt; res;</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">   67359102 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">   67359102 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_load, addr);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        216 :   T ALWAYS_INLINE load(reg_t addr, xlate_flags_t xlate_flags = {}) {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">        428 :     target_endian&lt;T&gt; res;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">        428 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        428 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_load, addr);</span></a>
 <a name="109"><span class="lineNum">     109 </span>            : </a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">   67359102 :     if (likely(!xlate_flags.is_special_access() &amp;&amp; aligned &amp;&amp; tlb_hit)) {</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">   67358972 :       res = *(target_endian&lt;T&gt;*)host_addr;</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        428 :     if (likely(!xlate_flags.is_special_access() &amp;&amp; aligned &amp;&amp; tlb_hit)) {</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        291 :       res = *(target_endian&lt;T&gt;*)host_addr;</span></a>
 <a name="112"><span class="lineNum">     112 </span>            :     } else {</a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        130 :       load_slow_path(addr, sizeof(T), (uint8_t*)&amp;res, xlate_flags);</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        137 :       load_slow_path(addr, sizeof(T), (uint8_t*)&amp;res, xlate_flags);</span></a>
 <a name="114"><span class="lineNum">     114 </span>            :     }</a>
 <a name="115"><span class="lineNum">     115 </span>            : </a>
 <a name="116"><span class="lineNum">     116 </span>            :     MMU_OBSERVE_LOAD(addr,from_target(res),sizeof(T));</a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">   67359102 :     return from_target(res);</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        428 :     return from_target(res);</span></a>
 <a name="119"><span class="lineNum">     119 </span>            :   }</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            :   template&lt;typename T&gt;</a>
@@ -204,16 +204,16 @@
 <a name="142"><span class="lineNum">     142 </span>            :   }</a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
 <a name="144"><span class="lineNum">     144 </span>            :   template&lt;typename T&gt;</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">     517488 :   void ALWAYS_INLINE store(reg_t addr, T val, xlate_flags_t xlate_flags = {}) {</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">     586755 :   void ALWAYS_INLINE store(reg_t addr, T val, xlate_flags_t xlate_flags = {}) {</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :     MMU_OBSERVE_STORE(addr, val, sizeof(T));</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">     517488 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">     517488 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_store, addr);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">     586755 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">     586755 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_store, addr);</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">     517488 :     if (!xlate_flags.is_special_access() &amp;&amp; likely(aligned &amp;&amp; tlb_hit)) {</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">     516376 :       *(target_endian&lt;T&gt;*)host_addr = to_target(val);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">     586755 :     if (!xlate_flags.is_special_access() &amp;&amp; likely(aligned &amp;&amp; tlb_hit)) {</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">     585562 :       *(target_endian&lt;T&gt;*)host_addr = to_target(val);</span></a>
 <a name="152"><span class="lineNum">     152 </span>            :     } else {</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">       1112 :       target_endian&lt;T&gt; target_val = to_target(val);</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       1112 :       store_slow_path(addr, sizeof(T), (const uint8_t*)&amp;target_val, xlate_flags, true, false);</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">       1193 :       target_endian&lt;T&gt; target_val = to_target(val);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">       1193 :       store_slow_path(addr, sizeof(T), (const uint8_t*)&amp;target_val, xlate_flags, true, false);</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :     }</a>
 <a name="156"><span class="lineNum">     156 </span>            :   }</a>
 <a name="157"><span class="lineNum">     157 </span>            : </a>
@@ -303,9 +303,9 @@
 <a name="241"><span class="lineNum">     241 </span>            :     })</a>
 <a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :   }</span></a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">   67359147 :   inline void yield_load_reservation()</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        222 :   inline void yield_load_reservation()</span></a>
 <a name="245"><span class="lineNum">     245 </span>            :   {</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">   67359147 :     load_reservation_address = (reg_t)-1;</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        222 :     load_reservation_address = (reg_t)-1;</span></a>
 <a name="247"><span class="lineNum">     247 </span>            :   }</a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
 <a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :   inline bool check_load_reservation(reg_t vaddr, size_t size)</span></a>
@@ -340,9 +340,9 @@
 <a name="278"><span class="lineNum">     278 </span>            : </a>
 <a name="279"><span class="lineNum">     279 </span>            :   static const reg_t ICACHE_ENTRIES = 4096;</a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">   67380976 :   inline size_t icache_index(reg_t addr)</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">     720100 :   inline size_t icache_index(reg_t addr)</span></a>
 <a name="282"><span class="lineNum">     282 </span>            :   {</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">      11003 :     return (addr / PC_ALIGN) % ICACHE_ENTRIES;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">     360050 :     return (addr / PC_ALIGN) % ICACHE_ENTRIES;</span></a>
 <a name="284"><span class="lineNum">     284 </span>            :   }</a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
 <a name="286"><span class="lineNum">     286 </span>            :   template&lt;typename T&gt;</a>
@@ -355,30 +355,30 @@
 <a name="293"><span class="lineNum">     293 </span>            :     return target_big_endian ? to_be(res) : res;</a>
 <a name="294"><span class="lineNum">     294 </span>            :   }</a>
 <a name="295"><span class="lineNum">     295 </span>            : </a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineCov">   67369973 :   inline icache_entry_t* refill_icache(reg_t addr, icache_entry_t* entry)</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">     360050 :   inline icache_entry_t* refill_icache(reg_t addr, icache_entry_t* entry)</span></a>
 <a name="297"><span class="lineNum">     297 </span>            :   {</a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">   67369973 :     insn_bits_t insn = fetch_insn_parcel(addr);</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">      11003 :     unsigned length = insn_length(insn);</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">     360050 :     insn_bits_t insn = fetch_insn_parcel(addr);</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">     360050 :     unsigned length = insn_length(insn);</span></a>
 <a name="300"><span class="lineNum">     300 </span>            : </a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineCov">      21956 :     for (unsigned pos = sizeof(insn_parcel_t); pos &lt; length; pos += sizeof(insn_parcel_t)) {</span></a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">      10953 :       insn |= (insn_bits_t)fetch_insn_parcel(addr + pos) &lt;&lt; (8 * pos);</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">      10953 :       length = insn_length(insn);</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineCov">     719126 :     for (unsigned pos = sizeof(insn_parcel_t); pos &lt; length; pos += sizeof(insn_parcel_t)) {</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">     359076 :       insn |= (insn_bits_t)fetch_insn_parcel(addr + pos) &lt;&lt; (8 * pos);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">     359076 :       length = insn_length(insn);</span></a>
 <a name="304"><span class="lineNum">     304 </span>            :     }</a>
 <a name="305"><span class="lineNum">     305 </span>            : </a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">      11003 :     insn_fetch_t fetch = {proc-&gt;decode_insn(insn), insn};</span></a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">      11003 :     entry-&gt;tag = addr;</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">      11003 :     entry-&gt;next = &amp;icache[icache_index(addr + length)];</span></a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineCov">      11003 :     entry-&gt;data = fetch;</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">     360050 :     insn_fetch_t fetch = {proc-&gt;decode_insn(insn), insn};</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">     360050 :     entry-&gt;tag = addr;</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">     360050 :     entry-&gt;next = &amp;icache[icache_index(addr + length)];</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">     360050 :     entry-&gt;data = fetch;</span></a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">      11003 :     auto [check_tracer, _, paddr] = access_tlb(tlb_insn, addr, TLB_FLAGS, TLB_CHECK_TRACER);</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">      11003 :     if (unlikely(check_tracer)) {</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">     360050 :     auto [check_tracer, _, paddr] = access_tlb(tlb_insn, addr, TLB_FLAGS, TLB_CHECK_TRACER);</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">     360050 :     if (unlikely(check_tracer)) {</span></a>
 <a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :       if (tracer.interested_in_range(paddr, paddr + 1, FETCH)) {</span></a>
 <a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :         entry-&gt;tag = -1;</span></a>
 <a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         tracer.trace(paddr, paddr + length, FETCH);</span></a>
 <a name="316"><span class="lineNum">     316 </span>            :       }</a>
 <a name="317"><span class="lineNum">     317 </span>            :     }</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineCov">      11003 :     MMU_OBSERVE_FETCH(addr, insn, length);</span></a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">      11003 :     return entry;</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">     360050 :     MMU_OBSERVE_FETCH(addr, insn, length);</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">     360050 :     return entry;</span></a>
 <a name="320"><span class="lineNum">     320 </span>            :   }</a>
 <a name="321"><span class="lineNum">     321 </span>            : </a>
 <a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :   inline icache_entry_t* access_icache(reg_t addr)</span></a>
@@ -391,20 +391,20 @@
 <a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :     return refill_icache(addr, entry);</span></a>
 <a name="330"><span class="lineNum">     330 </span>            :   }</a>
 <a name="331"><span class="lineNum">     331 </span>            : </a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">   67369973 :   inline insn_fetch_t load_insn(reg_t addr)</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">     360050 :   inline insn_fetch_t load_insn(reg_t addr)</span></a>
 <a name="333"><span class="lineNum">     333 </span>            :   {</a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">   67369973 :     return refill_icache(addr, &amp;icache[icache_index(addr)])-&gt;data;</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">     360050 :     return refill_icache(addr, &amp;icache[icache_index(addr)])-&gt;data;</span></a>
 <a name="335"><span class="lineNum">     335 </span>            :   }</a>
 <a name="336"><span class="lineNum">     336 </span>            : </a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">  269989719 :   std::tuple&lt;bool, uintptr_t, reg_t&gt; ALWAYS_INLINE access_tlb(const dtlb_entry_t* tlb, reg_t vaddr, reg_t allowed_flags = 0, reg_t required_flags = 0)</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">    1670895 :   std::tuple&lt;bool, uintptr_t, reg_t&gt; ALWAYS_INLINE access_tlb(const dtlb_entry_t* tlb, reg_t vaddr, reg_t allowed_flags = 0, reg_t required_flags = 0)</span></a>
 <a name="338"><span class="lineNum">     338 </span>            :   {</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">  269989719 :     auto vpn = vaddr / PGSIZE, pgoff = vaddr % PGSIZE;</span></a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">  269989719 :     auto&amp; entry = tlb[vpn % TLB_ENTRIES];</span></a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">  269989719 :     auto hit = likely((entry.tag &amp; (~allowed_flags | required_flags)) == (vpn | required_flags));</span></a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">  269989719 :     bool mmio = allowed_flags &amp; TLB_MMIO &amp; entry.tag;</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">  202630636 :     auto host_addr = mmio ? 0 : entry.data.host_addr + pgoff;</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">  269989719 :     auto paddr = entry.data.target_addr + pgoff;</span></a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">  202113995 :     return std::make_tuple(hit, host_addr, paddr);</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">    1670895 :     auto vpn = vaddr / PGSIZE, pgoff = vaddr % PGSIZE;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">    1670895 :     auto&amp; entry = tlb[vpn % TLB_ENTRIES];</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">    1670895 :     auto hit = likely((entry.tag &amp; (~allowed_flags | required_flags)) == (vpn | required_flags));</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">    1670895 :     bool mmio = allowed_flags &amp; TLB_MMIO &amp; entry.tag;</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">    1670232 :     auto host_addr = mmio ? 0 : entry.data.host_addr + pgoff;</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">    1670895 :     auto paddr = entry.data.target_addr + pgoff;</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">    1153541 :     return std::make_tuple(hit, host_addr, paddr);</span></a>
 <a name="346"><span class="lineNum">     346 </span>            :   }</a>
 <a name="347"><span class="lineNum">     347 </span>            : </a>
 <a name="348"><span class="lineNum">     348 </span>            :   void flush_tlb();</a>
@@ -422,14 +422,14 @@
 <a name="360"><span class="lineNum">     360 </span>            :     return target_big_endian;</a>
 <a name="361"><span class="lineNum">     361 </span>            :   }</a>
 <a name="362"><span class="lineNum">     362 </span>            : </a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         52 :   template&lt;typename T&gt; inline T from_target(target_endian&lt;T&gt; n) const</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">        277 :   template&lt;typename T&gt; inline T from_target(target_endian&lt;T&gt; n) const</span></a>
 <a name="364"><span class="lineNum">     364 </span>            :   {</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">     516641 :     return target_big_endian? n.from_be() : n.from_le();</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">     516691 :     return target_big_endian? n.from_be() : n.from_le();</span></a>
 <a name="366"><span class="lineNum">     366 </span>            :   }</a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">   67876538 :   template&lt;typename T&gt; inline target_endian&lt;T&gt; to_target(T n) const</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">     586906 :   template&lt;typename T&gt; inline target_endian&lt;T&gt; to_target(T n) const</span></a>
 <a name="369"><span class="lineNum">     369 </span>            :   {</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">   67876538 :     return target_big_endian? target_endian&lt;T&gt;::to_be(n) : target_endian&lt;T&gt;::to_le(n);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">     586906 :     return target_big_endian? target_endian&lt;T&gt;::to_be(n) : target_endian&lt;T&gt;::to_le(n);</span></a>
 <a name="371"><span class="lineNum">     371 </span>            :   }</a>
 <a name="372"><span class="lineNum">     372 </span>            : </a>
 <a name="373"><span class="lineNum">     373 </span>            : private:</a>
@@ -575,19 +575,19 @@
 <a name="513"><span class="lineNum">     513 </span><span class="lineNoCov">          0 :       pte_cache[key % PTE_CACHE_ENTRIES] = {key, value};</span></a>
 <a name="514"><span class="lineNum">     514 </span>            :   }</a>
 <a name="515"><span class="lineNum">     515 </span>            : </a>
-<a name="516"><span class="lineNum">     516 </span><span class="lineCov">   67380926 :   inline insn_parcel_t fetch_insn_parcel(reg_t addr) {</span></a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineCov">  134761852 :     if (auto [tlb_hit, host_addr, paddr] = access_tlb(tlb_insn, addr); tlb_hit)</span></a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineCov">      21293 :       return from_le(*(insn_parcel_t*)host_addr);</span></a>
+<a name="516"><span class="lineNum">     516 </span><span class="lineCov">     719126 :   inline insn_parcel_t fetch_insn_parcel(reg_t addr) {</span></a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">    1438252 :     if (auto [tlb_hit, host_addr, paddr] = access_tlb(tlb_insn, addr); tlb_hit)</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">     717913 :       return from_le(*(insn_parcel_t*)host_addr);</span></a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
-<a name="520"><span class="lineNum">     520 </span><span class="lineCov">   67359633 :     return from_le(fetch_slow_path(addr));</span></a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineCov">       1213 :     return from_le(fetch_slow_path(addr));</span></a>
 <a name="521"><span class="lineNum">     521 </span>            :   }</a>
 <a name="522"><span class="lineNum">     522 </span>            : </a>
-<a name="523"><span class="lineNum">     523 </span><span class="lineCov">   67360416 :   inline bool in_mprv() const</span></a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineCov">       2173 :   inline bool in_mprv() const</span></a>
 <a name="524"><span class="lineNum">     524 </span>            :   {</a>
-<a name="525"><span class="lineNum">     525 </span><span class="lineCov">   67360416 :     return proc != nullptr</span></a>
-<a name="526"><span class="lineNum">     526 </span><span class="lineCov">   67359266 :            &amp;&amp; !(proc-&gt;state.mnstatus &amp;&amp; !get_field(proc-&gt;state.mnstatus-&gt;read(), MNSTATUS_NMIE))</span></a>
-<a name="527"><span class="lineNum">     527 </span><span class="lineCov">   67359266 :            &amp;&amp; (!proc-&gt;state.debug_mode || get_field(proc-&gt;state.dcsr-&gt;read(), DCSR_MPRVEN))</span></a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineCov">  134719682 :            &amp;&amp; get_field(proc-&gt;state.mstatus-&gt;read(), MSTATUS_MPRV);</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineCov">       2173 :     return proc != nullptr</span></a>
+<a name="526"><span class="lineNum">     526 </span><span class="lineCov">       1023 :            &amp;&amp; !(proc-&gt;state.mnstatus &amp;&amp; !get_field(proc-&gt;state.mnstatus-&gt;read(), MNSTATUS_NMIE))</span></a>
+<a name="527"><span class="lineNum">     527 </span><span class="lineCov">       1023 :            &amp;&amp; (!proc-&gt;state.debug_mode || get_field(proc-&gt;state.dcsr-&gt;read(), DCSR_MPRVEN))</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineCov">       3196 :            &amp;&amp; get_field(proc-&gt;state.mstatus-&gt;read(), MSTATUS_MPRV);</span></a>
 <a name="529"><span class="lineNum">     529 </span>            :   }</a>
 <a name="530"><span class="lineNum">     530 </span>            : </a>
 <a name="531"><span class="lineNum">     531 </span>            :   reg_t pmp_homogeneous(reg_t addr, reg_t len);</a>
@@ -614,10 +614,10 @@
 <a name="552"><span class="lineNum">     552 </span>            :   reg_t ptbase;</a>
 <a name="553"><span class="lineNum">     553 </span>            : };</a>
 <a name="554"><span class="lineNum">     554 </span>            : </a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">   67359175 : inline vm_info decode_vm_info(int xlen, bool stage2, reg_t prv, reg_t satp)</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">        843 : inline vm_info decode_vm_info(int xlen, bool stage2, reg_t prv, reg_t satp)</span></a>
 <a name="556"><span class="lineNum">     556 </span>            : {</a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">   67359175 :   if (prv == PRV_M) {</span></a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineCov">   67359175 :     return {0, 0, 0, 0, 0};</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">        843 :   if (prv == PRV_M) {</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">        843 :     return {0, 0, 0, 0, 0};</span></a>
 <a name="559"><span class="lineNum">     559 </span><span class="lineNoCov">          0 :   } else if (!stage2 &amp;&amp; prv &lt;= PRV_S &amp;&amp; xlen == 32) {</span></a>
 <a name="560"><span class="lineNum">     560 </span><span class="lineNoCov">          0 :     switch (get_field(satp, SATP32_MODE)) {</span></a>
 <a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :       case SATP_MODE_OFF: return {0, 0, 0, 0, 0};</span></a>

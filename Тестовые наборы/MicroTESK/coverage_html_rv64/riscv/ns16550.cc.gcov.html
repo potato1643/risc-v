@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/ns16550.cc</title>
+  <title>LCOV - microtesk_coverage.info - riscv/ns16550.cc</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">38</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -364,10 +364,10 @@
 <a name="302"><span class="lineNum">     302 </span>            :   return ret;</a>
 <a name="303"><span class="lineNum">     303 </span>            : }</a>
 <a name="304"><span class="lineNum">     304 </span>            : </a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">   40893363 : void ns16550_t::tick(reg_t UNUSED rtc_ticks)</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">         63 : void ns16550_t::tick(reg_t UNUSED rtc_ticks)</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : {</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">   40893363 :   if (!(fcr &amp; UART_FCR_ENABLE_FIFO) ||</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">   40893363 :       (mcr &amp; UART_MCR_LOOP) ||</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">         63 :   if (!(fcr &amp; UART_FCR_ENABLE_FIFO) ||</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">         63 :       (mcr &amp; UART_MCR_LOOP) ||</span></a>
 <a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :       (UART_QUEUE_SIZE &lt;= rx_queue.size())) {</span></a>
 <a name="310"><span class="lineNum">     310 </span>            :     return;</a>
 <a name="311"><span class="lineNum">     311 </span>            :   }</a>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>LCOV - microtesk_rv64i_coverage.info - riscv/insns/csrrwi.h</title>
+  <title>LCOV - microtesk_coverage.info - riscv/insns/csrrwi.h</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">microtesk_rv64i_coverage.info</td>
+            <td class="headerValue">microtesk_coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2026-06-02 08:36:24</td>
+            <td class="headerValue">2026-06-03 20:36:44</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -60,11 +60,11 @@
       <td>
 <pre class="sourceHeading">          Line data    Source code</pre>
 <pre class="source">
-<a name="1"><span class="lineNum">       1 </span><span class="lineNoCov">          0 : int csr = validate_csr(insn.csr(), true);</span></a>
-<a name="2"><span class="lineNum">       2 </span><span class="lineNoCov">          0 : reg_t old = p-&gt;get_csr(csr, insn, true);</span></a>
-<a name="3"><span class="lineNum">       3 </span><span class="lineNoCov">          0 : p-&gt;put_csr(csr, insn.rs1());</span></a>
-<a name="4"><span class="lineNum">       4 </span><span class="lineNoCov">          0 : WRITE_RD(sext_xlen(old));</span></a>
-<a name="5"><span class="lineNum">       5 </span><span class="lineNoCov">          0 : serialize();</span></a>
+<a name="1"><span class="lineNum">       1 </span><span class="lineCov">        300 : int csr = validate_csr(insn.csr(), true);</span></a>
+<a name="2"><span class="lineNum">       2 </span><span class="lineCov">        150 : reg_t old = p-&gt;get_csr(csr, insn, true);</span></a>
+<a name="3"><span class="lineNum">       3 </span><span class="lineCov">        150 : p-&gt;put_csr(csr, insn.rs1());</span></a>
+<a name="4"><span class="lineNum">       4 </span><span class="lineCov">        150 : WRITE_RD(sext_xlen(old));</span></a>
+<a name="5"><span class="lineNum">       5 </span><span class="lineCov">        150 : serialize();</span></a>
 </pre>
       </td>
     </tr>
