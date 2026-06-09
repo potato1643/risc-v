@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - microtesk_all.info - riscv/devices.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">riscv</a> - devices.h<span style="font-size: 80%;"> (source / <a href="devices.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">microtesk_all.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntryLo">40.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2026-06-08 22:59:52</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #ifndef _RISCV_DEVICES_H</a>
+<a name="2"><span class="lineNum">       2 </span>            : #define _RISCV_DEVICES_H</a>
+<a name="3"><span class="lineNum">       3 </span>            : </a>
+<a name="4"><span class="lineNum">       4 </span>            : #include &quot;decode.h&quot;</a>
+<a name="5"><span class="lineNum">       5 </span>            : #include &quot;abstract_device.h&quot;</a>
+<a name="6"><span class="lineNum">       6 </span>            : #include &quot;abstract_interrupt_controller.h&quot;</a>
+<a name="7"><span class="lineNum">       7 </span>            : #include &quot;platform.h&quot;</a>
+<a name="8"><span class="lineNum">       8 </span>            : #include &lt;map&gt;</a>
+<a name="9"><span class="lineNum">       9 </span>            : #include &lt;queue&gt;</a>
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;vector&gt;</a>
+<a name="11"><span class="lineNum">      11 </span>            : #include &lt;utility&gt;</a>
+<a name="12"><span class="lineNum">      12 </span>            : #include &lt;cassert&gt;</a>
+<a name="13"><span class="lineNum">      13 </span>            : </a>
+<a name="14"><span class="lineNum">      14 </span>            : class processor_t;</a>
+<a name="15"><span class="lineNum">      15 </span>            : class simif_t;</a>
+<a name="16"><span class="lineNum">      16 </span>            : </a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">        123 : class bus_t : public abstract_device_t {</span></a>
+<a name="18"><span class="lineNum">      18 </span>            :  public:</a>
+<a name="19"><span class="lineNum">      19 </span>            :   bus_t();</a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            :   // the fallback device owns all addresses not owned by other devices</a>
+<a name="22"><span class="lineNum">      22 </span>            :   bus_t(abstract_device_t* fallback);</a>
+<a name="23"><span class="lineNum">      23 </span>            : </a>
+<a name="24"><span class="lineNum">      24 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="25"><span class="lineNum">      25 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="26"><span class="lineNum">      26 </span>            :   reg_t size() override;</a>
+<a name="27"><span class="lineNum">      27 </span>            :   void add_device(reg_t addr, abstract_device_t* dev);</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            :   std::pair&lt;reg_t, abstract_device_t*&gt; find_device(reg_t addr, size_t len);</a>
+<a name="30"><span class="lineNum">      30 </span>            : </a>
+<a name="31"><span class="lineNum">      31 </span>            :  private:</a>
+<a name="32"><span class="lineNum">      32 </span>            :   std::map&lt;reg_t, abstract_device_t*&gt; devices;</a>
+<a name="33"><span class="lineNum">      33 </span>            :   abstract_device_t* fallback;</a>
+<a name="34"><span class="lineNum">      34 </span>            : };</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : class rom_device_t : public abstract_device_t {</a>
+<a name="37"><span class="lineNum">      37 </span>            :  public:</a>
+<a name="38"><span class="lineNum">      38 </span>            :   rom_device_t(std::vector&lt;char&gt; data);</a>
+<a name="39"><span class="lineNum">      39 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="40"><span class="lineNum">      40 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">       2208 :   reg_t size() override { return data.size(); }</span></a>
+<a name="42"><span class="lineNum">      42 </span>            :   const std::vector&lt;char&gt;&amp; contents() { return data; }</a>
+<a name="43"><span class="lineNum">      43 </span>            :  private:</a>
+<a name="44"><span class="lineNum">      44 </span>            :   std::vector&lt;char&gt; data;</a>
+<a name="45"><span class="lineNum">      45 </span>            : };</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        276 : class abstract_mem_t : public abstract_device_t {</span></a>
+<a name="48"><span class="lineNum">      48 </span>            :  public:</a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        123 :   virtual ~abstract_mem_t() = default;</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            :   virtual char* contents(reg_t addr) = 0;</a>
+<a name="52"><span class="lineNum">      52 </span>            :   virtual void dump(std::ostream&amp; o) = 0;</a>
+<a name="53"><span class="lineNum">      53 </span>            : };</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            : class mem_t : public abstract_mem_t {</a>
+<a name="56"><span class="lineNum">      56 </span>            :  public:</a>
+<a name="57"><span class="lineNum">      57 </span>            :   mem_t(reg_t size);</a>
+<a name="58"><span class="lineNum">      58 </span>            :   mem_t(const mem_t&amp; that) = delete;</a>
+<a name="59"><span class="lineNum">      59 </span>            :   ~mem_t() override;</a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :   bool load(reg_t addr, size_t len, uint8_t* bytes) override { return load_store(addr, len, bytes, false); }</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override { return load_store(addr, len, const_cast&lt;uint8_t*&gt;(bytes), true); }</span></a>
+<a name="63"><span class="lineNum">      63 </span>            :   char* contents(reg_t addr) override;</a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       1296 :   reg_t size() override { return sz; }</span></a>
+<a name="65"><span class="lineNum">      65 </span>            :   void dump(std::ostream&amp; o) override;</a>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span>            :  private:</a>
+<a name="68"><span class="lineNum">      68 </span>            :   bool load_store(reg_t addr, size_t len, uint8_t* bytes, bool store);</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            :   std::map&lt;reg_t, char*&gt; sparse_memory_map;</a>
+<a name="71"><span class="lineNum">      71 </span>            :   reg_t sz;</a>
+<a name="72"><span class="lineNum">      72 </span>            : };</a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            : class abstract_sim_if_t {</a>
+<a name="75"><span class="lineNum">      75 </span>            : public:</a>
+<a name="76"><span class="lineNum">      76 </span>            :   virtual ~abstract_sim_if_t() = default;</a>
+<a name="77"><span class="lineNum">      77 </span>            :   virtual bool load(reg_t addr, size_t len, uint8_t* bytes) = 0;</a>
+<a name="78"><span class="lineNum">      78 </span>            :   virtual bool store(reg_t addr, size_t len, const uint8_t* bytes) = 0;</a>
+<a name="79"><span class="lineNum">      79 </span>            : };</a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span>            : class external_sim_device_t : public abstract_device_t {</a>
+<a name="82"><span class="lineNum">      82 </span>            : public:</a>
+<a name="83"><span class="lineNum">      83 </span>            :   external_sim_device_t(abstract_sim_if_t* sim);</a>
+<a name="84"><span class="lineNum">      84 </span>            :   void set_simulator(abstract_sim_if_t* sim);</a>
+<a name="85"><span class="lineNum">      85 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="86"><span class="lineNum">      86 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="87"><span class="lineNum">      87 </span>            :   reg_t size() override;</a>
+<a name="88"><span class="lineNum">      88 </span>            : </a>
+<a name="89"><span class="lineNum">      89 </span>            : private:</a>
+<a name="90"><span class="lineNum">      90 </span>            :   abstract_sim_if_t* external_simulator;</a>
+<a name="91"><span class="lineNum">      91 </span>            : };</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            : class clint_t : public abstract_device_t {</a>
+<a name="94"><span class="lineNum">      94 </span>            :  public:</a>
+<a name="95"><span class="lineNum">      95 </span>            :   clint_t(const simif_t*, uint64_t freq_hz, bool real_time);</a>
+<a name="96"><span class="lineNum">      96 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="97"><span class="lineNum">      97 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">        276 :   reg_t size() override { return CLINT_SIZE; }</span></a>
+<a name="99"><span class="lineNum">      99 </span>            :   void tick(reg_t rtc_ticks) override;</a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :   uint64_t get_mtimecmp(reg_t hartid) { return mtimecmp[hartid]; }</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :   uint64_t get_mtime() { return mtime; }</span></a>
+<a name="102"><span class="lineNum">     102 </span>            :  private:</a>
+<a name="103"><span class="lineNum">     103 </span>            :   typedef uint64_t mtime_t;</a>
+<a name="104"><span class="lineNum">     104 </span>            :   typedef uint64_t mtimecmp_t;</a>
+<a name="105"><span class="lineNum">     105 </span>            :   typedef uint32_t msip_t;</a>
+<a name="106"><span class="lineNum">     106 </span>            :   const simif_t* sim;</a>
+<a name="107"><span class="lineNum">     107 </span>            :   uint64_t freq_hz;</a>
+<a name="108"><span class="lineNum">     108 </span>            :   bool real_time;</a>
+<a name="109"><span class="lineNum">     109 </span>            :   uint64_t real_time_ref_secs;</a>
+<a name="110"><span class="lineNum">     110 </span>            :   uint64_t real_time_ref_usecs;</a>
+<a name="111"><span class="lineNum">     111 </span>            :   mtime_t mtime;</a>
+<a name="112"><span class="lineNum">     112 </span>            :   std::map&lt;size_t, mtimecmp_t&gt; mtimecmp;</a>
+<a name="113"><span class="lineNum">     113 </span>            : };</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            : #define PLIC_MAX_DEVICES 1024</a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span>            : struct plic_context_t {</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        276 :   plic_context_t(processor_t* proc, bool mmode)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        276 :     : proc(proc), mmode(mmode)</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        276 :   {}</span></a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span>            :   processor_t *proc;</a>
+<a name="123"><span class="lineNum">     123 </span>            :   bool mmode;</a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span>            :   uint8_t priority_threshold {};</a>
+<a name="126"><span class="lineNum">     126 </span>            :   uint32_t enable[PLIC_MAX_DEVICES/32] {};</a>
+<a name="127"><span class="lineNum">     127 </span>            :   uint32_t pending[PLIC_MAX_DEVICES/32] {};</a>
+<a name="128"><span class="lineNum">     128 </span>            :   uint8_t pending_priority[PLIC_MAX_DEVICES] {};</a>
+<a name="129"><span class="lineNum">     129 </span>            :   uint32_t claimed[PLIC_MAX_DEVICES/32] {};</a>
+<a name="130"><span class="lineNum">     130 </span>            : };</a>
+<a name="131"><span class="lineNum">     131 </span>            : </a>
+<a name="132"><span class="lineNum">     132 </span>            : class plic_t : public abstract_device_t, public abstract_interrupt_controller_t {</a>
+<a name="133"><span class="lineNum">     133 </span>            :  public:</a>
+<a name="134"><span class="lineNum">     134 </span>            :   plic_t(const simif_t*, uint32_t ndev);</a>
+<a name="135"><span class="lineNum">     135 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="136"><span class="lineNum">     136 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="137"><span class="lineNum">     137 </span>            :   void set_interrupt_level(uint32_t id, int lvl) override;</a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        276 :   reg_t size() override { return PLIC_SIZE; }</span></a>
+<a name="139"><span class="lineNum">     139 </span>            :  private:</a>
+<a name="140"><span class="lineNum">     140 </span>            :   std::vector&lt;plic_context_t&gt; contexts;</a>
+<a name="141"><span class="lineNum">     141 </span>            :   uint32_t num_ids;</a>
+<a name="142"><span class="lineNum">     142 </span>            :   uint32_t num_ids_word;</a>
+<a name="143"><span class="lineNum">     143 </span>            :   uint32_t max_prio;</a>
+<a name="144"><span class="lineNum">     144 </span>            :   uint8_t priority[PLIC_MAX_DEVICES];</a>
+<a name="145"><span class="lineNum">     145 </span>            :   uint32_t level[PLIC_MAX_DEVICES/32];</a>
+<a name="146"><span class="lineNum">     146 </span>            :   uint32_t context_best_pending(const plic_context_t *c);</a>
+<a name="147"><span class="lineNum">     147 </span>            :   void context_update(const plic_context_t *context);</a>
+<a name="148"><span class="lineNum">     148 </span>            :   uint32_t context_claim(plic_context_t *c);</a>
+<a name="149"><span class="lineNum">     149 </span>            :   bool priority_read(reg_t offset, uint32_t *val);</a>
+<a name="150"><span class="lineNum">     150 </span>            :   bool priority_write(reg_t offset, uint32_t val);</a>
+<a name="151"><span class="lineNum">     151 </span>            :   bool pending_read(reg_t offset, uint32_t *val);</a>
+<a name="152"><span class="lineNum">     152 </span>            :   bool context_enable_read(const plic_context_t *context,</a>
+<a name="153"><span class="lineNum">     153 </span>            :                            reg_t offset, uint32_t *val);</a>
+<a name="154"><span class="lineNum">     154 </span>            :   bool context_enable_write(plic_context_t *context,</a>
+<a name="155"><span class="lineNum">     155 </span>            :                             reg_t offset, uint32_t val);</a>
+<a name="156"><span class="lineNum">     156 </span>            :   bool context_read(plic_context_t *context,</a>
+<a name="157"><span class="lineNum">     157 </span>            :                     reg_t offset, uint32_t *val);</a>
+<a name="158"><span class="lineNum">     158 </span>            :   bool context_write(plic_context_t *context,</a>
+<a name="159"><span class="lineNum">     159 </span>            :                      reg_t offset, uint32_t val);</a>
+<a name="160"><span class="lineNum">     160 </span>            : };</a>
+<a name="161"><span class="lineNum">     161 </span>            : </a>
+<a name="162"><span class="lineNum">     162 </span>            : class ns16550_t : public abstract_device_t {</a>
+<a name="163"><span class="lineNum">     163 </span>            :  public:</a>
+<a name="164"><span class="lineNum">     164 </span>            :   ns16550_t(abstract_interrupt_controller_t *intctrl,</a>
+<a name="165"><span class="lineNum">     165 </span>            :             uint32_t interrupt_id, uint32_t reg_shift, uint32_t reg_io_width);</a>
+<a name="166"><span class="lineNum">     166 </span>            :   bool load(reg_t addr, size_t len, uint8_t* bytes) override;</a>
+<a name="167"><span class="lineNum">     167 </span>            :   bool store(reg_t addr, size_t len, const uint8_t* bytes) override;</a>
+<a name="168"><span class="lineNum">     168 </span>            :   void tick(reg_t rtc_ticks) override;</a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        138 :   reg_t size() override { return NS16550_SIZE; }</span></a>
+<a name="170"><span class="lineNum">     170 </span>            :  private:</a>
+<a name="171"><span class="lineNum">     171 </span>            :   abstract_interrupt_controller_t *intctrl;</a>
+<a name="172"><span class="lineNum">     172 </span>            :   uint32_t interrupt_id;</a>
+<a name="173"><span class="lineNum">     173 </span>            :   uint32_t reg_shift;</a>
+<a name="174"><span class="lineNum">     174 </span>            :   uint32_t reg_io_width;</a>
+<a name="175"><span class="lineNum">     175 </span>            :   std::queue&lt;uint8_t&gt; rx_queue;</a>
+<a name="176"><span class="lineNum">     176 </span>            :   uint8_t dll;</a>
+<a name="177"><span class="lineNum">     177 </span>            :   uint8_t dlm;</a>
+<a name="178"><span class="lineNum">     178 </span>            :   uint8_t iir;</a>
+<a name="179"><span class="lineNum">     179 </span>            :   uint8_t ier;</a>
+<a name="180"><span class="lineNum">     180 </span>            :   uint8_t fcr;</a>
+<a name="181"><span class="lineNum">     181 </span>            :   uint8_t lcr;</a>
+<a name="182"><span class="lineNum">     182 </span>            :   uint8_t mcr;</a>
+<a name="183"><span class="lineNum">     183 </span>            :   uint8_t lsr;</a>
+<a name="184"><span class="lineNum">     184 </span>            :   uint8_t msr;</a>
+<a name="185"><span class="lineNum">     185 </span>            :   uint8_t scr;</a>
+<a name="186"><span class="lineNum">     186 </span>            :   void update_interrupt(void);</a>
+<a name="187"><span class="lineNum">     187 </span>            :   uint8_t rx_byte(void);</a>
+<a name="188"><span class="lineNum">     188 </span>            :   void tx_byte(uint8_t val);</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span>            :   int backoff_counter;</a>
+<a name="191"><span class="lineNum">     191 </span>            :   static const int MAX_BACKOFF = 16;</a>
+<a name="192"><span class="lineNum">     192 </span>            : };</a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span>            : template&lt;typename T&gt;</a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 : void write_little_endian_reg(T* word, reg_t addr, size_t len, const uint8_t* bytes)</span></a>
+<a name="196"><span class="lineNum">     196 </span>            : {</a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :   assert(len &lt;= sizeof(T));</span></a>
+<a name="198"><span class="lineNum">     198 </span>            : </a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :   for (size_t i = 0; i &lt; len; i++) {</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :     const int shift = 8 * ((addr + i) % sizeof(T));</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :     *word = (*word &amp; ~(T(0xFF) &lt;&lt; shift)) | (T(bytes[i]) &lt;&lt; shift);</span></a>
+<a name="202"><span class="lineNum">     202 </span>            :   }</a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span>            : template&lt;typename T&gt;</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 : void read_little_endian_reg(T word, reg_t addr, size_t len, uint8_t* bytes)</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : {</a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :   assert(len &lt;= sizeof(T));</span></a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :   for (size_t i = 0; i &lt; len; i++) {</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :     const int shift = 8 * ((addr + i) % sizeof(T));</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :     bytes[i] = word &gt;&gt; shift;</span></a>
+<a name="213"><span class="lineNum">     213 </span>            :   }</a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="215"><span class="lineNum">     215 </span>            : </a>
+<a name="216"><span class="lineNum">     216 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

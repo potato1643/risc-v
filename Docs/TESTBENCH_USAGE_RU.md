@@ -6,7 +6,7 @@
 
 | Набор | ISA | Тип тестов | Кол-во |
 |-------|:---:|------------|:------:|
-| **MicroTESK** | RV64I | Алгоритмические (ELF) | 30 |
+| **MicroTESK** | RV64IMAFDC+RV32 | Алгоритмические (ELF) | 214 |
 | **RISCOF** | RV64I | Поинструкционные ISA (.S) | 50 |
 | **Imperas** | RV32I | Сигнатурные (.S) | 48 |
 
@@ -19,9 +19,9 @@
 
 ---
 
-## 2. Запуск MicroTESK (RV64I) со сбором gcov-покрытия
+## 2. Запуск MicroTESK (RV64IMAFDC + RV32) со сбором gcov-покрытия
 
-30 ELF-программ. Алгоритмические тесты: сортировка, деление, работа с регистрами.
+214 ELF-программ. Покрытие расширений I, M, A, C, F, D. Алгоритмические тесты + compliance-тесты. Включая RV32F/D/C.
 
 ```bash
 docker exec riscv-env sh -c '
@@ -38,19 +38,21 @@ for elf in $(find "$ELF_DIR" -name "*.elf"); do
 done
 
 # Шаг 3: собрать покрытие
-lcov --capture --directory "$BUILD_DIR" \
+lcov --rc lcov_branch_coverage=1 --capture --directory "$BUILD_DIR" \
      --output-file /tmp/microtesk_coverage.info \
      --ignore-errors gcov,source
 
 # Шаг 4: HTML-отчёт
-genhtml /tmp/microtesk_coverage.info \
+genhtml --rc genhtml_branch_coverage=1 /tmp/microtesk_coverage.info \
         --output-directory /tmp/microtesk_coverage_html
 
 echo "Отчёт: /tmp/microtesk_coverage_html/index.html"
 '
 ```
 
-**Ожидаемый результат:** Line Coverage 16.2%, Function Coverage 12.2%
+**Ожидаемый результат:** Line Coverage 19.6%, Function Coverage 14.6%, Branch Coverage 3.2%
+
+> IMAFDC-фильтр: Line 25.9%, Function 20.6%, Branch 12.0%
 
 ---
 
@@ -81,7 +83,7 @@ find riscof_work -name "*.elf" | while read elf; do
 done
 
 # Шаг 4: собрать покрытие
-lcov --capture --directory "$BUILD_DIR" \
+lcov --rc lcov_branch_coverage=1 --capture --directory "$BUILD_DIR" \
      --output-file /tmp/riscof_rv64_coverage.info \
      --ignore-errors gcov,source
 
@@ -89,7 +91,7 @@ echo "Отчёт собран: /tmp/riscof_rv64_coverage.info"
 '
 ```
 
-**Ожидаемый результат:** Line Coverage 15.5%, Function Coverage 11.8%
+**Ожидаемый результат:** Line Coverage 15.5%, Function Coverage 11.8%, Branch Coverage 2.6%
 
 ---
 
@@ -124,7 +126,7 @@ find /tmp/imperas_elf -name "*.elf" | while read elf; do
 done
 
 # Шаг 5: собрать покрытие
-lcov --capture --directory "$BUILD_DIR" \
+lcov --rc lcov_branch_coverage=1 --capture --directory "$BUILD_DIR" \
      --output-file /tmp/imperas_rv32_coverage.info \
      --ignore-errors gcov,source
 
@@ -132,7 +134,7 @@ echo "Отчёт собран: /tmp/imperas_rv32_coverage.info"
 '
 ```
 
-**Ожидаемый результат:** Line Coverage 15.7%, Function Coverage 12.3%
+**Ожидаемый результат:** Line Coverage 15.7%, Function Coverage 12.3%, Branch Coverage 2.7%
 
 ---
 
@@ -152,7 +154,7 @@ bash Инструменты\ сбора\ покрытия/run_coverage.sh
 4. Запускает RISCOF → lcov
 5. Очищает счётчики gcov
 6. Запускает Imperas → lcov
-7. Выводит сводную таблицу Line/Function Coverage
+7. Выводит сводную таблицу Line/Function/Branch Coverage
 
 ---
 
@@ -163,22 +165,22 @@ bash Инструменты\ сбора\ покрытия/run_coverage.sh
 ```bash
 docker exec riscv-env sh -c '
 # Объединить три .info файла
-lcov -a /tmp/microtesk_coverage.info \
+lcov --rc lcov_branch_coverage=1 -a /tmp/microtesk_coverage.info \
      -a /tmp/riscof_rv64_coverage.info \
      -a /tmp/imperas_rv32_coverage.info \
      -o /tmp/merged_coverage.info
 
 # Просмотр сводки
-lcov --summary /tmp/merged_coverage.info
+lcov --rc lcov_branch_coverage=1 --summary /tmp/merged_coverage.info
 
 # Только исходники Spike (без системных заголовков)
-lcov --extract /tmp/merged_coverage.info "/opt/riscv-isa-sim/*" \
+lcov --rc lcov_branch_coverage=1 --extract /tmp/merged_coverage.info "/opt/riscv-isa-sim/*" \
      --output-file /tmp/spike_merged.info
-lcov --summary /tmp/spike_merged.info
+lcov --rc lcov_branch_coverage=1 --summary /tmp/spike_merged.info
 '
 ```
 
-**Ожидаемый результат:** Line Coverage 16.9% (общий), 15.4% (Spike); Function Coverage 13.3%
+**Ожидаемый результат:** Line Coverage 19.9% (общий), 19.0% (Spike); Function Coverage 15.0%; Branch Coverage 3.3% (общий), 1.9% (Spike)
 
 ---
 
@@ -190,7 +192,7 @@ docker cp riscv-env:/tmp/microtesk_coverage_html ./microtesk_coverage
 open ./microtesk_coverage/index.html
 
 # Сводка покрытия в текстовом виде
-docker exec riscv-env lcov --summary /tmp/microtesk_coverage.info
+docker exec riscv-env lcov --rc lcov_branch_coverage=1 --summary /tmp/microtesk_coverage.info
 ```
 
 ---
@@ -224,4 +226,7 @@ docker start compiler-lab
 
 ### Ограничение покрытия
 
-На данный момент gcov-покрытие собрано только для расширения **I** (базовые целочисленные инструкции). Расширения M, A, C, F, D и др. не протестированы на gcov-инструментированном Spike. Для их запуска используйте RISCOF с соответствующими CGF-файлами.
+По состоянию на 2026-06-09 gcov-покрытие собрано для расширений **I, M, A, C, F, D** через MicroTESK (202 ELF, 25.9% линий, 12.0% ветвей IMAFDC). Не протестированы: V (векторное), B (битовые операции), Crypto, Hypervisor, Zfh, Zfa, CBO и др. Привилегированные инструкции и системный режим также не покрыты.
+
+- **Branch coverage** (веточное покрытие) добавлено 2026-06-09: все скрипты обновлены флагом `--rc lcov_branch_coverage=1`
+- F/D тесты MicroTESK покрывают инструкции FPU, но проверка ожидаемых значений не проходит (подробнее: `ANALYSIS_FP_CRASH_ROOT_CAUSE.md`)

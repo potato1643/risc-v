@@ -1,2 +1,14 @@
 # macOS Finder
 .DS_Store
+
+# Local learning log
+LearningLog.md
+WorkLog_CN.md
+WorkLog_RU.md
+WorkLog.md
+
+# Docs
+COMPARISON_REPORT_CN.md
+TESTBENCH_USAGE_CN.md
+
+old/

@@ -12,7 +12,8 @@
 
 ### Списки тестовых наборов
 
-- RISC-V Architecture Test SIG —— Планируется использовать
+- RISC-V Architectural Certification Tests (ACTs)
+  
 - Imperas RISC-V Test Suite —— Планируется использовать
 
 - RISCV-DV test suite —— Планируется использовать

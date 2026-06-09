@@ -36,16 +36,16 @@ done
 echo "Imperas RV32I: pass=$pass fail=$fail"
 
 # Сбор покрытия
-lcov --capture --directory "$BUILD_DIR" \
+lcov --rc lcov_branch_coverage=1 --capture --directory "$BUILD_DIR" \
      --output-file "$REPORT_DIR/imperas_coverage.info" \
      --ignore-errors gcov,source
 
 # HTML-отчёт
-genhtml "$REPORT_DIR/imperas_coverage.info" \
+genhtml --rc genhtml_branch_coverage=1 "$REPORT_DIR/imperas_coverage.info" \
         --output-directory "$REPORT_DIR/html" \
         --ignore-errors source
 
 echo ""
 echo "=== Результаты Imperas RV32I ==="
-lcov --summary "$REPORT_DIR/imperas_coverage.info" 2>&1 | grep -E "lines|functions"
+lcov --rc lcov_branch_coverage=1 --summary "$REPORT_DIR/imperas_coverage.info" 2>&1 | grep -E "lines|functions|branches"
 echo "HTML-отчёт: $REPORT_DIR/html/index.html"

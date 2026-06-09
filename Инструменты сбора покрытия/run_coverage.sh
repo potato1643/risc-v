@@ -61,12 +61,12 @@ for suite in microtesk riscof_rv64 imperas_rv32; do
     echo "  $SUITE_NAME: pass=$pass fail=$fail"
 
     # Генерация отчёта lcov
-    lcov --capture --directory "$BUILD_DIR" \
+    lcov --rc lcov_branch_coverage=1 --capture --directory "$BUILD_DIR" \
          --output-file "$REPORT_DIR/${suite}_coverage.info" \
          --ignore-errors gcov,source 2>&1 | tail -1
 
     # Генерация HTML-отчёта
-    genhtml "$REPORT_DIR/${suite}_coverage.info" \
+    genhtml --rc genhtml_branch_coverage=1 "$REPORT_DIR/${suite}_coverage.info" \
             --output-directory "$REPORT_DIR/${suite}_html" \
             --ignore-errors source 2>&1 | tail -1
 
@@ -80,7 +80,7 @@ echo "========================================="
 for suite in microtesk riscof_rv64 imperas_rv32; do
     echo ""
     echo "--- $suite ---"
-    lcov --summary "$REPORT_DIR/${suite}_coverage.info" 2>&1 | grep -E "lines|functions"
+    lcov --rc lcov_branch_coverage=1 --summary "$REPORT_DIR/${suite}_coverage.info" 2>&1 | grep -E "lines|functions|branches"
 done
 
 echo ""

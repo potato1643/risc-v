@@ -39,7 +39,7 @@ for label in microtesk riscof imperas; do
     esac
     echo ""
     echo "--- $NAME ---"
-    lcov --summary "$INFO" 2>&1 | grep -E "lines|functions"
+    lcov --rc lcov_branch_coverage=1 --summary "$INFO" 2>&1 | grep -E "lines|functions|branches"
 done
 
 # --- Шаг 2: полное объединение (все файлы) ---
@@ -48,12 +48,12 @@ echo "========================================="
 echo ">>> Шаг 2: объединение трёх .info (все файлы)"
 echo "========================================="
 
-lcov -a "$MICROTESK_INFO" -a "$RISCOF_INFO" -a "$IMPERAS_INFO" \
+lcov --rc lcov_branch_coverage=1 -a "$MICROTESK_INFO" -a "$RISCOF_INFO" -a "$IMPERAS_INFO" \
      -o "$OUTDIR/merged_all.info" 2>&1 | tail -1
 
 echo ""
 echo "--- Объединённое покрытие (все файлы) ---"
-lcov --summary "$OUTDIR/merged_all.info" 2>&1 | grep -E "lines|functions"
+lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/merged_all.info" 2>&1 | grep -E "lines|functions|branches"
 
 # --- Шаг 3: объединение только исходников Spike ---
 echo ""
@@ -61,12 +61,12 @@ echo "========================================="
 echo ">>> Шаг 3: фильтрация — только исходники Spike"
 echo "========================================="
 
-lcov --extract "$OUTDIR/merged_all.info" "/opt/riscv-isa-sim/*" \
+lcov --rc lcov_branch_coverage=1 --extract "$OUTDIR/merged_all.info" "/opt/riscv-isa-sim/*" \
      --output-file "$OUTDIR/spike_merged.info" 2>&1 | tail -1
 
 echo ""
 echo "--- Объединённое покрытие (только Spike) ---"
-lcov --summary "$OUTDIR/spike_merged.info" 2>&1 | grep -E "lines|functions"
+lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/spike_merged.info" 2>&1 | grep -E "lines|functions|branches"
 
 # --- Шаг 4: Delta-анализ (попарные объединения) ---
 echo ""
@@ -81,7 +81,7 @@ for label in microtesk riscof imperas; do
         riscof)    INFO="$RISCOF_INFO";    NAME="RISCOF" ;;
         imperas)   INFO="$IMPERAS_INFO";   NAME="Imperas" ;;
     esac
-    lcov --extract "$INFO" "/opt/riscv-isa-sim/*" \
+    lcov --rc lcov_branch_coverage=1 --extract "$INFO" "/opt/riscv-isa-sim/*" \
          --output-file "$OUTDIR/${label}_spike.info" 2>&1 | tail -1
 done
 
@@ -89,23 +89,23 @@ done
 echo ""
 echo "--- Попарные объединения (Spike-only) ---"
 
-lcov -a "$OUTDIR/microtesk_spike.info" -a "$OUTDIR/riscof_spike.info" \
+lcov --rc lcov_branch_coverage=1 -a "$OUTDIR/microtesk_spike.info" -a "$OUTDIR/riscof_spike.info" \
      -o "$OUTDIR/m_r_spike.info" 2>&1 | tail -1
-MR=$(lcov --summary "$OUTDIR/m_r_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+MR=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/m_r_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
 
-lcov -a "$OUTDIR/microtesk_spike.info" -a "$OUTDIR/imperas_spike.info" \
+lcov --rc lcov_branch_coverage=1 -a "$OUTDIR/microtesk_spike.info" -a "$OUTDIR/imperas_spike.info" \
      -o "$OUTDIR/m_i_spike.info" 2>&1 | tail -1
-MI=$(lcov --summary "$OUTDIR/m_i_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+MI=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/m_i_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
 
-lcov -a "$OUTDIR/riscof_spike.info" -a "$OUTDIR/imperas_spike.info" \
+lcov --rc lcov_branch_coverage=1 -a "$OUTDIR/riscof_spike.info" -a "$OUTDIR/imperas_spike.info" \
      -o "$OUTDIR/r_i_spike.info" 2>&1 | tail -1
-RI=$(lcov --summary "$OUTDIR/r_i_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+RI=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/r_i_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
 
-ALL3=$(lcov --summary "$OUTDIR/spike_merged.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+ALL3=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/spike_merged.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
 
-MICROTESK_LINES=$(lcov --summary "$OUTDIR/microtesk_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
-RISCOF_LINES=$(lcov --summary "$OUTDIR/riscof_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
-IMPERAS_LINES=$(lcov --summary "$OUTDIR/imperas_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+MICROTESK_LINES=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/microtesk_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+RISCOF_LINES=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/riscof_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
+IMPERAS_LINES=$(lcov --rc lcov_branch_coverage=1 --summary "$OUTDIR/imperas_spike.info" 2>&1 | grep "lines" | grep -oE "[0-9]+" | head -1)
 
 # Уникальный вклад = All3 - (сумма двух других без этого)
 UNIQ_MICROTESK=$(( ALL3 - RI ))

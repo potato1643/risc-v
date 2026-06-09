@@ -1,0 +1,2892 @@
+Home: /opt/microtesk-riscv
+Current directory: /opt/microtesk-riscv/arch/riscv/templates/compliance/rv64um
+Model name: riscv
+Template file: mul.rb
+Loaded template RiscVBaseTemplate defined in /opt/microtesk-riscv/arch/riscv/templates/riscv_base.rb
+Loaded template MulTemplate defined in /opt/microtesk-riscv/arch/riscv/templates/compliance/rv64um/mul.rb
+Processing template MulTemplate defined in /opt/microtesk-riscv/arch/riscv/templates/compliance/rv64um/mul.rb...
+Instance number: 1
+
+----------------------- Initializing Processing Elements -----------------------
+
+The 'instantiate' operation is undefined.
+Creating MMU model...
+
+------------------------- Started Processing Template --------------------------
+
+
+------------------ Started Processing Initialization Section -------------------
+
+Defining Type.CARD(8) as byte ('.byte')...
+Defining Type.CARD(16) as half ('.half')...
+Defining Type.CARD(16) as hword ('.hword')...
+Defining Type.CARD(32) as word ('.word')...
+Defining Type.CARD(64) as dword ('.dword')...
+Defining Type.CARD(16) as byte2 ('.2byte')...
+Defining Type.CARD(32) as byte4 ('.4byte')...
+Defining Type.CARD(64) as byte8 ('.8byte')...
+Defining Type.FLOAT(23, 8) as float ('.float %s')...
+Defining Type.FLOAT(52, 11) as double ('.double %s')...
+Defining Type.FLOAT(23, 8) as floatx ('.float 0f:%08X')...
+Defining Type.FLOAT(52, 11) as doublex ('.double 0d:%016X')...
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: preparator(:target => 'X')
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: preparator(:target => 'X', :arguments => {:i => 0})
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Addressing mode: X
+Addressing mode: X
+Operation: or
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: preparator(:target => 'X', :mask => [32h'00000000', 64h'0000000000000000'])
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Addressing mode: X
+Operation: not
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: preparator(:target => 'X', :mask => [32h'FFFFFFFF', 64h'FFFFFFFFFFFFFFFF'])
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Addressing mode: X
+Operation: ori
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: preparator(:target => 'X', :mask => [32b'000000000000000000000XXXXXXXXXXX', 64b'00000000000000000000000000000000000000000000000000000XXXXXXXXXXX'])
+Ended building a call (empty = true, executable = false)
+Begin preparator: F
+Addressing mode: X
+Ended building a call (empty = true, executable = false)
+Preparator reference: X
+Ended building a call (empty = false, executable = false)
+Addressing mode: X
+Operation: fmv_d_x
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: F
+Registering preparator: preparator(:target => 'F', :mask => 64h'XXXXXXXXXXXXXXXX')
+Ended building a call (empty = true, executable = false)
+Begin preparator: F
+Addressing mode: X
+Ended building a call (empty = true, executable = false)
+Preparator reference: X
+Ended building a call (empty = false, executable = false)
+Addressing mode: X
+Operation: fmv_w_x
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: F
+Registering preparator: preparator(:target => 'F', :mask => 32h'XXXXXXXX')
+Ended building a call (empty = true, executable = false)
+Begin preparator: VR
+Ended building a call (empty = true, executable = false)
+End preparator: VR
+Registering preparator: preparator(:target => 'VR')
+Ended building a call (empty = true, executable = false)
+Begin preparator: USTATUS
+Ended building a call (empty = true, executable = false)
+End preparator: USTATUS
+Registering preparator: preparator(:target => 'USTATUS')
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Addressing mode: X
+Ended building a call (empty = true, executable = false)
+Preparator reference: X
+Ended building a call (empty = false, executable = false)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: comparator(:target => 'X')
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: comparator(:target => 'X', :arguments => {:i => 0})
+Ended building a call (empty = true, executable = false)
+Begin preparator: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: X
+Registering preparator: comparator(:target => 'X', :mask => [32h'00000000', 64h'0000000000000000'])
+Ended building a call (empty = true, executable = false)
+Begin preparator: F
+Addressing mode: X
+Ended building a call (empty = true, executable = false)
+Preparator reference: X
+Ended building a call (empty = false, executable = false)
+Addressing mode: X
+Operation: fmv_x_d
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+End preparator: F
+Registering preparator: comparator(:target => 'F')
+Ended building a call (empty = true, executable = false)
+Begin preparator: VR
+Ended building a call (empty = true, executable = false)
+End preparator: VR
+Registering preparator: comparator(:target => 'VR')
+Ended building a call (empty = true, executable = false)
+Begin Data (isGlobal=true, isSeparateFile=false)
+End Data
+
+------------------------------- Allocating data --------------------------------
+
+Section: .data [pa=0x0000000080028000, va=0x0000000080028000]
+Allocation starts: 0x0000000080028000
+Sequence index: -1
+
+.align 4
+.pushsection .tohost,"aw",@progbits
+.align 8; .global tohost; tohost: .dword 0;
+.align 8; .global fromhost; fromhost: .dword 0;
+.popsection;
+.align 4
+.globl begin_signature
+begin_signature:
+Ended building a call (empty = true, executable = false)
+Begin Data (isGlobal=true, isSeparateFile=false)
+End Data
+
+------------------------------- Allocating data --------------------------------
+
+Section: .data [pa=0x0000000080028000, va=0x0000000080028000]
+Allocation starts: 0x0000000080028000
+Sequence index: -1
+
+.align 4
+.globl end_signature
+end_signature:
+.align 8; .global begin_regstate; begin_regstate:
+.word 128;
+.align 8; .global end_regstate; end_regstate:
+.word 4;
+Label: stvec_handler
+Label: mtvec_handler
+Label: _start
+Operation: j
+Ended building a call (empty = false, executable = true)
+Label: trap_vector
+Addressing mode: X
+Addressing mode: MCAUSE
+Operation: csrr
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: beq
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: beq
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: beq
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: beqz
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: jr
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Addressing mode: MCAUSE
+Operation: csrr
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: bgez
+Ended building a call (empty = false, executable = true)
+Operation: j
+Ended building a call (empty = false, executable = true)
+Label: handle_exception
+Label: other_exception
+Label: 1
+Addressing mode: X
+Addressing mode: X
+Operation: ori
+Ended building a call (empty = false, executable = true)
+Label: write_tohost
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Output (kind: TEXT): "sw gp, tohost, t5"
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: j
+Ended building a call (empty = false, executable = true)
+Label: reset_vector
+Addressing mode: X
+Addressing mode: MHARTID
+Operation: csrr
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: bnez
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: MTVEC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: SATP
+Operation: csrwi
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: MTVEC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: PMPADDR0
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: PMPCFG0
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: MTVEC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: MEDELEG
+Operation: csrwi
+Ended building a call (empty = false, executable = true)
+Addressing mode: MIDELEG
+Operation: csrwi
+Ended building a call (empty = false, executable = true)
+Addressing mode: MIE
+Operation: csrwi
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: MTVEC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: slli
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: bgez
+Ended building a call (empty = false, executable = true)
+Operation: fence
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: ecall
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: beqz
+Ended building a call (empty = false, executable = true)
+Addressing mode: STVEC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: MEDELEG
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: MEDELEG
+Operation: csrr
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: MSTATUS
+Operation: csrwi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: la
+Ended building a call (empty = false, executable = true)
+Addressing mode: MEPC
+Addressing mode: X
+Operation: csrw
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: MHARTID
+Operation: csrr
+Ended building a call (empty = false, executable = true)
+Operation: mret
+Ended building a call (empty = false, executable = true)
+Label: 1
+Ended building a call (empty = false, executable = false)
+
+------------------- Ended Processing Initialization Section --------------------
+
+
+------------------- Started Processing Finalization Section --------------------
+
+Addressing mode: X
+Addressing mode: X
+Output (kind: TRACE): "Check: x0(0x%016x) != TESTNUM(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Label: fail
+Output (kind: TRACE): "Error: Test failed (self check did not pass)!"
+Operation: fence
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: beqz
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: sll
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: or
+Ended building a call (empty = false, executable = true)
+Operation: ecall
+Ended building a call (empty = false, executable = true)
+Label: pass
+Operation: fence
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: ecall
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = false, executable = false)
+Ended building a call (empty = true, executable = false)
+
+-------------------- Ended Processing Finalization Section ---------------------
+
+
+----------------------- Started Processing Main Section ------------------------
+
+Addressing mode: X
+Label: test_32
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_33
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_2
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_3
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_4
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_5
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_6
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_7
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_30
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_31
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_8
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_9
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_10
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_11
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_12
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_13
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_14
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_15
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_16
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_17
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_18
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_19
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_20
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_21
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_22
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_23
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_24
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_25
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Label: 1
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Operation: nop
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: addi
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_26
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_27
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_28
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Label: test_29
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Addressing mode: X
+Addressing mode: X
+Operation: mul
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Operation: li
+Ended building a call (empty = false, executable = true)
+Addressing mode: X
+Output (kind: TRACE): "Check: testreg(0x%016x) == x29(0x%016x)", mode X(i: #IMM), mode X(i: #IMM)
+Addressing mode: X
+Operation: bne
+Ended building a call (empty = false, executable = true)
+Ended building a call (empty = true, executable = false)
+
+------------------- Constructed Prologue (riscv_test.rb:231) -------------------
+
+	.section .text.init
+	.align 6
+.weak stvec_handler
+.weak mtvec_handler
+	.globl _start
+_start:
+	j reset_vector
+	.align 2
+trap_vector:
+	csrr t5, mcause
+	li t6, 0x8
+	beq t5, t6, write_tohost
+	li t6, 0x9
+	beq t5, t6, write_tohost
+	li t6, 0xb
+	beq t5, t6, write_tohost
+	la t5, mtvec_handler
+	beqz t5, 1f
+	jr t5
+1:
+	csrr t5, mcause
+	bgez t5, handle_exception
+	j other_exception
+handle_exception:
+other_exception:
+1:
+	ori gp, gp, 1337
+write_tohost:
+	nop
+	sw gp, tohost, t5
+	nop
+	j write_tohost
+reset_vector:
+	csrr a0, mhartid
+1:
+	bnez a0, 1b
+	la t0, 1f
+	csrw mtvec, t0
+	csrwi satp, 0x0
+	.align 2
+1:
+	la t0, 1f
+	csrw mtvec, t0
+	li t0, 0xffffffffffffffff
+	csrw pmpaddr0, t0
+	li t0, 0x1f
+	csrw pmpcfg0, t0
+	.align 2
+1:
+	la t0, 1f
+	csrw mtvec, t0
+	csrwi medeleg, 0x0
+	csrwi mideleg, 0x0
+	csrwi mie, 0x0
+	.align 2
+1:
+	li gp, 0x0
+	la t0, trap_vector
+	csrw mtvec, t0
+	li a0, 0x1
+	slli a0, a0, 0x1f
+	bgez a0, 1f
+	fence
+	li gp, 0x1
+	ecall
+1:
+	la t0, stvec_handler
+	beqz t0, 1f
+	csrw stvec, t0
+	li t0, 0xb109
+	csrw medeleg, t0
+	csrr t1, medeleg
+	bne t0, t1, other_exception
+1:
+	csrwi mstatus, 0x0
+	la t0, 1f
+	csrw mepc, t0
+	csrr a0, mhartid
+	mret
+1:
+
+------------------------------- Allocating code --------------------------------
+
+Section: .section .text.init [pa=0x0000000080000000, va=0x0000000080000000]
+
+Code allocator: directive: .align 6
+Code allocator: directive: .weak stvec_handler
+Code allocator: directive: .weak mtvec_handler
+Code allocator: directive: .globl _start
+Code allocator: directive: _start:
+0x0000000080000000 (PA): j reset_vector (0x0000006F)
+Code allocator: directive: .align 2
+Code allocator: directive: trap_vector:
+0x0000000080000004 (PA): csrr t5, mcause (0x34202F73)
+0x0000000080000008 (PA): li t6, 0x8 (0x00800F93)
+0x000000008000000c (PA): beq t5, t6, write_tohost (0xFFFF0AE3)
+0x0000000080000010 (PA): li t6, 0x9 (0x00900F93)
+0x0000000080000014 (PA): beq t5, t6, write_tohost (0xFFFF06E3)
+0x0000000080000018 (PA): li t6, 0xb (0x00B00F93)
+0x000000008000001c (PA): beq t5, t6, write_tohost (0xFFFF02E3)
+0x0000000080000020 (PA): la t5, mtvec_handler (0x80000F17FE0F0F13)
+0x0000000080000028 (PA): beqz t5, 1f (0xFC0F0CE3)
+0x000000008000002c (PA): jr t5 (0x000F0067)
+Code allocator: directive: 1:
+0x0000000080000030 (PA): csrr t5, mcause (0x34202F73)
+0x0000000080000034 (PA): bgez t5, handle_exception (0xFC0F56E3)
+0x0000000080000038 (PA): j other_exception (0xFC9FF06F)
+Code allocator: directive: handle_exception:
+Code allocator: directive: other_exception:
+Code allocator: directive: 1:
+0x000000008000003c (PA): ori gp, gp, 1337 (0x5391E193)
+Code allocator: directive: write_tohost:
+0x0000000080000040 (PA): nop (0x00000013)
+0x0000000080000044 (PA): nop (0x00000013)
+0x0000000080000048 (PA): j write_tohost (0xFB9FF06F)
+Code allocator: directive: reset_vector:
+0x000000008000004c (PA): csrr a0, mhartid (0xF1402573)
+Code allocator: directive: 1:
+0x0000000080000050 (PA): bnez a0, 1b (0xFA0518E3)
+0x0000000080000054 (PA): la t0, 1f (0x80000297FAC28293)
+0x000000008000005c (PA): csrw mtvec, t0 (0x30529073)
+0x0000000080000060 (PA): csrwi satp, 0x0 (0x18005073)
+Code allocator: directive: .align 2
+Code allocator: directive: 1:
+0x0000000080000064 (PA): la t0, 1f (0x80000297F9C28293)
+0x000000008000006c (PA): csrw mtvec, t0 (0x30529073)
+0x0000000080000070 (PA): li t0, 0xffffffffffffffff (0xFFF00293)
+0x0000000080000074 (PA): csrw pmpaddr0, t0 (0x3B029073)
+0x0000000080000078 (PA): li t0, 0x1f (0x01F00293)
+0x000000008000007c (PA): csrw pmpcfg0, t0 (0x3A029073)
+Code allocator: directive: .align 2
+Code allocator: directive: 1:
+0x0000000080000080 (PA): la t0, 1f (0x80000297F8028293)
+0x0000000080000088 (PA): csrw mtvec, t0 (0x30529073)
+0x000000008000008c (PA): csrwi medeleg, 0x0 (0x30205073)
+0x0000000080000090 (PA): csrwi mideleg, 0x0 (0x30305073)
+0x0000000080000094 (PA): csrwi mie, 0x0 (0x30405073)
+Code allocator: directive: .align 2
+Code allocator: directive: 1:
+0x0000000080000098 (PA): li gp, 0x0 (0x00000193)
+0x000000008000009c (PA): la t0, trap_vector (0x80000297F6428293)
+0x00000000800000a4 (PA): csrw mtvec, t0 (0x30529073)
+0x00000000800000a8 (PA): li a0, 0x1 (0x00100513)
+0x00000000800000ac (PA): slli a0, a0, 0x1f (0x01F51513)
+0x00000000800000b0 (PA): bgez a0, 1f (0xF40558E3)
+0x00000000800000b4 (PA): fence (0x0000000F)
+0x00000000800000b8 (PA): li gp, 0x1 (0x00100193)
+0x00000000800000bc (PA): ecall (0x00000073)
+Code allocator: directive: 1:
+0x00000000800000c0 (PA): la t0, stvec_handler (0x80000297F4028293)
+0x00000000800000c8 (PA): beqz t0, 1f (0xF2028CE3)
+0x00000000800000cc (PA): csrw stvec, t0 (0x10529073)
+0x00000000800000d0 (PA): li t0, 0xb109 (0x0000B2B710928293)
+0x00000000800000d8 (PA): csrw medeleg, t0 (0x30229073)
+0x00000000800000dc (PA): csrr t1, medeleg (0x30202373)
+0x00000000800000e0 (PA): bne t0, t1, other_exception (0xF26290E3)
+Code allocator: directive: 1:
+0x00000000800000e4 (PA): csrwi mstatus, 0x0 (0x30005073)
+0x00000000800000e8 (PA): la t0, 1f (0x80000297F1828293)
+0x00000000800000f0 (PA): csrw mepc, t0 (0x34129073)
+0x00000000800000f4 (PA): csrr a0, mhartid (0xF1402573)
+0x00000000800000f8 (PA): mret (0x30200073)
+Code allocator: directive: 1:
+Code allocator: register the remaining block: [0x0000000080000000..0x00000000800000fc) (56 calls)
+
+
+------------- Constructed External Code (riscv_test_macros.rb:182) -------------
+
+test_32:
+	li ra, 0x7e00
+	li sp, 0x6db6db6db6db6db7
+	mul t5, ra, sp
+	li t4, 0x1200
+	li gp, 0x20
+	bne t5, t4, fail
+test_33:
+	li ra, 0x7fc0
+	li sp, 0x6db6db6db6db6db7
+	mul t5, ra, sp
+	li t4, 0x1240
+	li gp, 0x21
+	bne t5, t4, fail
+test_2:
+	li ra, 0x0
+	li sp, 0x0
+	mul t5, ra, sp
+	li t4, 0x0
+	li gp, 0x2
+	bne t5, t4, fail
+test_3:
+	li ra, 0x1
+	li sp, 0x1
+	mul t5, ra, sp
+	li t4, 0x1
+	li gp, 0x3
+	bne t5, t4, fail
+test_4:
+	li ra, 0x3
+	li sp, 0x7
+	mul t5, ra, sp
+	li t4, 0x15
+	li gp, 0x4
+	bne t5, t4, fail
+test_5:
+	li ra, 0x0
+	li sp, 0xffffffffffff8000
+	mul t5, ra, sp
+	li t4, 0x0
+	li gp, 0x5
+	bne t5, t4, fail
+test_6:
+	li ra, 0xffffffff80000000
+	li sp, 0x0
+	mul t5, ra, sp
+	li t4, 0x0
+	li gp, 0x6
+	bne t5, t4, fail
+test_7:
+	li ra, 0xffffffff80000000
+	li sp, 0xffffffffffff8000
+	mul t5, ra, sp
+	li t4, 0x400000000000
+	li gp, 0x7
+	bne t5, t4, fail
+test_30:
+	li ra, 0xaaaaaaaaaaaaaaab
+	li sp, 0x2fe7d
+	mul t5, ra, sp
+	li t4, 0xff7f
+	li gp, 0x1e
+	bne t5, t4, fail
+test_31:
+	li ra, 0x2fe7d
+	li sp, 0xaaaaaaaaaaaaaaab
+	mul t5, ra, sp
+	li t4, 0xff7f
+	li gp, 0x1f
+	bne t5, t4, fail
+test_8:
+	li ra, 0xd
+	li sp, 0xb
+	mul ra, ra, sp
+	li t4, 0x8f
+	li gp, 0x8
+	bne ra, t4, fail
+test_9:
+	li ra, 0xe
+	li sp, 0xb
+	mul sp, ra, sp
+	li t4, 0x9a
+	li gp, 0x9
+	bne sp, t4, fail
+test_10:
+	li ra, 0xd
+	mul ra, ra, ra
+	li t4, 0xa9
+	li gp, 0xa
+	bne ra, t4, fail
+test_11:
+	li tp, 0x0
+1:
+	li ra, 0xd
+	li sp, 0xb
+	mul t5, ra, sp
+	addi t1, t5, 0
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x8f
+	li gp, 0xb
+	bne t1, t4, fail
+test_12:
+	li tp, 0x0
+1:
+	li ra, 0xe
+	li sp, 0xb
+	mul t5, ra, sp
+	nop
+	addi t1, t5, 0
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x9a
+	li gp, 0xc
+	bne t1, t4, fail
+test_13:
+	li tp, 0x0
+1:
+	li ra, 0xf
+	li sp, 0xb
+	mul t5, ra, sp
+	nop
+	nop
+	addi t1, t5, 0
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0xa5
+	li gp, 0xd
+	bne t1, t4, fail
+test_14:
+	li tp, 0x0
+1:
+	li ra, 0xd
+	li sp, 0xb
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x8f
+	li gp, 0xe
+	bne t5, t4, fail
+test_15:
+	li tp, 0x0
+1:
+	li ra, 0xe
+	li sp, 0xb
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x9a
+	li gp, 0xf
+	bne t5, t4, fail
+test_16:
+	li tp, 0x0
+1:
+	li ra, 0xf
+	li sp, 0xb
+	nop
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0xa5
+	li gp, 0x10
+	bne t5, t4, fail
+test_17:
+	li tp, 0x0
+1:
+	li ra, 0xd
+	nop
+	li sp, 0xb
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x8f
+	li gp, 0x11
+	bne t5, t4, fail
+test_18:
+	li tp, 0x0
+1:
+	li ra, 0xe
+	nop
+	li sp, 0xb
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x9a
+	li gp, 0x12
+	bne t5, t4, fail
+test_19:
+	li tp, 0x0
+1:
+	li ra, 0xf
+	nop
+	nop
+	li sp, 0xb
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0xa5
+	li gp, 0x13
+	bne t5, t4, fail
+test_20:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	li ra, 0xd
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x8f
+	li gp, 0x14
+	bne t5, t4, fail
+test_21:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	li ra, 0xe
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x9a
+	li gp, 0x15
+	bne t5, t4, fail
+test_22:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	li ra, 0xf
+	nop
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0xa5
+	li gp, 0x16
+	bne t5, t4, fail
+test_23:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	nop
+	li ra, 0xd
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x8f
+	li gp, 0x17
+	bne t5, t4, fail
+test_24:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	nop
+	li ra, 0xe
+	nop
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0x9a
+	li gp, 0x18
+	bne t5, t4, fail
+test_25:
+	li tp, 0x0
+1:
+	li sp, 0xb
+	nop
+	nop
+	li ra, 0xf
+	mul t5, ra, sp
+	addi tp, tp, 1
+	li t0, 0x2
+	bne tp, t0, 1b
+	li t4, 0xa5
+	li gp, 0x19
+	bne t5, t4, fail
+test_26:
+	li ra, 0x1f
+	mul sp, zero, ra
+	li t4, 0x0
+	li gp, 0x1a
+	bne sp, t4, fail
+test_27:
+	li ra, 0x20
+	mul sp, ra, zero
+	li t4, 0x0
+	li gp, 0x1b
+	bne sp, t4, fail
+test_28:
+	mul ra, zero, zero
+	li t4, 0x0
+	li gp, 0x1c
+	bne ra, t4, fail
+test_29:
+	li ra, 0x21
+	li sp, 0x22
+	mul zero, ra, sp
+	li t4, 0x0
+	li gp, 0x1d
+	bne zero, t4, fail
+
+------------------------------- Allocating code --------------------------------
+
+Section: .section .text.init [pa=0x0000000080000000, va=0x0000000080000000]
+
+Code allocator: directive: test_32:
+0x00000000800000fc (PA): li ra, 0x7e00 (0x000000B70000809300B090930000E09300B0909301F0E09300A090932000E093)
+0x000000008000011c (PA): li sp, 0x6db6db6db6db6db7 (0x6DB6E137B6D1011300B111135B61611300B111136DB1611300A111131B716113)
+0x000000008000013c (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000140 (PA): li t4, 0x1200 (0x00001EB7200E8E93)
+0x0000000080000148 (PA): li gp, 0x20 (0x02000193)
+0x000000008000014c (PA): bne t5, t4, fail (0xEBDF1AE3)
+Code allocator: directive: test_33:
+0x0000000080000150 (PA): li ra, 0x7fc0 (0x000000B70000809300B090930000E09300B0909301F0E09300A090933C00E093)
+0x0000000080000170 (PA): li sp, 0x6db6db6db6db6db7 (0x6DB6E137B6D1011300B111135B61611300B111136DB1611300A111131B716113)
+0x0000000080000190 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000194 (PA): li t4, 0x1240 (0x00001EB7240E8E93)
+0x000000008000019c (PA): li gp, 0x21 (0x02100193)
+0x00000000800001a0 (PA): bne t5, t4, fail (0xE7DF10E3)
+Code allocator: directive: test_2:
+0x00000000800001a4 (PA): li ra, 0x0 (0x00000093)
+0x00000000800001a8 (PA): li sp, 0x0 (0x00000113)
+0x00000000800001ac (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800001b0 (PA): li t4, 0x0 (0x00000E93)
+0x00000000800001b4 (PA): li gp, 0x2 (0x00200193)
+0x00000000800001b8 (PA): bne t5, t4, fail (0xE5DF14E3)
+Code allocator: directive: test_3:
+0x00000000800001bc (PA): li ra, 0x1 (0x00100093)
+0x00000000800001c0 (PA): li sp, 0x1 (0x00100113)
+0x00000000800001c4 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800001c8 (PA): li t4, 0x1 (0x00100E93)
+0x00000000800001cc (PA): li gp, 0x3 (0x00300193)
+0x00000000800001d0 (PA): bne t5, t4, fail (0xE3DF18E3)
+Code allocator: directive: test_4:
+0x00000000800001d4 (PA): li ra, 0x3 (0x00300093)
+0x00000000800001d8 (PA): li sp, 0x7 (0x00700113)
+0x00000000800001dc (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800001e0 (PA): li t4, 0x15 (0x01500E93)
+0x00000000800001e4 (PA): li gp, 0x4 (0x00400193)
+0x00000000800001e8 (PA): bne t5, t4, fail (0xE1DF1CE3)
+Code allocator: directive: test_5:
+0x00000000800001ec (PA): li ra, 0x0 (0x00000093)
+0x00000000800001f0 (PA): li sp, 0xffffffffffff8000 (0xFFFF813700010113)
+0x00000000800001f8 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800001fc (PA): li t4, 0x0 (0x00000E93)
+0x0000000080000200 (PA): li gp, 0x5 (0x00500193)
+0x0000000080000204 (PA): bne t5, t4, fail (0xDFDF1EE3)
+Code allocator: directive: test_6:
+0x0000000080000208 (PA): li ra, 0xffffffff80000000 (0x800000B700008093)
+0x0000000080000210 (PA): li sp, 0x0 (0x00000113)
+0x0000000080000214 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000218 (PA): li t4, 0x0 (0x00000E93)
+0x000000008000021c (PA): li gp, 0x6 (0x00600193)
+0x0000000080000220 (PA): bne t5, t4, fail (0xDFDF10E3)
+Code allocator: directive: test_7:
+0x0000000080000224 (PA): li ra, 0xffffffff80000000 (0x800000B700008093)
+0x000000008000022c (PA): li sp, 0xffffffffffff8000 (0xFFFF813700010113)
+0x0000000080000234 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000238 (PA): li t4, 0x400000000000 (0x00004EB7000E8E9300BE9E93000EEE9300BE9E93000EEE9300AE9E93000EEE93)
+0x0000000080000258 (PA): li gp, 0x7 (0x00700193)
+0x000000008000025c (PA): bne t5, t4, fail (0xDBDF12E3)
+Code allocator: directive: test_30:
+0x0000000080000260 (PA): li ra, 0xaaaaaaaaaaaaaaab (0xAAAAB0B7AAA0809300B090935550E09300B090932AA0E09300A090932AB0E093)
+0x0000000080000280 (PA): li sp, 0x2fe7d (0x000001370001011300B111130001611300B111130BF1611300A1111327D16113)
+0x00000000800002a0 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800002a4 (PA): li t4, 0xff7f (0x00000EB7000E8E9300BE9E93000EEE9300BE9E9303FEEE9300AE9E9337FEEE93)
+0x00000000800002c4 (PA): li gp, 0x1e (0x01E00193)
+0x00000000800002c8 (PA): bne t5, t4, fail (0xD3DF1CE3)
+Code allocator: directive: test_31:
+0x00000000800002cc (PA): li ra, 0x2fe7d (0x000000B70000809300B090930000E09300B090930BF0E09300A0909327D0E093)
+0x00000000800002ec (PA): li sp, 0xaaaaaaaaaaaaaaab (0xAAAAB137AAA1011300B111135551611300B111132AA1611300A111132AB16113)
+0x000000008000030c (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000310 (PA): li t4, 0xff7f (0x00000EB7000E8E9300BE9E93000EEE9300BE9E9303FEEE9300AE9E9337FEEE93)
+0x0000000080000330 (PA): li gp, 0x1f (0x01F00193)
+0x0000000080000334 (PA): bne t5, t4, fail (0xCDDF16E3)
+Code allocator: directive: test_8:
+0x0000000080000338 (PA): li ra, 0xd (0x00D00093)
+0x000000008000033c (PA): li sp, 0xb (0x00B00113)
+0x0000000080000340 (PA): mul ra, ra, sp (0x022080B3)
+0x0000000080000344 (PA): li t4, 0x8f (0x08F00E93)
+0x0000000080000348 (PA): li gp, 0x8 (0x00800193)
+0x000000008000034c (PA): bne ra, t4, fail (0xCBD09AE3)
+Code allocator: directive: test_9:
+0x0000000080000350 (PA): li ra, 0xe (0x00E00093)
+0x0000000080000354 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000358 (PA): mul sp, ra, sp (0x02208133)
+0x000000008000035c (PA): li t4, 0x9a (0x09A00E93)
+0x0000000080000360 (PA): li gp, 0x9 (0x00900193)
+0x0000000080000364 (PA): bne sp, t4, fail (0xC9D11EE3)
+Code allocator: directive: test_10:
+0x0000000080000368 (PA): li ra, 0xd (0x00D00093)
+0x000000008000036c (PA): mul ra, ra, ra (0x021080B3)
+0x0000000080000370 (PA): li t4, 0xa9 (0x0A900E93)
+0x0000000080000374 (PA): li gp, 0xa (0x00A00193)
+0x0000000080000378 (PA): bne ra, t4, fail (0xC9D094E3)
+Code allocator: directive: test_11:
+0x000000008000037c (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000380 (PA): li ra, 0xd (0x00D00093)
+0x0000000080000384 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000388 (PA): mul t5, ra, sp (0x02208F33)
+0x000000008000038c (PA): addi t1, t5, 0 (0x000F0313)
+0x0000000080000390 (PA): addi tp, tp, 1 (0x00120213)
+0x0000000080000394 (PA): li t0, 0x2 (0x00200293)
+0x0000000080000398 (PA): bne tp, t0, 1b (0xC65214E3)
+0x000000008000039c (PA): li t4, 0x8f (0x08F00E93)
+0x00000000800003a0 (PA): li gp, 0xb (0x00B00193)
+0x00000000800003a4 (PA): bne t1, t4, fail (0xC5D31EE3)
+Code allocator: directive: test_12:
+0x00000000800003a8 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800003ac (PA): li ra, 0xe (0x00E00093)
+0x00000000800003b0 (PA): li sp, 0xb (0x00B00113)
+0x00000000800003b4 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800003b8 (PA): nop (0x00000013)
+0x00000000800003bc (PA): addi t1, t5, 0 (0x000F0313)
+0x00000000800003c0 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800003c4 (PA): li t0, 0x2 (0x00200293)
+0x00000000800003c8 (PA): bne tp, t0, 1b (0xC2521CE3)
+0x00000000800003cc (PA): li t4, 0x9a (0x09A00E93)
+0x00000000800003d0 (PA): li gp, 0xc (0x00C00193)
+0x00000000800003d4 (PA): bne t1, t4, fail (0xC3D316E3)
+Code allocator: directive: test_13:
+0x00000000800003d8 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800003dc (PA): li ra, 0xf (0x00F00093)
+0x00000000800003e0 (PA): li sp, 0xb (0x00B00113)
+0x00000000800003e4 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800003e8 (PA): nop (0x00000013)
+0x00000000800003ec (PA): nop (0x00000013)
+0x00000000800003f0 (PA): addi t1, t5, 0 (0x000F0313)
+0x00000000800003f4 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800003f8 (PA): li t0, 0x2 (0x00200293)
+0x00000000800003fc (PA): bne tp, t0, 1b (0xC05212E3)
+0x0000000080000400 (PA): li t4, 0xa5 (0x0A500E93)
+0x0000000080000404 (PA): li gp, 0xd (0x00D00193)
+0x0000000080000408 (PA): bne t1, t4, fail (0xBFD31CE3)
+Code allocator: directive: test_14:
+0x000000008000040c (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000410 (PA): li ra, 0xd (0x00D00093)
+0x0000000080000414 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000418 (PA): mul t5, ra, sp (0x02208F33)
+0x000000008000041c (PA): addi tp, tp, 1 (0x00120213)
+0x0000000080000420 (PA): li t0, 0x2 (0x00200293)
+0x0000000080000424 (PA): bne tp, t0, 1b (0xBC521EE3)
+0x0000000080000428 (PA): li t4, 0x8f (0x08F00E93)
+0x000000008000042c (PA): li gp, 0xe (0x00E00193)
+0x0000000080000430 (PA): bne t5, t4, fail (0xBDDF18E3)
+Code allocator: directive: test_15:
+0x0000000080000434 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000438 (PA): li ra, 0xe (0x00E00093)
+0x000000008000043c (PA): li sp, 0xb (0x00B00113)
+0x0000000080000440 (PA): nop (0x00000013)
+0x0000000080000444 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000448 (PA): addi tp, tp, 1 (0x00120213)
+0x000000008000044c (PA): li t0, 0x2 (0x00200293)
+0x0000000080000450 (PA): bne tp, t0, 1b (0xBA5218E3)
+0x0000000080000454 (PA): li t4, 0x9a (0x09A00E93)
+0x0000000080000458 (PA): li gp, 0xf (0x00F00193)
+0x000000008000045c (PA): bne t5, t4, fail (0xBBDF12E3)
+Code allocator: directive: test_16:
+0x0000000080000460 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000464 (PA): li ra, 0xf (0x00F00093)
+0x0000000080000468 (PA): li sp, 0xb (0x00B00113)
+0x000000008000046c (PA): nop (0x00000013)
+0x0000000080000470 (PA): nop (0x00000013)
+0x0000000080000474 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000478 (PA): addi tp, tp, 1 (0x00120213)
+0x000000008000047c (PA): li t0, 0x2 (0x00200293)
+0x0000000080000480 (PA): bne tp, t0, 1b (0xB85210E3)
+0x0000000080000484 (PA): li t4, 0xa5 (0x0A500E93)
+0x0000000080000488 (PA): li gp, 0x10 (0x01000193)
+0x000000008000048c (PA): bne t5, t4, fail (0xB7DF1AE3)
+Code allocator: directive: test_17:
+0x0000000080000490 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000494 (PA): li ra, 0xd (0x00D00093)
+0x0000000080000498 (PA): nop (0x00000013)
+0x000000008000049c (PA): li sp, 0xb (0x00B00113)
+0x00000000800004a0 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800004a4 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800004a8 (PA): li t0, 0x2 (0x00200293)
+0x00000000800004ac (PA): bne tp, t0, 1b (0xB4521AE3)
+0x00000000800004b0 (PA): li t4, 0x8f (0x08F00E93)
+0x00000000800004b4 (PA): li gp, 0x11 (0x01100193)
+0x00000000800004b8 (PA): bne t5, t4, fail (0xB5DF14E3)
+Code allocator: directive: test_18:
+0x00000000800004bc (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800004c0 (PA): li ra, 0xe (0x00E00093)
+0x00000000800004c4 (PA): nop (0x00000013)
+0x00000000800004c8 (PA): li sp, 0xb (0x00B00113)
+0x00000000800004cc (PA): nop (0x00000013)
+0x00000000800004d0 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800004d4 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800004d8 (PA): li t0, 0x2 (0x00200293)
+0x00000000800004dc (PA): bne tp, t0, 1b (0xB25212E3)
+0x00000000800004e0 (PA): li t4, 0x9a (0x09A00E93)
+0x00000000800004e4 (PA): li gp, 0x12 (0x01200193)
+0x00000000800004e8 (PA): bne t5, t4, fail (0xB1DF1CE3)
+Code allocator: directive: test_19:
+0x00000000800004ec (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800004f0 (PA): li ra, 0xf (0x00F00093)
+0x00000000800004f4 (PA): nop (0x00000013)
+0x00000000800004f8 (PA): nop (0x00000013)
+0x00000000800004fc (PA): li sp, 0xb (0x00B00113)
+0x0000000080000500 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000504 (PA): addi tp, tp, 1 (0x00120213)
+0x0000000080000508 (PA): li t0, 0x2 (0x00200293)
+0x000000008000050c (PA): bne tp, t0, 1b (0xAE521AE3)
+0x0000000080000510 (PA): li t4, 0xa5 (0x0A500E93)
+0x0000000080000514 (PA): li gp, 0x13 (0x01300193)
+0x0000000080000518 (PA): bne t5, t4, fail (0xAFDF14E3)
+Code allocator: directive: test_20:
+0x000000008000051c (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000520 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000524 (PA): li ra, 0xd (0x00D00093)
+0x0000000080000528 (PA): mul t5, ra, sp (0x02208F33)
+0x000000008000052c (PA): addi tp, tp, 1 (0x00120213)
+0x0000000080000530 (PA): li t0, 0x2 (0x00200293)
+0x0000000080000534 (PA): bne tp, t0, 1b (0xAC5216E3)
+0x0000000080000538 (PA): li t4, 0x8f (0x08F00E93)
+0x000000008000053c (PA): li gp, 0x14 (0x01400193)
+0x0000000080000540 (PA): bne t5, t4, fail (0xADDF10E3)
+Code allocator: directive: test_21:
+0x0000000080000544 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000548 (PA): li sp, 0xb (0x00B00113)
+0x000000008000054c (PA): li ra, 0xe (0x00E00093)
+0x0000000080000550 (PA): nop (0x00000013)
+0x0000000080000554 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000558 (PA): addi tp, tp, 1 (0x00120213)
+0x000000008000055c (PA): li t0, 0x2 (0x00200293)
+0x0000000080000560 (PA): bne tp, t0, 1b (0xAA5210E3)
+0x0000000080000564 (PA): li t4, 0x9a (0x09A00E93)
+0x0000000080000568 (PA): li gp, 0x15 (0x01500193)
+0x000000008000056c (PA): bne t5, t4, fail (0xA9DF1AE3)
+Code allocator: directive: test_22:
+0x0000000080000570 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000574 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000578 (PA): li ra, 0xf (0x00F00093)
+0x000000008000057c (PA): nop (0x00000013)
+0x0000000080000580 (PA): nop (0x00000013)
+0x0000000080000584 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000588 (PA): addi tp, tp, 1 (0x00120213)
+0x000000008000058c (PA): li t0, 0x2 (0x00200293)
+0x0000000080000590 (PA): bne tp, t0, 1b (0xA65218E3)
+0x0000000080000594 (PA): li t4, 0xa5 (0x0A500E93)
+0x0000000080000598 (PA): li gp, 0x16 (0x01600193)
+0x000000008000059c (PA): bne t5, t4, fail (0xA7DF12E3)
+Code allocator: directive: test_23:
+0x00000000800005a0 (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800005a4 (PA): li sp, 0xb (0x00B00113)
+0x00000000800005a8 (PA): nop (0x00000013)
+0x00000000800005ac (PA): li ra, 0xd (0x00D00093)
+0x00000000800005b0 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800005b4 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800005b8 (PA): li t0, 0x2 (0x00200293)
+0x00000000800005bc (PA): bne tp, t0, 1b (0xA45212E3)
+0x00000000800005c0 (PA): li t4, 0x8f (0x08F00E93)
+0x00000000800005c4 (PA): li gp, 0x17 (0x01700193)
+0x00000000800005c8 (PA): bne t5, t4, fail (0xA3DF1CE3)
+Code allocator: directive: test_24:
+0x00000000800005cc (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x00000000800005d0 (PA): li sp, 0xb (0x00B00113)
+0x00000000800005d4 (PA): nop (0x00000013)
+0x00000000800005d8 (PA): li ra, 0xe (0x00E00093)
+0x00000000800005dc (PA): nop (0x00000013)
+0x00000000800005e0 (PA): mul t5, ra, sp (0x02208F33)
+0x00000000800005e4 (PA): addi tp, tp, 1 (0x00120213)
+0x00000000800005e8 (PA): li t0, 0x2 (0x00200293)
+0x00000000800005ec (PA): bne tp, t0, 1b (0xA0521AE3)
+0x00000000800005f0 (PA): li t4, 0x9a (0x09A00E93)
+0x00000000800005f4 (PA): li gp, 0x18 (0x01800193)
+0x00000000800005f8 (PA): bne t5, t4, fail (0xA1DF14E3)
+Code allocator: directive: test_25:
+0x00000000800005fc (PA): li tp, 0x0 (0x00000213)
+Code allocator: directive: 1:
+0x0000000080000600 (PA): li sp, 0xb (0x00B00113)
+0x0000000080000604 (PA): nop (0x00000013)
+0x0000000080000608 (PA): nop (0x00000013)
+0x000000008000060c (PA): li ra, 0xf (0x00F00093)
+0x0000000080000610 (PA): mul t5, ra, sp (0x02208F33)
+0x0000000080000614 (PA): addi tp, tp, 1 (0x00120213)
+0x0000000080000618 (PA): li t0, 0x2 (0x00200293)
+0x000000008000061c (PA): bne tp, t0, 1b (0x9E5212E3)
+0x0000000080000620 (PA): li t4, 0xa5 (0x0A500E93)
+0x0000000080000624 (PA): li gp, 0x19 (0x01900193)
+0x0000000080000628 (PA): bne t5, t4, fail (0x9DDF1CE3)
+Code allocator: directive: test_26:
+0x000000008000062c (PA): li ra, 0x1f (0x01F00093)
+0x0000000080000630 (PA): mul sp, zero, ra (0x02100133)
+0x0000000080000634 (PA): li t4, 0x0 (0x00000E93)
+0x0000000080000638 (PA): li gp, 0x1a (0x01A00193)
+0x000000008000063c (PA): bne sp, t4, fail (0x9DD112E3)
+Code allocator: directive: test_27:
+0x0000000080000640 (PA): li ra, 0x20 (0x02000093)
+0x0000000080000644 (PA): mul sp, ra, zero (0x02008133)
+0x0000000080000648 (PA): li t4, 0x0 (0x00000E93)
+0x000000008000064c (PA): li gp, 0x1b (0x01B00193)
+0x0000000080000650 (PA): bne sp, t4, fail (0x9BD118E3)
+Code allocator: directive: test_28:
+0x0000000080000654 (PA): mul ra, zero, zero (0x020000B3)
+0x0000000080000658 (PA): li t4, 0x0 (0x00000E93)
+0x000000008000065c (PA): li gp, 0x1c (0x01C00193)
+0x0000000080000660 (PA): bne ra, t4, fail (0x9BD090E3)
+Code allocator: directive: test_29:
+0x0000000080000664 (PA): li ra, 0x21 (0x02100093)
+0x0000000080000668 (PA): li sp, 0x22 (0x02200113)
+0x000000008000066c (PA): mul zero, ra, sp (0x02208033)
+0x0000000080000670 (PA): li t4, 0x0 (0x00000E93)
+0x0000000080000674 (PA): li gp, 0x1d (0x01D00193)
+0x0000000080000678 (PA): bne zero, t4, fail (0x99D014E3)
+Code allocator: register the remaining block: [0x00000000800000fc..0x000000008000067c) (269 calls)
+
+
+------------------------ Ended Processing Main Section -------------------------
+
+
+------------- Running Execution from Prologue (riscv_test.rb:231) --------------
+
+
+---------------------------------- Instance 0 ----------------------------------
+
+Execution status: 0x0000000080000000
+
+.align 6
+.weak stvec_handler
+.weak mtvec_handler
+.globl _start
+_start:
+0x0000000080000000 j reset_vector
+Jump to 0x000000008000004c
+reset_vector:
+0x000000008000004c csrr a0, mhartid
+1:
+0x0000000080000050 bnez a0, 1b
+0x0000000080000054 la t0, 1f
+0x000000008000005c csrw mtvec, t0
+0x0000000080000060 csrwi satp, 0x0
+.align 2
+1:
+0x0000000080000064 la t0, 1f
+0x000000008000006c csrw mtvec, t0
+0x0000000080000070 li t0, 0xffffffffffffffff
+0x0000000080000074 csrw pmpaddr0, t0
+0x0000000080000078 li t0, 0x1f
+0x000000008000007c csrw pmpcfg0, t0
+.align 2
+1:
+0x0000000080000080 la t0, 1f
+0x0000000080000088 csrw mtvec, t0
+0x000000008000008c csrwi medeleg, 0x0
+0x0000000080000090 csrwi mideleg, 0x0
+0x0000000080000094 csrwi mie, 0x0
+.align 2
+1:
+0x0000000080000098 li gp, 0x0
+0x000000008000009c la t0, trap_vector
+0x00000000800000a4 csrw mtvec, t0
+0x00000000800000a8 li a0, 0x1
+0x00000000800000ac slli a0, a0, 0x1f
+0x00000000800000b0 bgez a0, 1f
+Jump to 0x00000000800000c0
+1:
+0x00000000800000c0 la t0, stvec_handler
+0x00000000800000c8 beqz t0, 1f
+Jump to 0x00000000800000e4
+1:
+0x00000000800000e4 csrwi mstatus, 0x0
+0x00000000800000e8 la t0, 1f
+0x00000000800000f0 csrw mepc, t0
+0x00000000800000f4 csrr a0, mhartid
+0x00000000800000f8 mret
+1:
+test_32:
+0x00000000800000fc li ra, 0x7e00
+0x000000008000011c li sp, 0x6db6db6db6db6db7
+0x000000008000013c mul t5, ra, sp
+0x0000000080000140 li t4, 0x1200
+0x0000000080000148 li gp, 0x20
+Reference to undefined label fail:
+Check: testreg(0x0000000000001200) == x29(0x0000000000001200)
+0x000000008000014c bne t5, t4, fail
+Call is not executed. Simulation is paused until the label is allocated.
+
+--------------- Constructed Epilogue (riscv_test_macros.rb:884) ----------------
+
+	bne zero, gp, pass
+fail:
+	fence
+1:
+	beqz gp, 1b
+	sll gp, gp, ra
+	or gp, gp, ra
+	ecall
+pass:
+	fence
+	li gp, 0x1
+	ecall
+	unimp
+
+------------------------------- Allocating code --------------------------------
+
+Section: .section .text.init [pa=0x0000000080000000, va=0x0000000080000000]
+
+0x000000008000067c (PA): bne zero, gp, pass (0x983012E3)
+Code allocator: directive: fail:
+0x0000000080000680 (PA): fence (0x0000000F)
+Code allocator: directive: 1:
+0x0000000080000684 (PA): beqz gp, 1b (0x96018EE3)
+0x0000000080000688 (PA): sll gp, gp, ra (0x001191B3)
+0x000000008000068c (PA): or gp, gp, ra (0x0011E1B3)
+0x0000000080000690 (PA): ecall (0x00000073)
+Code allocator: directive: pass:
+0x0000000080000694 (PA): fence (0x0000000F)
+0x0000000080000698 (PA): li gp, 0x1 (0x00100193)
+0x000000008000069c (PA): ecall (0x00000073)
+Code allocator: register the remaining block: [0x000000008000067c..0x00000000800006a0) (10 calls)
+
+
+---------- Running Execution from Epilogue (riscv_test_macros.rb:884) ----------
+
+
+---------------------------------- Instance 0 ----------------------------------
+
+Execution status: 0x000000008000014c (waiting for label fail)
+
+Check: testreg(0x0000000000001200) == x29(0x0000000000001200)
+0x000000008000014c bne t5, t4, fail
+test_33:
+0x0000000080000150 li ra, 0x7fc0
+0x0000000080000170 li sp, 0x6db6db6db6db6db7
+0x0000000080000190 mul t5, ra, sp
+0x0000000080000194 li t4, 0x1240
+0x000000008000019c li gp, 0x21
+Check: testreg(0x0000000000001240) == x29(0x0000000000001240)
+0x00000000800001a0 bne t5, t4, fail
+test_2:
+0x00000000800001a4 li ra, 0x0
+0x00000000800001a8 li sp, 0x0
+0x00000000800001ac mul t5, ra, sp
+0x00000000800001b0 li t4, 0x0
+0x00000000800001b4 li gp, 0x2
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x00000000800001b8 bne t5, t4, fail
+test_3:
+0x00000000800001bc li ra, 0x1
+0x00000000800001c0 li sp, 0x1
+0x00000000800001c4 mul t5, ra, sp
+0x00000000800001c8 li t4, 0x1
+0x00000000800001cc li gp, 0x3
+Check: testreg(0x0000000000000001) == x29(0x0000000000000001)
+0x00000000800001d0 bne t5, t4, fail
+test_4:
+0x00000000800001d4 li ra, 0x3
+0x00000000800001d8 li sp, 0x7
+0x00000000800001dc mul t5, ra, sp
+0x00000000800001e0 li t4, 0x15
+0x00000000800001e4 li gp, 0x4
+Check: testreg(0x0000000000000015) == x29(0x0000000000000015)
+0x00000000800001e8 bne t5, t4, fail
+test_5:
+0x00000000800001ec li ra, 0x0
+0x00000000800001f0 li sp, 0xffffffffffff8000
+0x00000000800001f8 mul t5, ra, sp
+0x00000000800001fc li t4, 0x0
+0x0000000080000200 li gp, 0x5
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x0000000080000204 bne t5, t4, fail
+test_6:
+0x0000000080000208 li ra, 0xffffffff80000000
+0x0000000080000210 li sp, 0x0
+0x0000000080000214 mul t5, ra, sp
+0x0000000080000218 li t4, 0x0
+0x000000008000021c li gp, 0x6
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x0000000080000220 bne t5, t4, fail
+test_7:
+0x0000000080000224 li ra, 0xffffffff80000000
+0x000000008000022c li sp, 0xffffffffffff8000
+0x0000000080000234 mul t5, ra, sp
+0x0000000080000238 li t4, 0x400000000000
+0x0000000080000258 li gp, 0x7
+Check: testreg(0x0000400000000000) == x29(0x0000400000000000)
+0x000000008000025c bne t5, t4, fail
+test_30:
+0x0000000080000260 li ra, 0xaaaaaaaaaaaaaaab
+0x0000000080000280 li sp, 0x2fe7d
+0x00000000800002a0 mul t5, ra, sp
+0x00000000800002a4 li t4, 0xff7f
+0x00000000800002c4 li gp, 0x1e
+Check: testreg(0x000000000000ff7f) == x29(0x000000000000ff7f)
+0x00000000800002c8 bne t5, t4, fail
+test_31:
+0x00000000800002cc li ra, 0x2fe7d
+0x00000000800002ec li sp, 0xaaaaaaaaaaaaaaab
+0x000000008000030c mul t5, ra, sp
+0x0000000080000310 li t4, 0xff7f
+0x0000000080000330 li gp, 0x1f
+Check: testreg(0x000000000000ff7f) == x29(0x000000000000ff7f)
+0x0000000080000334 bne t5, t4, fail
+test_8:
+0x0000000080000338 li ra, 0xd
+0x000000008000033c li sp, 0xb
+0x0000000080000340 mul ra, ra, sp
+0x0000000080000344 li t4, 0x8f
+0x0000000080000348 li gp, 0x8
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x000000008000034c bne ra, t4, fail
+test_9:
+0x0000000080000350 li ra, 0xe
+0x0000000080000354 li sp, 0xb
+0x0000000080000358 mul sp, ra, sp
+0x000000008000035c li t4, 0x9a
+0x0000000080000360 li gp, 0x9
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x0000000080000364 bne sp, t4, fail
+test_10:
+0x0000000080000368 li ra, 0xd
+0x000000008000036c mul ra, ra, ra
+0x0000000080000370 li t4, 0xa9
+0x0000000080000374 li gp, 0xa
+Check: testreg(0x00000000000000a9) == x29(0x00000000000000a9)
+0x0000000080000378 bne ra, t4, fail
+test_11:
+0x000000008000037c li tp, 0x0
+1:
+0x0000000080000380 li ra, 0xd
+0x0000000080000384 li sp, 0xb
+0x0000000080000388 mul t5, ra, sp
+0x000000008000038c addi t1, t5, 0
+0x0000000080000390 addi tp, tp, 1
+0x0000000080000394 li t0, 0x2
+0x0000000080000398 bne tp, t0, 1b
+Jump to 0x0000000080000380
+1:
+0x0000000080000380 li ra, 0xd
+0x0000000080000384 li sp, 0xb
+0x0000000080000388 mul t5, ra, sp
+0x000000008000038c addi t1, t5, 0
+0x0000000080000390 addi tp, tp, 1
+0x0000000080000394 li t0, 0x2
+0x0000000080000398 bne tp, t0, 1b
+0x000000008000039c li t4, 0x8f
+0x00000000800003a0 li gp, 0xb
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x00000000800003a4 bne t1, t4, fail
+test_12:
+0x00000000800003a8 li tp, 0x0
+1:
+0x00000000800003ac li ra, 0xe
+0x00000000800003b0 li sp, 0xb
+0x00000000800003b4 mul t5, ra, sp
+0x00000000800003b8 nop
+0x00000000800003bc addi t1, t5, 0
+0x00000000800003c0 addi tp, tp, 1
+0x00000000800003c4 li t0, 0x2
+0x00000000800003c8 bne tp, t0, 1b
+Jump to 0x00000000800003ac
+1:
+0x00000000800003ac li ra, 0xe
+0x00000000800003b0 li sp, 0xb
+0x00000000800003b4 mul t5, ra, sp
+0x00000000800003b8 nop
+0x00000000800003bc addi t1, t5, 0
+0x00000000800003c0 addi tp, tp, 1
+0x00000000800003c4 li t0, 0x2
+0x00000000800003c8 bne tp, t0, 1b
+0x00000000800003cc li t4, 0x9a
+0x00000000800003d0 li gp, 0xc
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x00000000800003d4 bne t1, t4, fail
+test_13:
+0x00000000800003d8 li tp, 0x0
+1:
+0x00000000800003dc li ra, 0xf
+0x00000000800003e0 li sp, 0xb
+0x00000000800003e4 mul t5, ra, sp
+0x00000000800003e8 nop
+0x00000000800003ec nop
+0x00000000800003f0 addi t1, t5, 0
+0x00000000800003f4 addi tp, tp, 1
+0x00000000800003f8 li t0, 0x2
+0x00000000800003fc bne tp, t0, 1b
+Jump to 0x00000000800003dc
+1:
+0x00000000800003dc li ra, 0xf
+0x00000000800003e0 li sp, 0xb
+0x00000000800003e4 mul t5, ra, sp
+0x00000000800003e8 nop
+0x00000000800003ec nop
+0x00000000800003f0 addi t1, t5, 0
+0x00000000800003f4 addi tp, tp, 1
+0x00000000800003f8 li t0, 0x2
+0x00000000800003fc bne tp, t0, 1b
+0x0000000080000400 li t4, 0xa5
+0x0000000080000404 li gp, 0xd
+Check: testreg(0x00000000000000a5) == x29(0x00000000000000a5)
+0x0000000080000408 bne t1, t4, fail
+test_14:
+0x000000008000040c li tp, 0x0
+1:
+0x0000000080000410 li ra, 0xd
+0x0000000080000414 li sp, 0xb
+0x0000000080000418 mul t5, ra, sp
+0x000000008000041c addi tp, tp, 1
+0x0000000080000420 li t0, 0x2
+0x0000000080000424 bne tp, t0, 1b
+Jump to 0x0000000080000410
+1:
+0x0000000080000410 li ra, 0xd
+0x0000000080000414 li sp, 0xb
+0x0000000080000418 mul t5, ra, sp
+0x000000008000041c addi tp, tp, 1
+0x0000000080000420 li t0, 0x2
+0x0000000080000424 bne tp, t0, 1b
+0x0000000080000428 li t4, 0x8f
+0x000000008000042c li gp, 0xe
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x0000000080000430 bne t5, t4, fail
+test_15:
+0x0000000080000434 li tp, 0x0
+1:
+0x0000000080000438 li ra, 0xe
+0x000000008000043c li sp, 0xb
+0x0000000080000440 nop
+0x0000000080000444 mul t5, ra, sp
+0x0000000080000448 addi tp, tp, 1
+0x000000008000044c li t0, 0x2
+0x0000000080000450 bne tp, t0, 1b
+Jump to 0x0000000080000438
+1:
+0x0000000080000438 li ra, 0xe
+0x000000008000043c li sp, 0xb
+0x0000000080000440 nop
+0x0000000080000444 mul t5, ra, sp
+0x0000000080000448 addi tp, tp, 1
+0x000000008000044c li t0, 0x2
+0x0000000080000450 bne tp, t0, 1b
+0x0000000080000454 li t4, 0x9a
+0x0000000080000458 li gp, 0xf
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x000000008000045c bne t5, t4, fail
+test_16:
+0x0000000080000460 li tp, 0x0
+1:
+0x0000000080000464 li ra, 0xf
+0x0000000080000468 li sp, 0xb
+0x000000008000046c nop
+0x0000000080000470 nop
+0x0000000080000474 mul t5, ra, sp
+0x0000000080000478 addi tp, tp, 1
+0x000000008000047c li t0, 0x2
+0x0000000080000480 bne tp, t0, 1b
+Jump to 0x0000000080000464
+1:
+0x0000000080000464 li ra, 0xf
+0x0000000080000468 li sp, 0xb
+0x000000008000046c nop
+0x0000000080000470 nop
+0x0000000080000474 mul t5, ra, sp
+0x0000000080000478 addi tp, tp, 1
+0x000000008000047c li t0, 0x2
+0x0000000080000480 bne tp, t0, 1b
+0x0000000080000484 li t4, 0xa5
+0x0000000080000488 li gp, 0x10
+Check: testreg(0x00000000000000a5) == x29(0x00000000000000a5)
+0x000000008000048c bne t5, t4, fail
+test_17:
+0x0000000080000490 li tp, 0x0
+1:
+0x0000000080000494 li ra, 0xd
+0x0000000080000498 nop
+0x000000008000049c li sp, 0xb
+0x00000000800004a0 mul t5, ra, sp
+0x00000000800004a4 addi tp, tp, 1
+0x00000000800004a8 li t0, 0x2
+0x00000000800004ac bne tp, t0, 1b
+Jump to 0x0000000080000494
+1:
+0x0000000080000494 li ra, 0xd
+0x0000000080000498 nop
+0x000000008000049c li sp, 0xb
+0x00000000800004a0 mul t5, ra, sp
+0x00000000800004a4 addi tp, tp, 1
+0x00000000800004a8 li t0, 0x2
+0x00000000800004ac bne tp, t0, 1b
+0x00000000800004b0 li t4, 0x8f
+0x00000000800004b4 li gp, 0x11
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x00000000800004b8 bne t5, t4, fail
+test_18:
+0x00000000800004bc li tp, 0x0
+1:
+0x00000000800004c0 li ra, 0xe
+0x00000000800004c4 nop
+0x00000000800004c8 li sp, 0xb
+0x00000000800004cc nop
+0x00000000800004d0 mul t5, ra, sp
+0x00000000800004d4 addi tp, tp, 1
+0x00000000800004d8 li t0, 0x2
+0x00000000800004dc bne tp, t0, 1b
+Jump to 0x00000000800004c0
+1:
+0x00000000800004c0 li ra, 0xe
+0x00000000800004c4 nop
+0x00000000800004c8 li sp, 0xb
+0x00000000800004cc nop
+0x00000000800004d0 mul t5, ra, sp
+0x00000000800004d4 addi tp, tp, 1
+0x00000000800004d8 li t0, 0x2
+0x00000000800004dc bne tp, t0, 1b
+0x00000000800004e0 li t4, 0x9a
+0x00000000800004e4 li gp, 0x12
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x00000000800004e8 bne t5, t4, fail
+test_19:
+0x00000000800004ec li tp, 0x0
+1:
+0x00000000800004f0 li ra, 0xf
+0x00000000800004f4 nop
+0x00000000800004f8 nop
+0x00000000800004fc li sp, 0xb
+0x0000000080000500 mul t5, ra, sp
+0x0000000080000504 addi tp, tp, 1
+0x0000000080000508 li t0, 0x2
+0x000000008000050c bne tp, t0, 1b
+Jump to 0x00000000800004f0
+1:
+0x00000000800004f0 li ra, 0xf
+0x00000000800004f4 nop
+0x00000000800004f8 nop
+0x00000000800004fc li sp, 0xb
+0x0000000080000500 mul t5, ra, sp
+0x0000000080000504 addi tp, tp, 1
+0x0000000080000508 li t0, 0x2
+0x000000008000050c bne tp, t0, 1b
+0x0000000080000510 li t4, 0xa5
+0x0000000080000514 li gp, 0x13
+Check: testreg(0x00000000000000a5) == x29(0x00000000000000a5)
+0x0000000080000518 bne t5, t4, fail
+test_20:
+0x000000008000051c li tp, 0x0
+1:
+0x0000000080000520 li sp, 0xb
+0x0000000080000524 li ra, 0xd
+0x0000000080000528 mul t5, ra, sp
+0x000000008000052c addi tp, tp, 1
+0x0000000080000530 li t0, 0x2
+0x0000000080000534 bne tp, t0, 1b
+Jump to 0x0000000080000520
+1:
+0x0000000080000520 li sp, 0xb
+0x0000000080000524 li ra, 0xd
+0x0000000080000528 mul t5, ra, sp
+0x000000008000052c addi tp, tp, 1
+0x0000000080000530 li t0, 0x2
+0x0000000080000534 bne tp, t0, 1b
+0x0000000080000538 li t4, 0x8f
+0x000000008000053c li gp, 0x14
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x0000000080000540 bne t5, t4, fail
+test_21:
+0x0000000080000544 li tp, 0x0
+1:
+0x0000000080000548 li sp, 0xb
+0x000000008000054c li ra, 0xe
+0x0000000080000550 nop
+0x0000000080000554 mul t5, ra, sp
+0x0000000080000558 addi tp, tp, 1
+0x000000008000055c li t0, 0x2
+0x0000000080000560 bne tp, t0, 1b
+Jump to 0x0000000080000548
+1:
+0x0000000080000548 li sp, 0xb
+0x000000008000054c li ra, 0xe
+0x0000000080000550 nop
+0x0000000080000554 mul t5, ra, sp
+0x0000000080000558 addi tp, tp, 1
+0x000000008000055c li t0, 0x2
+0x0000000080000560 bne tp, t0, 1b
+0x0000000080000564 li t4, 0x9a
+0x0000000080000568 li gp, 0x15
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x000000008000056c bne t5, t4, fail
+test_22:
+0x0000000080000570 li tp, 0x0
+1:
+0x0000000080000574 li sp, 0xb
+0x0000000080000578 li ra, 0xf
+0x000000008000057c nop
+0x0000000080000580 nop
+0x0000000080000584 mul t5, ra, sp
+0x0000000080000588 addi tp, tp, 1
+0x000000008000058c li t0, 0x2
+0x0000000080000590 bne tp, t0, 1b
+Jump to 0x0000000080000574
+1:
+0x0000000080000574 li sp, 0xb
+0x0000000080000578 li ra, 0xf
+0x000000008000057c nop
+0x0000000080000580 nop
+0x0000000080000584 mul t5, ra, sp
+0x0000000080000588 addi tp, tp, 1
+0x000000008000058c li t0, 0x2
+0x0000000080000590 bne tp, t0, 1b
+0x0000000080000594 li t4, 0xa5
+0x0000000080000598 li gp, 0x16
+Check: testreg(0x00000000000000a5) == x29(0x00000000000000a5)
+0x000000008000059c bne t5, t4, fail
+test_23:
+0x00000000800005a0 li tp, 0x0
+1:
+0x00000000800005a4 li sp, 0xb
+0x00000000800005a8 nop
+0x00000000800005ac li ra, 0xd
+0x00000000800005b0 mul t5, ra, sp
+0x00000000800005b4 addi tp, tp, 1
+0x00000000800005b8 li t0, 0x2
+0x00000000800005bc bne tp, t0, 1b
+Jump to 0x00000000800005a4
+1:
+0x00000000800005a4 li sp, 0xb
+0x00000000800005a8 nop
+0x00000000800005ac li ra, 0xd
+0x00000000800005b0 mul t5, ra, sp
+0x00000000800005b4 addi tp, tp, 1
+0x00000000800005b8 li t0, 0x2
+0x00000000800005bc bne tp, t0, 1b
+0x00000000800005c0 li t4, 0x8f
+0x00000000800005c4 li gp, 0x17
+Check: testreg(0x000000000000008f) == x29(0x000000000000008f)
+0x00000000800005c8 bne t5, t4, fail
+test_24:
+0x00000000800005cc li tp, 0x0
+1:
+0x00000000800005d0 li sp, 0xb
+0x00000000800005d4 nop
+0x00000000800005d8 li ra, 0xe
+0x00000000800005dc nop
+0x00000000800005e0 mul t5, ra, sp
+0x00000000800005e4 addi tp, tp, 1
+0x00000000800005e8 li t0, 0x2
+0x00000000800005ec bne tp, t0, 1b
+Jump to 0x00000000800005d0
+1:
+0x00000000800005d0 li sp, 0xb
+0x00000000800005d4 nop
+0x00000000800005d8 li ra, 0xe
+0x00000000800005dc nop
+0x00000000800005e0 mul t5, ra, sp
+0x00000000800005e4 addi tp, tp, 1
+0x00000000800005e8 li t0, 0x2
+0x00000000800005ec bne tp, t0, 1b
+0x00000000800005f0 li t4, 0x9a
+0x00000000800005f4 li gp, 0x18
+Check: testreg(0x000000000000009a) == x29(0x000000000000009a)
+0x00000000800005f8 bne t5, t4, fail
+test_25:
+0x00000000800005fc li tp, 0x0
+1:
+0x0000000080000600 li sp, 0xb
+0x0000000080000604 nop
+0x0000000080000608 nop
+0x000000008000060c li ra, 0xf
+0x0000000080000610 mul t5, ra, sp
+0x0000000080000614 addi tp, tp, 1
+0x0000000080000618 li t0, 0x2
+0x000000008000061c bne tp, t0, 1b
+Jump to 0x0000000080000600
+1:
+0x0000000080000600 li sp, 0xb
+0x0000000080000604 nop
+0x0000000080000608 nop
+0x000000008000060c li ra, 0xf
+0x0000000080000610 mul t5, ra, sp
+0x0000000080000614 addi tp, tp, 1
+0x0000000080000618 li t0, 0x2
+0x000000008000061c bne tp, t0, 1b
+0x0000000080000620 li t4, 0xa5
+0x0000000080000624 li gp, 0x19
+Check: testreg(0x00000000000000a5) == x29(0x00000000000000a5)
+0x0000000080000628 bne t5, t4, fail
+test_26:
+0x000000008000062c li ra, 0x1f
+0x0000000080000630 mul sp, zero, ra
+0x0000000080000634 li t4, 0x0
+0x0000000080000638 li gp, 0x1a
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x000000008000063c bne sp, t4, fail
+test_27:
+0x0000000080000640 li ra, 0x20
+0x0000000080000644 mul sp, ra, zero
+0x0000000080000648 li t4, 0x0
+0x000000008000064c li gp, 0x1b
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x0000000080000650 bne sp, t4, fail
+test_28:
+0x0000000080000654 mul ra, zero, zero
+0x0000000080000658 li t4, 0x0
+0x000000008000065c li gp, 0x1c
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x0000000080000660 bne ra, t4, fail
+test_29:
+0x0000000080000664 li ra, 0x21
+0x0000000080000668 li sp, 0x22
+0x000000008000066c mul zero, ra, sp
+0x0000000080000670 li t4, 0x0
+0x0000000080000674 li gp, 0x1d
+Check: testreg(0x0000000000000000) == x29(0x0000000000000000)
+0x0000000080000678 bne zero, t4, fail
+Check: x0(0x0000000000000000) != TESTNUM(0x000000000000001d)
+0x000000008000067c bne zero, gp, pass
+Jump to 0x0000000080000694
+pass:
+0x0000000080000694 fence
+0x0000000080000698 li gp, 0x1
+0x000000008000069c ecall
+0x00000000800006a0 unimp
+Allocated entries: []
+
+--------------------- Printing test program to mul_0000.s ----------------------
+
+
+-------------------------- Ended Processing Template ---------------------------
+
+
+----------------------- Printing linker script to mul.ld -----------------------
+
+Generation Statistics
+Generation time: 7.320 seconds
+Generation rate: 45 instructions/second
+Programs/stimuli/instructions: 1/0/334

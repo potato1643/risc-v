@@ -1,0 +1,125 @@
+
+<style>
+*{box-sizing:border-box}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:1rem 0 12px}
+input[type=text]{flex:1;min-width:160px}
+select{min-width:130px}
+.count{font-size:13px;color:var(--color-text-secondary);white-space:nowrap}
+.tbl-wrap{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--color-background-secondary)}
+th{padding:8px 12px;text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-secondary)}
+td{padding:6px 12px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--color-background-secondary)}
+code{font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:1px 4px;border-radius:3px}
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:4px;font-weight:500;white-space:nowrap}
+.set-cell{font-weight:500;font-size:13px;white-space:nowrap}
+.insns{line-height:1.7}
+/* status badges */
+.s-yes{background:#EAF3DE;color:#27500A}
+.s-no{background:#FCEBEB;color:#791F1F}
+.s-partial{background:#FAEEDA;color:#633806}
+/* set color rows */
+.row-green td{background:#f0fdf0}
+.row-yellow td{background:#fefce8}
+.row-pink td{background:#fff0f0}
+tbody tr.row-green:hover td{background:#e6fae6}
+tbody tr.row-yellow:hover td{background:#fef9d0}
+tbody tr.row-pink:hover td{background:#ffe6e6}
+@media(prefers-color-scheme:dark){
+  .s-yes{background:#173404;color:#C0DD97}
+  .s-no{background:#501313;color:#F7C1C1}
+  .s-partial{background:#412402;color:#FAC775}
+  .row-green td{background:#0d1f0d}
+  .row-yellow td{background:#1f1c06}
+  .row-pink td{background:#1f0a0a}
+  tbody tr.row-green:hover td{background:#122012}
+  tbody tr.row-yellow:hover td{background:#221e08}
+  tbody tr.row-pink:hover td{background:#220c0c}
+}
+</style>
+
+<h2 class="sr-only">RISC-V MicroTESK Instruction Table — Instruction Set, Instructions, Specified, Validated</h2>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="搜索指令集或指令…" oninput="filter()">
+  <select id="catFilter" onchange="filter()">
+    <option value="">所有类别</option>
+    <option value="Integer">Integer (I/M/A)</option>
+    <option value="Float">Float (F/D/Q)</option>
+    <option value="Compressed">Compressed (C)</option>
+    <option value="Vector">Vector (V)</option>
+    <option value="System">System</option>
+  </select>
+  <select id="valFilter" onchange="filter()">
+    <option value="">所有验证状态</option>
+    <option value="Yes">已完全验证</option>
+    <option value="Partially">部分验证</option>
+    <option value="No">未验证</option>
+  </select>
+  <span class="count" id="count"></span>
+</div>
+
+<div class="tbl-wrap">
+<table>
+<thead><tr><th style="width:18%">指令集</th><th style="width:38%">指令</th><th style="width:17%">Specified</th><th style="width:27%">Validated</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+
+<script>
+const data = [
+  {set:"RV32I (User)", cat:"Integer", color:"green", insns:["LUI","AUIPC","JAL","JALR","BEQ","BNE","BLT","BGE","BLTU","BGEU","LB","LH","LW","LBU","LHU","SB","SH","SW","ADDI","SLTI","SLTIU","XORI","ORI","ANDI","SLLI","SRLI","SRAI","SLL","SRL","SRA","ADD","SUB","SLT","SLTU","XOR","OR","AND"], specified:"Yes (37/37)", validated:"Yes (37/37)"},
+  {set:"RV64I (User)", cat:"Integer", color:"green", insns:["LWU","LD","SD","ADDIW","SLLIW","SRLIW","SRAIW","ADDW","SUBW","SLLW","SRLW","SRAW"], specified:"Yes (12/12)", validated:"Yes (12/12)"},
+  {set:"RV32I (System)", cat:"System", color:"yellow", insns:["ECALL","EBREAK","FENCE","FENCE.I","MRET","SRET","URET","WFI","CSRRW","CSRRS","CSRRC","CSRRWI","CSRRSI","CSRRCI"], specified:"Yes (14/14)", validated:"No (0/14)"},
+  {set:"RV32M", cat:"Integer", color:"green", insns:["MUL","MULH","MULHSU","MULHU","DIV","DIVU","REM","REMU"], specified:"Yes (8/8)", validated:"Yes (8/8)"},
+  {set:"RV64M", cat:"Integer", color:"green", insns:["MULW","DIVW","DIVUW","REMW","REMUW"], specified:"Yes (5/5)", validated:"Yes (5/5)"},
+  {set:"RV32A", cat:"Integer", color:"green", insns:["LR.W","SC.W","AMOSWAP.W","AMOADD.W","AMOXOR.W","AMOAND.W","AMOOR.W","AMOMIN.W","AMOMAX.W","AMOMINU.W","AMOMAXU.W"], specified:"Yes (11/11)", validated:"Yes (11/11)"},
+  {set:"RV64A", cat:"Integer", color:"green", insns:["LR.D","SC.D","AMOSWAP.D","AMOADD.D","AMOXOR.D","AMOAND.D","AMOOR.D","AMOMIN.D","AMOMAX.D","AMOMINU.D","AMOMAXU.D"], specified:"Yes (11/11)", validated:"Yes (11/11)"},
+  {set:"RV32F", cat:"Float", color:"yellow", insns:["FLW","FSW","FMADD.S","FMSUB.S","FNMSUB.S","FNMADD.S","FADD.S","FSUB.S","FMUL.S","FDIV.S","FSQRT.S","FSGNJ.S","FSGNJN.S","FSGNJX.S","FMIN.S","FMAX.S","FCVT.W.S","FCVT.WU.S","FMV.X.W","FEQ.S","FLT.S","FLE.S","FCLASS.S","FCVT.S.W","FCVT.S.WU","FMV.W.X"], specified:"Yes (26/26)", validated:"Partially (8/26)"},
+  {set:"RV64F", cat:"Float", color:"yellow", insns:["FCVT.L.S","FCVT.LU.S","FCVT.S.L","FCVT.S.LU"], specified:"Yes (4/4)", validated:"Partially (0/4)"},
+  {set:"RV32D", cat:"Float", color:"yellow", insns:["FLD","FSD","FMADD.D","FMSUB.D","FNMSUB.D","FNMADD.D","FADD.D","FSUB.D","FMUL.D","FDIV.D","FSQRT.D","FSGNJ.D","FSGNJN.D","FSGNJX.D","FMIN.D","FMAX.D","FCVT.S.D","FCVT.D.S","FEQ.D","FLT.D","FLE.D","FCLASS.D","FCVT.W.D","FCVT.WU.D","FCVT.D.W","FCVT.D.WU"], specified:"Yes (26/26)", validated:"Partially (2/26)"},
+  {set:"RV64D", cat:"Float", color:"yellow", insns:["FCVT.L.D","FCVT.LU.D","FMV.X.D","FCVT.D.L","FCVT.D.LU","FMV.D.X"], specified:"Yes (6/6)", validated:"No (0/6)"},
+  {set:"RVC", cat:"Compressed", color:"yellow", insns:["C.ADDI4SPN","C.FLD","C.LQ","C.LW","C.FLW","C.LD","C.FSD","C.SQ","C.SW","C.FSW","C.SD","C.NOP","C.ADDI","C.JAL","C.ADDIW","C.LI","C.ADDI16SP","C.LUI","C.SRLI","C.SRLI64","C.SRAI","C.SRAI64","C.ANDI","C.SUB","C.XOR","C.OR","C.AND","C.SUBW","C.ADDW","C.J","C.BEQZ","C.BNEZ","C.SLLI","C.SLLI64","C.FLDSP","C.LQSP","C.LWSP","C.FLWSP","C.LDSP","C.JR","C.MV","C.EBREAK","C.JALR","C.ADD","C.FSDSP","C.SQSP","C.SWSP","C.FSWSP","C.SDSP"], specified:"Yes (49/49)", validated:"Partially (36/49)"},
+  {set:"RV64Q", cat:"Float", color:"pink", insns:[], specified:"No", validated:"No"},
+  {set:"RV32V", cat:"Vector", color:"pink", insns:["VADD","VSUB","VSL","VSR","VAND","VOR","VXOR","VSEQ","VSNE","VSLT","VSGE","VCLIP","VCVT","VMPOP","VMFIRST","VEXTRACT","VINSERT","VMERGE","VSELECT","VSLIDE","VDIV","VREM","VMUL","VMULH","VMIN","VMAX","VSGNJ","VSGNJN","VSGNJX","VSQRT","VCLASS","VPOPC","VADDI","VSLI","VSRI","VANDI","VORI","VXORI","VCLIPI","VMADD","VMSUB","VNMADD","VNMSUB"], specified:"No (6/43)", validated:"No"},
+];
+
+function statusBadge(s) {
+  if (!s) return '';
+  const cls = s.startsWith('Yes') ? 's-yes' : s.startsWith('No') ? 's-no' : 's-partial';
+  return `<span class="badge ${cls}">${s}</span>`;
+}
+
+function render(rows) {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = rows.map(r => {
+    const insnsHtml = r.insns.length
+      ? `<div class="insns">${r.insns.map(i=>`<code>${i}</code>`).join(' ')}</div>`
+      : '<span style="color:var(--color-text-secondary);font-size:12px">—</span>';
+    return `<tr class="row-${r.color}">
+      <td class="set-cell">${r.set}</td>
+      <td>${insnsHtml}</td>
+      <td>${statusBadge(r.specified)}</td>
+      <td>${statusBadge(r.validated)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('count').textContent = `${rows.length} / ${data.length} 个指令集`;
+}
+
+function filter() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const val = document.getElementById('valFilter').value;
+  const res = data.filter(r => {
+    const matchQ = !q || r.set.toLowerCase().includes(q) || r.insns.some(i => i.toLowerCase().includes(q));
+    const matchCat = !cat || r.cat === cat;
+    const matchVal = !val || r.validated.startsWith(val);
+    return matchQ && matchCat && matchVal;
+  });
+  render(res);
+}
+
+render(data);
+</script>
