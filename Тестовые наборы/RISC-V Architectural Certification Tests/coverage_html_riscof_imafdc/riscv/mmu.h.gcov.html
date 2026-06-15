@@ -1,0 +1,823 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - riscof_imafdc_filtered.info - riscv/mmu.h</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">riscv</a> - mmu.h<span style="font-size: 80%;"> (source / <a href="mmu.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">riscof_imafdc_filtered.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">63</td>
+            <td class="headerCovTableEntry">193</td>
+            <td class="headerCovTableEntryLo">32.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2026-06-12 23:14:30</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">35</td>
+            <td class="headerCovTableEntry">312</td>
+            <td class="headerCovTableEntryLo">11.2 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">80</td>
+            <td class="headerCovTableEntry">850</td>
+            <td class="headerCovTableEntryLo">9.4 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : // See LICENSE for license details.</a>
+<a name="2"><span class="lineNum">       2 </span>                :            : </a>
+<a name="3"><span class="lineNum">       3 </span>                :            : #ifndef _RISCV_MMU_H</a>
+<a name="4"><span class="lineNum">       4 </span>                :            : #define _RISCV_MMU_H</a>
+<a name="5"><span class="lineNum">       5 </span>                :            : </a>
+<a name="6"><span class="lineNum">       6 </span>                :            : #include &quot;bloom_filter.h&quot;</a>
+<a name="7"><span class="lineNum">       7 </span>                :            : #include &quot;decode.h&quot;</a>
+<a name="8"><span class="lineNum">       8 </span>                :            : #include &quot;trap.h&quot;</a>
+<a name="9"><span class="lineNum">       9 </span>                :            : #include &quot;common.h&quot;</a>
+<a name="10"><span class="lineNum">      10 </span>                :            : #include &quot;simif.h&quot;</a>
+<a name="11"><span class="lineNum">      11 </span>                :            : #include &quot;processor.h&quot;</a>
+<a name="12"><span class="lineNum">      12 </span>                :            : #include &quot;memtracer.h&quot;</a>
+<a name="13"><span class="lineNum">      13 </span>                :            : #include &quot;../fesvr/byteorder.h&quot;</a>
+<a name="14"><span class="lineNum">      14 </span>                :            : #include &quot;triggers.h&quot;</a>
+<a name="15"><span class="lineNum">      15 </span>                :            : #include &quot;cfg.h&quot;</a>
+<a name="16"><span class="lineNum">      16 </span>                :            : </a>
+<a name="17"><span class="lineNum">      17 </span>                :            : #include &lt;algorithm&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>                :            : #include &lt;cassert&gt;</a>
+<a name="19"><span class="lineNum">      19 </span>                :            : #include &lt;cstddef&gt;</a>
+<a name="20"><span class="lineNum">      20 </span>                :            : #include &lt;stdlib.h&gt;</a>
+<a name="21"><span class="lineNum">      21 </span>                :            : </a>
+<a name="22"><span class="lineNum">      22 </span>                :            : // virtual memory configuration</a>
+<a name="23"><span class="lineNum">      23 </span>                :            : #define PGSHIFT 12</a>
+<a name="24"><span class="lineNum">      24 </span>                :            : const reg_t PGSIZE = 1 &lt;&lt; PGSHIFT;</a>
+<a name="25"><span class="lineNum">      25 </span>                :            : </a>
+<a name="26"><span class="lineNum">      26 </span>                :            : // observability hooks for load, store and fetch</a>
+<a name="27"><span class="lineNum">      27 </span>                :            : // intentionally empty not to cause runtime overhead</a>
+<a name="28"><span class="lineNum">      28 </span>                :            : // can be redefined if needed </a>
+<a name="29"><span class="lineNum">      29 </span>                :            : #ifndef MMU_OBSERVE_FETCH</a>
+<a name="30"><span class="lineNum">      30 </span>                :            : #define MMU_OBSERVE_FETCH(addr, insn, length)</a>
+<a name="31"><span class="lineNum">      31 </span>                :            : #endif</a>
+<a name="32"><span class="lineNum">      32 </span>                :            : </a>
+<a name="33"><span class="lineNum">      33 </span>                :            : #ifndef MMU_OBSERVE_LOAD</a>
+<a name="34"><span class="lineNum">      34 </span>                :            : #define MMU_OBSERVE_LOAD(addr, data, length)</a>
+<a name="35"><span class="lineNum">      35 </span>                :            : #endif</a>
+<a name="36"><span class="lineNum">      36 </span>                :            : </a>
+<a name="37"><span class="lineNum">      37 </span>                :            : #ifndef MMU_OBSERVE_STORE</a>
+<a name="38"><span class="lineNum">      38 </span>                :            : #define MMU_OBSERVE_STORE(addr, data, length)</a>
+<a name="39"><span class="lineNum">      39 </span>                :            : #endif</a>
+<a name="40"><span class="lineNum">      40 </span>                :            : </a>
+<a name="41"><span class="lineNum">      41 </span>                :            : struct insn_fetch_t</a>
+<a name="42"><span class="lineNum">      42 </span>                :            : {</a>
+<a name="43"><span class="lineNum">      43 </span>                :            :   insn_func_t func;</a>
+<a name="44"><span class="lineNum">      44 </span>                :            :   insn_t insn;</a>
+<a name="45"><span class="lineNum">      45 </span>                :            : };</a>
+<a name="46"><span class="lineNum">      46 </span>                :            : </a>
+<a name="47"><span class="lineNum">      47 </span>                :            : struct icache_entry_t {</a>
+<a name="48"><span class="lineNum">      48 </span>                :            :   reg_t tag;</a>
+<a name="49"><span class="lineNum">      49 </span>                :            :   icache_entry_t* next;</a>
+<a name="50"><span class="lineNum">      50 </span>                :            :   insn_fetch_t data;</a>
+<a name="51"><span class="lineNum">      51 </span>                :            : };</a>
+<a name="52"><span class="lineNum">      52 </span>                :            : </a>
+<a name="53"><span class="lineNum">      53 </span>                :            : struct tlb_entry_t {</a>
+<a name="54"><span class="lineNum">      54 </span>                :            :   uintptr_t host_addr;</a>
+<a name="55"><span class="lineNum">      55 </span>                :            :   reg_t target_addr;</a>
+<a name="56"><span class="lineNum">      56 </span>                :            : };</a>
+<a name="57"><span class="lineNum">      57 </span>                :            : </a>
+<a name="58"><span class="lineNum">      58 </span>                :            : struct dtlb_entry_t {</a>
+<a name="59"><span class="lineNum">      59 </span>                :            :   tlb_entry_t data;</a>
+<a name="60"><span class="lineNum">      60 </span>                :            :   reg_t tag;</a>
+<a name="61"><span class="lineNum">      61 </span>                :            : };</a>
+<a name="62"><span class="lineNum">      62 </span>                :            : </a>
+<a name="63"><span class="lineNum">      63 </span>                :            : struct pte_cache_entry_t {</a>
+<a name="64"><span class="lineNum">      64 </span>                :            :   reg_t paddr;</a>
+<a name="65"><span class="lineNum">      65 </span>                :            :   reg_t pte;</a>
+<a name="66"><span class="lineNum">      66 </span>                :            : };</a>
+<a name="67"><span class="lineNum">      67 </span>                :            : </a>
+<a name="68"><span class="lineNum">      68 </span>                :            : struct xlate_flags_t {</a>
+<a name="69"><span class="lineNum">      69 </span>                :            :   const bool forced_virt : 1 {false};</a>
+<a name="70"><span class="lineNum">      70 </span>                :            :   const bool hlvx : 1 {false};</a>
+<a name="71"><span class="lineNum">      71 </span>                :            :   const bool lr : 1 {false};</a>
+<a name="72"><span class="lineNum">      72 </span>                :            :   const bool ss_access : 1 {false};</a>
+<a name="73"><span class="lineNum">      73 </span>                :            :   const bool clean_inval : 1 {false};</a>
+<a name="74"><span class="lineNum">      74 </span>                :            : </a>
+<a name="75"><span class="lineNum">      75 </span>                :<span class="lineCov">   11034278 :   bool is_special_access() const {</span></a>
+<a name="76"><span class="lineNum">      76 </span>  [<span class="branchCov" title="Branch 0 was taken 10910811 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 10910811 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">   11034278 :     return forced_virt || hlvx || lr || ss_access || clean_inval;</span></a>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 10910811 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 10910811 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchCov" title="Branch 8 was taken 10910811 times"> + </span> 
+<span class="lineNum">         </span>            <span class="branchNoCov" title="Branch 9 was not taken"> - </span>]
+<a name="77"><span class="lineNum">      77 </span>                :            :   }</a>
+<a name="78"><span class="lineNum">      78 </span>                :            : };</a>
+<a name="79"><span class="lineNum">      79 </span>                :            : </a>
+<a name="80"><span class="lineNum">      80 </span>                :            : struct mem_access_info_t {</a>
+<a name="81"><span class="lineNum">      81 </span>                :            :   const reg_t vaddr;</a>
+<a name="82"><span class="lineNum">      82 </span>                :            :   const reg_t transformed_vaddr;</a>
+<a name="83"><span class="lineNum">      83 </span>                :            :   const reg_t effective_priv;</a>
+<a name="84"><span class="lineNum">      84 </span>                :            :   const bool effective_virt;</a>
+<a name="85"><span class="lineNum">      85 </span>                :            :   const xlate_flags_t flags;</a>
+<a name="86"><span class="lineNum">      86 </span>                :            :   const access_type type;</a>
+<a name="87"><span class="lineNum">      87 </span>                :            : };</a>
+<a name="88"><span class="lineNum">      88 </span>                :            : </a>
+<a name="89"><span class="lineNum">      89 </span>                :            : void throw_access_exception(bool virt, reg_t addr, access_type type);</a>
+<a name="90"><span class="lineNum">      90 </span>                :            : [[noreturn]] void throw_page_fault_exception(bool virt, reg_t addr, access_type type);</a>
+<a name="91"><span class="lineNum">      91 </span>                :            : </a>
+<a name="92"><span class="lineNum">      92 </span>                :            : // this class implements a processor's port into the virtual memory system.</a>
+<a name="93"><span class="lineNum">      93 </span>                :            : // an MMU and instruction cache are maintained for simulator performance.</a>
+<a name="94"><span class="lineNum">      94 </span>                :            : class mmu_t</a>
+<a name="95"><span class="lineNum">      95 </span>                :            : {</a>
+<a name="96"><span class="lineNum">      96 </span>                :            : private:</a>
+<a name="97"><span class="lineNum">      97 </span>                :            :   reg_t get_pmlen(bool effective_virt, reg_t effective_priv, xlate_flags_t flags) const;</a>
+<a name="98"><span class="lineNum">      98 </span>                :            :   mem_access_info_t generate_access_info(reg_t addr, access_type type, xlate_flags_t xlate_flags);</a>
+<a name="99"><span class="lineNum">      99 </span>                :            : </a>
+<a name="100"><span class="lineNum">     100 </span>                :            : public:</a>
+<a name="101"><span class="lineNum">     101 </span>                :            :   mmu_t(simif_t* sim, endianness_t endianness, processor_t* proc, reg_t cache_blocksz);</a>
+<a name="102"><span class="lineNum">     102 </span>                :            :   ~mmu_t();</a>
+<a name="103"><span class="lineNum">     103 </span>                :            : </a>
+<a name="104"><span class="lineNum">     104 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="105"><span class="lineNum">     105 </span>  [<span class="branchCov" title="Branch 0 was taken 9957802 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">    9962170 :   T ALWAYS_INLINE load(reg_t addr, xlate_flags_t xlate_flags = {}) {</span></a>
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchNoCov" title="Branch 8 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchCov" title="Branch 12 was taken 1916 times"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span><span class="branchNoExec" title="Branch 16 was not executed"> # </span><span class="branchNoExec" title="Branch 17 was not executed"> # </span><span class="branchNoExec" title="Branch 18 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 19 was not executed"> # </span><span class="branchNoExec" title="Branch 20 was not executed"> # </span><span class="branchNoExec" title="Branch 21 was not executed"> # </span><span class="branchNoExec" title="Branch 22 was not executed"> # </span><span class="branchNoExec" title="Branch 23 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 24 was not executed"> # </span><span class="branchNoExec" title="Branch 25 was not executed"> # </span><span class="branchNoExec" title="Branch 26 was not executed"> # </span><span class="branchNoExec" title="Branch 27 was not executed"> # </span><span class="branchNoExec" title="Branch 28 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 29 was not executed"> # </span><span class="branchNoExec" title="Branch 30 was not executed"> # </span><span class="branchNoExec" title="Branch 31 was not executed"> # </span><span class="branchNoExec" title="Branch 32 was not executed"> # </span><span class="branchNoExec" title="Branch 33 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 34 was not executed"> # </span><span class="branchNoExec" title="Branch 35 was not executed"> # </span><span class="branchNoExec" title="Branch 36 was not executed"> # </span><span class="branchNoExec" title="Branch 37 was not executed"> # </span><span class="branchNoExec" title="Branch 38 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 39 was not executed"> # </span><span class="branchNoExec" title="Branch 40 was not executed"> # </span><span class="branchNoExec" title="Branch 41 was not executed"> # </span><span class="branchNoExec" title="Branch 42 was not executed"> # </span><span class="branchNoExec" title="Branch 43 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 44 was not executed"> # </span><span class="branchNoExec" title="Branch 45 was not executed"> # </span><span class="branchNoExec" title="Branch 46 was not executed"> # </span><span class="branchNoExec" title="Branch 47 was not executed"> # </span><span class="branchNoExec" title="Branch 48 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 49 was not executed"> # </span><span class="branchNoExec" title="Branch 50 was not executed"> # </span><span class="branchNoExec" title="Branch 51 was not executed"> # </span><span class="branchNoExec" title="Branch 52 was not executed"> # </span><span class="branchNoExec" title="Branch 53 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 54 was not executed"> # </span><span class="branchNoExec" title="Branch 55 was not executed"> # </span><span class="branchNoExec" title="Branch 56 was not executed"> # </span><span class="branchNoExec" title="Branch 57 was not executed"> # </span><span class="branchNoExec" title="Branch 58 was not executed"> # </span> 
+<span class="lineNum">         </span>   <span class="branchNoExec" title="Branch 59 was not executed"> # </span><span class="branchNoExec" title="Branch 60 was not executed"> # </span><span class="branchNoExec" title="Branch 61 was not executed"> # </span><span class="branchNoExec" title="Branch 62 was not executed"> # </span> 
+<span class="lineNum">         </span>            <span class="branchNoExec" title="Branch 63 was not executed"> # </span>]
+<a name="106"><span class="lineNum">     106 </span>                :<span class="lineCov">    9963113 :     target_endian&lt;T&gt; res;</span></a>
+<a name="107"><span class="lineNum">     107 </span>                :<span class="lineCov">    9963113 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
+<a name="108"><span class="lineNum">     108 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineCov">    9963113 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_load, addr);</span></a>
+<span class="lineNum">         </span>   <span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<a name="109"><span class="lineNum">     109 </span>                :            : </a>
+<a name="110"><span class="lineNum">     110 </span>  [<span class="branchCov" title="Branch 0 was taken 9957802 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 9957802 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">    9963113 :     if (likely(!xlate_flags.is_special_access() &amp;&amp; aligned &amp;&amp; tlb_hit)) {</span></a>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 258 times"> + </span><span class="branchCov" title="Branch 5 was taken 9957544 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchNoCov" title="Branch 8 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchNoCov" title="Branch 12 was not taken"> - </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchNoCov" title="Branch 17 was not taken"> - </span><span class="branchCov" title="Branch 18 was taken 1229 times"> + </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 19 was not taken"> - </span><span class="branchCov" title="Branch 20 was taken 1229 times"> + </span><span class="branchNoCov" title="Branch 21 was not taken"> - </span><span class="branchCov" title="Branch 22 was taken 10 times"> + </span><span class="branchCov" title="Branch 23 was taken 1219 times"> + </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 24 was taken 65 times"> + </span><span class="branchNoCov" title="Branch 25 was not taken"> - </span><span class="branchCov" title="Branch 26 was taken 2 times"> + </span><span class="branchCov" title="Branch 27 was taken 63 times"> + </span><span class="branchNoCov" title="Branch 28 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 29 was not taken"> - </span><span class="branchNoCov" title="Branch 30 was not taken"> - </span><span class="branchNoCov" title="Branch 31 was not taken"> - </span><span class="branchNoCov" title="Branch 32 was not taken"> - </span><span class="branchNoCov" title="Branch 33 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 34 was not taken"> - </span><span class="branchNoCov" title="Branch 35 was not taken"> - </span><span class="branchCov" title="Branch 36 was taken 3946 times"> + </span><span class="branchNoCov" title="Branch 37 was not taken"> - </span><span class="branchCov" title="Branch 38 was taken 3946 times"> + </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 39 was not taken"> - </span><span class="branchCov" title="Branch 40 was taken 225 times"> + </span><span class="branchCov" title="Branch 41 was taken 3721 times"> + </span><span class="branchNoCov" title="Branch 42 was not taken"> - </span><span class="branchNoCov" title="Branch 43 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 44 was not taken"> - </span><span class="branchNoCov" title="Branch 45 was not taken"> - </span><span class="branchNoCov" title="Branch 46 was not taken"> - </span><span class="branchNoCov" title="Branch 47 was not taken"> - </span><span class="branchNoExec" title="Branch 48 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 49 was not executed"> # </span><span class="branchNoExec" title="Branch 50 was not executed"> # </span><span class="branchNoExec" title="Branch 51 was not executed"> # </span><span class="branchNoExec" title="Branch 52 was not executed"> # </span><span class="branchNoExec" title="Branch 53 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 54 was not executed"> # </span><span class="branchNoExec" title="Branch 55 was not executed"> # </span><span class="branchNoExec" title="Branch 56 was not executed"> # </span><span class="branchNoExec" title="Branch 57 was not executed"> # </span><span class="branchNoExec" title="Branch 58 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 59 was not executed"> # </span><span class="branchNoExec" title="Branch 60 was not executed"> # </span><span class="branchNoExec" title="Branch 61 was not executed"> # </span><span class="branchNoExec" title="Branch 62 was not executed"> # </span><span class="branchNoExec" title="Branch 63 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 64 was not executed"> # </span><span class="branchNoExec" title="Branch 65 was not executed"> # </span><span class="branchNoExec" title="Branch 66 was not executed"> # </span><span class="branchNoExec" title="Branch 67 was not executed"> # </span><span class="branchNoExec" title="Branch 68 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 69 was not executed"> # </span><span class="branchNoExec" title="Branch 70 was not executed"> # </span><span class="branchNoExec" title="Branch 71 was not executed"> # </span><span class="branchNoExec" title="Branch 72 was not executed"> # </span><span class="branchNoExec" title="Branch 73 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 74 was not executed"> # </span><span class="branchNoExec" title="Branch 75 was not executed"> # </span><span class="branchNoExec" title="Branch 76 was not executed"> # </span><span class="branchNoExec" title="Branch 77 was not executed"> # </span><span class="branchNoExec" title="Branch 78 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 79 was not executed"> # </span><span class="branchNoExec" title="Branch 80 was not executed"> # </span><span class="branchNoExec" title="Branch 81 was not executed"> # </span><span class="branchNoExec" title="Branch 82 was not executed"> # </span><span class="branchNoExec" title="Branch 83 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 84 was not executed"> # </span><span class="branchNoExec" title="Branch 85 was not executed"> # </span><span class="branchNoExec" title="Branch 86 was not executed"> # </span><span class="branchNoExec" title="Branch 87 was not executed"> # </span><span class="branchNoExec" title="Branch 88 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 89 was not executed"> # </span><span class="branchNoExec" title="Branch 90 was not executed"> # </span><span class="branchNoExec" title="Branch 91 was not executed"> # </span><span class="branchNoExec" title="Branch 92 was not executed"> # </span><span class="branchNoExec" title="Branch 93 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 94 was not executed"> # </span><span class="branchNoExec" title="Branch 95 was not executed"> # </span><span class="branchNoExec" title="Branch 96 was not executed"> # </span><span class="branchNoExec" title="Branch 97 was not executed"> # </span><span class="branchNoExec" title="Branch 98 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 99 was not executed"> # </span><span class="branchNoExec" title="Branch 100 was not executed"> # </span><span class="branchNoExec" title="Branch 101 was not executed"> # </span><span class="branchNoExec" title="Branch 102 was not executed"> # </span><span class="branchNoExec" title="Branch 103 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 104 was not executed"> # </span><span class="branchNoExec" title="Branch 105 was not executed"> # </span><span class="branchNoExec" title="Branch 106 was not executed"> # </span><span class="branchNoExec" title="Branch 107 was not executed"> # </span><span class="branchNoExec" title="Branch 108 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 109 was not executed"> # </span><span class="branchNoExec" title="Branch 110 was not executed"> # </span><span class="branchNoExec" title="Branch 111 was not executed"> # </span><span class="branchNoExec" title="Branch 112 was not executed"> # </span><span class="branchNoExec" title="Branch 113 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 114 was not executed"> # </span><span class="branchNoExec" title="Branch 115 was not executed"> # </span><span class="branchNoExec" title="Branch 116 was not executed"> # </span><span class="branchNoExec" title="Branch 117 was not executed"> # </span><span class="branchNoExec" title="Branch 118 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 119 was not executed"> # </span><span class="branchNoExec" title="Branch 120 was not executed"> # </span><span class="branchNoExec" title="Branch 121 was not executed"> # </span><span class="branchNoExec" title="Branch 122 was not executed"> # </span><span class="branchNoExec" title="Branch 123 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 124 was not executed"> # </span><span class="branchNoExec" title="Branch 125 was not executed"> # </span><span class="branchNoExec" title="Branch 126 was not executed"> # </span><span class="branchNoExec" title="Branch 127 was not executed"> # </span><span class="branchNoExec" title="Branch 128 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 129 was not executed"> # </span><span class="branchNoExec" title="Branch 130 was not executed"> # </span><span class="branchNoExec" title="Branch 131 was not executed"> # </span><span class="branchNoExec" title="Branch 132 was not executed"> # </span><span class="branchNoExec" title="Branch 133 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 134 was not executed"> # </span><span class="branchNoExec" title="Branch 135 was not executed"> # </span><span class="branchNoExec" title="Branch 136 was not executed"> # </span><span class="branchNoExec" title="Branch 137 was not executed"> # </span><span class="branchNoExec" title="Branch 138 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 139 was not executed"> # </span><span class="branchNoExec" title="Branch 140 was not executed"> # </span><span class="branchNoExec" title="Branch 141 was not executed"> # </span><span class="branchNoExec" title="Branch 142 was not executed"> # </span><span class="branchNoExec" title="Branch 143 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 144 was not executed"> # </span><span class="branchNoExec" title="Branch 145 was not executed"> # </span><span class="branchNoExec" title="Branch 146 was not executed"> # </span><span class="branchNoExec" title="Branch 147 was not executed"> # </span><span class="branchNoExec" title="Branch 148 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 149 was not executed"> # </span><span class="branchNoExec" title="Branch 150 was not executed"> # </span><span class="branchNoExec" title="Branch 151 was not executed"> # </span><span class="branchNoExec" title="Branch 152 was not executed"> # </span><span class="branchNoExec" title="Branch 153 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 154 was not executed"> # </span><span class="branchNoExec" title="Branch 155 was not executed"> # </span><span class="branchNoExec" title="Branch 156 was not executed"> # </span><span class="branchNoExec" title="Branch 157 was not executed"> # </span><span class="branchNoExec" title="Branch 158 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 159 was not executed"> # </span><span class="branchNoExec" title="Branch 160 was not executed"> # </span><span class="branchNoExec" title="Branch 161 was not executed"> # </span><span class="branchNoExec" title="Branch 162 was not executed"> # </span><span class="branchNoExec" title="Branch 163 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 164 was not executed"> # </span><span class="branchNoExec" title="Branch 165 was not executed"> # </span><span class="branchNoExec" title="Branch 166 was not executed"> # </span><span class="branchNoExec" title="Branch 167 was not executed"> # </span><span class="branchNoExec" title="Branch 168 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 169 was not executed"> # </span><span class="branchNoExec" title="Branch 170 was not executed"> # </span><span class="branchNoExec" title="Branch 171 was not executed"> # </span><span class="branchNoExec" title="Branch 172 was not executed"> # </span><span class="branchNoExec" title="Branch 173 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 174 was not executed"> # </span><span class="branchNoExec" title="Branch 175 was not executed"> # </span>]
+<a name="111"><span class="lineNum">     111 </span>                :<span class="lineCov">    9962586 :       res = *(target_endian&lt;T&gt;*)host_addr;</span></a>
+<a name="112"><span class="lineNum">     112 </span>                :            :     } else {</a>
+<a name="113"><span class="lineNum">     113 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">        527 :       load_slow_path(addr, sizeof(T), (uint8_t*)&amp;res, xlate_flags);</span></a>
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchCov" title="Branch 6 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchNoCov" title="Branch 8 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchCov" title="Branch 12 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span>         <span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span>]
+<a name="114"><span class="lineNum">     114 </span>                :            :     }</a>
+<a name="115"><span class="lineNum">     115 </span>                :            : </a>
+<a name="116"><span class="lineNum">     116 </span>                :            :     MMU_OBSERVE_LOAD(addr,from_target(res),sizeof(T));</a>
+<a name="117"><span class="lineNum">     117 </span>                :            : </a>
+<a name="118"><span class="lineNum">     118 </span>                :<span class="lineCov">    9963113 :     return from_target(res);</span></a>
+<a name="119"><span class="lineNum">     119 </span>                :            :   }</a>
+<a name="120"><span class="lineNum">     120 </span>                :            : </a>
+<a name="121"><span class="lineNum">     121 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="122"><span class="lineNum">     122 </span>                :<span class="lineNoCov">          0 :   T load_reserved(reg_t addr) {</span></a>
+<a name="123"><span class="lineNum">     123 </span>                :<span class="lineNoCov">          0 :     return load&lt;T&gt;(addr, {.lr = true});</span></a>
+<a name="124"><span class="lineNum">     124 </span>                :            :   }</a>
+<a name="125"><span class="lineNum">     125 </span>                :            : </a>
+<a name="126"><span class="lineNum">     126 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="127"><span class="lineNum">     127 </span>                :<span class="lineNoCov">          0 :   T guest_load(reg_t addr) {</span></a>
+<a name="128"><span class="lineNum">     128 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     return load&lt;T&gt;(addr, {.forced_virt = true});</span></a>
+<a name="129"><span class="lineNum">     129 </span>                :            :   }</a>
+<a name="130"><span class="lineNum">     130 </span>                :            : </a>
+<a name="131"><span class="lineNum">     131 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="132"><span class="lineNum">     132 </span>                :<span class="lineNoCov">          0 :   T guest_load_x(reg_t addr) {</span></a>
+<a name="133"><span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :     return load&lt;T&gt;(addr, {.forced_virt=true, .hlvx=true});</span></a>
+<a name="134"><span class="lineNum">     134 </span>                :            :   }</a>
+<a name="135"><span class="lineNum">     135 </span>                :            : </a>
+<a name="136"><span class="lineNum">     136 </span>                :            :   // shadow stack load</a>
+<a name="137"><span class="lineNum">     137 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="138"><span class="lineNum">     138 </span>                :<span class="lineNoCov">          0 :   T ss_load(reg_t addr) {</span></a>
+<a name="139"><span class="lineNum">     139 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if ((addr &amp; (sizeof(T) - 1)) != 0)</span></a>
+<a name="140"><span class="lineNum">     140 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       throw trap_store_access_fault((proc) ? proc-&gt;state.v : false, addr, 0, 0);</span></a>
+<a name="141"><span class="lineNum">     141 </span>                :<span class="lineNoCov">          0 :     return load&lt;T&gt;(addr, {.ss_access=true});</span></a>
+<a name="142"><span class="lineNum">     142 </span>                :            :   }</a>
+<a name="143"><span class="lineNum">     143 </span>                :            : </a>
+<a name="144"><span class="lineNum">     144 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="145"><span class="lineNum">     145 </span>                :<span class="lineCov">    1063399 :   void ALWAYS_INLINE store(reg_t addr, T val, xlate_flags_t xlate_flags = {}) {</span></a>
+<a name="146"><span class="lineNum">     146 </span>                :            :     MMU_OBSERVE_STORE(addr, val, sizeof(T));</a>
+<a name="147"><span class="lineNum">     147 </span>                :<span class="lineCov">    1063399 :     bool aligned = (addr &amp; (sizeof(T) - 1)) == 0;</span></a>
+<a name="148"><span class="lineNum">     148 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineCov">    1063399 :     auto [tlb_hit, host_addr, _] = access_tlb(tlb_store, addr);</span></a>
+<span class="lineNum">         </span>   <span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<a name="149"><span class="lineNum">     149 </span>                :            : </a>
+<a name="150"><span class="lineNum">     150 </span>  [<span class="branchCov" title="Branch 0 was taken 721469 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 721469 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span> :<span class="lineCov">    1063399 :     if (!xlate_flags.is_special_access() &amp;&amp; likely(aligned &amp;&amp; tlb_hit)) {</span></a>
+<span class="lineNum">         </span><span class="branchCov" title="Branch 4 was taken 719867 times"> + </span><span class="branchCov" title="Branch 5 was taken 1602 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchNoCov" title="Branch 8 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchNoCov" title="Branch 12 was not taken"> - </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchNoCov" title="Branch 17 was not taken"> - </span><span class="branchCov" title="Branch 18 was taken 1197 times"> + </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 19 was not taken"> - </span><span class="branchCov" title="Branch 20 was taken 1197 times"> + </span><span class="branchNoCov" title="Branch 21 was not taken"> - </span><span class="branchCov" title="Branch 22 was taken 1197 times"> + </span><span class="branchNoCov" title="Branch 23 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 24 was taken 135 times"> + </span><span class="branchNoCov" title="Branch 25 was not taken"> - </span><span class="branchCov" title="Branch 26 was taken 134 times"> + </span><span class="branchCov" title="Branch 27 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 28 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 29 was not taken"> - </span><span class="branchNoCov" title="Branch 30 was not taken"> - </span><span class="branchNoCov" title="Branch 31 was not taken"> - </span><span class="branchNoCov" title="Branch 32 was not taken"> - </span><span class="branchNoCov" title="Branch 33 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 34 was not taken"> - </span><span class="branchNoCov" title="Branch 35 was not taken"> - </span><span class="branchCov" title="Branch 36 was taken 217730 times"> + </span><span class="branchNoCov" title="Branch 37 was not taken"> - </span><span class="branchCov" title="Branch 38 was taken 217730 times"> + </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 39 was not taken"> - </span><span class="branchCov" title="Branch 40 was taken 217406 times"> + </span><span class="branchCov" title="Branch 41 was taken 324 times"> + </span><span class="branchNoCov" title="Branch 42 was not taken"> - </span><span class="branchNoCov" title="Branch 43 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 44 was not taken"> - </span><span class="branchNoCov" title="Branch 45 was not taken"> - </span><span class="branchNoCov" title="Branch 46 was not taken"> - </span><span class="branchNoCov" title="Branch 47 was not taken"> - </span><span class="branchNoExec" title="Branch 48 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 49 was not executed"> # </span><span class="branchNoExec" title="Branch 50 was not executed"> # </span><span class="branchNoExec" title="Branch 51 was not executed"> # </span><span class="branchNoExec" title="Branch 52 was not executed"> # </span><span class="branchNoExec" title="Branch 53 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 54 was not executed"> # </span><span class="branchNoExec" title="Branch 55 was not executed"> # </span><span class="branchNoExec" title="Branch 56 was not executed"> # </span><span class="branchNoExec" title="Branch 57 was not executed"> # </span><span class="branchNoExec" title="Branch 58 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 59 was not executed"> # </span><span class="branchNoExec" title="Branch 60 was not executed"> # </span><span class="branchNoExec" title="Branch 61 was not executed"> # </span><span class="branchNoExec" title="Branch 62 was not executed"> # </span><span class="branchNoExec" title="Branch 63 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 64 was not executed"> # </span><span class="branchNoExec" title="Branch 65 was not executed"> # </span><span class="branchNoExec" title="Branch 66 was not executed"> # </span><span class="branchNoExec" title="Branch 67 was not executed"> # </span><span class="branchNoExec" title="Branch 68 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 69 was not executed"> # </span><span class="branchNoExec" title="Branch 70 was not executed"> # </span><span class="branchNoExec" title="Branch 71 was not executed"> # </span><span class="branchNoExec" title="Branch 72 was not executed"> # </span><span class="branchNoExec" title="Branch 73 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 74 was not executed"> # </span><span class="branchNoExec" title="Branch 75 was not executed"> # </span><span class="branchNoExec" title="Branch 76 was not executed"> # </span><span class="branchNoExec" title="Branch 77 was not executed"> # </span><span class="branchNoExec" title="Branch 78 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 79 was not executed"> # </span><span class="branchNoExec" title="Branch 80 was not executed"> # </span><span class="branchNoExec" title="Branch 81 was not executed"> # </span><span class="branchNoExec" title="Branch 82 was not executed"> # </span><span class="branchNoExec" title="Branch 83 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 84 was not executed"> # </span><span class="branchNoExec" title="Branch 85 was not executed"> # </span><span class="branchNoExec" title="Branch 86 was not executed"> # </span><span class="branchNoExec" title="Branch 87 was not executed"> # </span><span class="branchNoExec" title="Branch 88 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 89 was not executed"> # </span><span class="branchNoExec" title="Branch 90 was not executed"> # </span><span class="branchNoExec" title="Branch 91 was not executed"> # </span><span class="branchNoExec" title="Branch 92 was not executed"> # </span><span class="branchNoExec" title="Branch 93 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 94 was not executed"> # </span><span class="branchNoExec" title="Branch 95 was not executed"> # </span><span class="branchNoExec" title="Branch 96 was not executed"> # </span><span class="branchNoExec" title="Branch 97 was not executed"> # </span><span class="branchNoExec" title="Branch 98 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 99 was not executed"> # </span><span class="branchNoExec" title="Branch 100 was not executed"> # </span><span class="branchNoExec" title="Branch 101 was not executed"> # </span><span class="branchNoExec" title="Branch 102 was not executed"> # </span><span class="branchNoExec" title="Branch 103 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 104 was not executed"> # </span><span class="branchNoExec" title="Branch 105 was not executed"> # </span><span class="branchNoExec" title="Branch 106 was not executed"> # </span><span class="branchNoExec" title="Branch 107 was not executed"> # </span><span class="branchNoExec" title="Branch 108 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 109 was not executed"> # </span><span class="branchNoExec" title="Branch 110 was not executed"> # </span><span class="branchNoExec" title="Branch 111 was not executed"> # </span><span class="branchNoExec" title="Branch 112 was not executed"> # </span><span class="branchNoExec" title="Branch 113 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 114 was not executed"> # </span><span class="branchNoExec" title="Branch 115 was not executed"> # </span><span class="branchNoExec" title="Branch 116 was not executed"> # </span><span class="branchNoExec" title="Branch 117 was not executed"> # </span><span class="branchNoExec" title="Branch 118 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 119 was not executed"> # </span><span class="branchNoExec" title="Branch 120 was not executed"> # </span><span class="branchNoExec" title="Branch 121 was not executed"> # </span><span class="branchNoExec" title="Branch 122 was not executed"> # </span><span class="branchNoExec" title="Branch 123 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 124 was not executed"> # </span><span class="branchNoExec" title="Branch 125 was not executed"> # </span><span class="branchNoExec" title="Branch 126 was not executed"> # </span><span class="branchNoExec" title="Branch 127 was not executed"> # </span><span class="branchNoExec" title="Branch 128 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 129 was not executed"> # </span><span class="branchNoExec" title="Branch 130 was not executed"> # </span><span class="branchNoExec" title="Branch 131 was not executed"> # </span><span class="branchNoExec" title="Branch 132 was not executed"> # </span><span class="branchNoExec" title="Branch 133 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 134 was not executed"> # </span><span class="branchNoExec" title="Branch 135 was not executed"> # </span><span class="branchNoExec" title="Branch 136 was not executed"> # </span><span class="branchNoExec" title="Branch 137 was not executed"> # </span><span class="branchNoExec" title="Branch 138 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 139 was not executed"> # </span><span class="branchNoExec" title="Branch 140 was not executed"> # </span><span class="branchNoExec" title="Branch 141 was not executed"> # </span><span class="branchNoExec" title="Branch 142 was not executed"> # </span><span class="branchNoExec" title="Branch 143 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 144 was not executed"> # </span><span class="branchNoExec" title="Branch 145 was not executed"> # </span><span class="branchNoExec" title="Branch 146 was not executed"> # </span><span class="branchNoExec" title="Branch 147 was not executed"> # </span><span class="branchNoExec" title="Branch 148 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 149 was not executed"> # </span><span class="branchNoExec" title="Branch 150 was not executed"> # </span><span class="branchNoExec" title="Branch 151 was not executed"> # </span><span class="branchNoExec" title="Branch 152 was not executed"> # </span><span class="branchNoExec" title="Branch 153 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 154 was not executed"> # </span><span class="branchNoExec" title="Branch 155 was not executed"> # </span><span class="branchNoExec" title="Branch 156 was not executed"> # </span><span class="branchNoExec" title="Branch 157 was not executed"> # </span><span class="branchNoExec" title="Branch 158 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 159 was not executed"> # </span><span class="branchNoExec" title="Branch 160 was not executed"> # </span><span class="branchNoExec" title="Branch 161 was not executed"> # </span><span class="branchNoExec" title="Branch 162 was not executed"> # </span><span class="branchNoExec" title="Branch 163 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 164 was not executed"> # </span><span class="branchNoExec" title="Branch 165 was not executed"> # </span><span class="branchNoExec" title="Branch 166 was not executed"> # </span><span class="branchNoExec" title="Branch 167 was not executed"> # </span><span class="branchNoExec" title="Branch 168 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 169 was not executed"> # </span><span class="branchNoExec" title="Branch 170 was not executed"> # </span><span class="branchNoExec" title="Branch 171 was not executed"> # </span><span class="branchNoExec" title="Branch 172 was not executed"> # </span><span class="branchNoExec" title="Branch 173 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 174 was not executed"> # </span><span class="branchNoExec" title="Branch 175 was not executed"> # </span>]
+<a name="151"><span class="lineNum">     151 </span>                :<span class="lineCov">    1061240 :       *(target_endian&lt;T&gt;*)host_addr = to_target(val);</span></a>
+<a name="152"><span class="lineNum">     152 </span>                :            :     } else {</a>
+<a name="153"><span class="lineNum">     153 </span>                :<span class="lineCov">       2159 :       target_endian&lt;T&gt; target_val = to_target(val);</span></a>
+<a name="154"><span class="lineNum">     154 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineCov">       2159 :       store_slow_path(addr, sizeof(T), (const uint8_t*)&amp;target_val, xlate_flags, true, false);</span></a>
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span><span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span><span class="branchNoExec" title="Branch 12 was not executed"> # </span><span class="branchNoExec" title="Branch 13 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 14 was not executed"> # </span><span class="branchNoExec" title="Branch 15 was not executed"> # </span>]
+<a name="155"><span class="lineNum">     155 </span>                :            :     }</a>
+<a name="156"><span class="lineNum">     156 </span>                :            :   }</a>
+<a name="157"><span class="lineNum">     157 </span>                :            : </a>
+<a name="158"><span class="lineNum">     158 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="159"><span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :   void guest_store(reg_t addr, T val) {</span></a>
+<a name="160"><span class="lineNum">     160 </span>                :<span class="lineNoCov">          0 :     store(addr, val, {.forced_virt=true});</span></a>
+<a name="161"><span class="lineNum">     161 </span>                :<span class="lineNoCov">          0 :   }</span></a>
+<a name="162"><span class="lineNum">     162 </span>                :            : </a>
+<a name="163"><span class="lineNum">     163 </span>                :            :   // shadow stack store</a>
+<a name="164"><span class="lineNum">     164 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="165"><span class="lineNum">     165 </span>                :<span class="lineNoCov">          0 :   void ss_store(reg_t addr, T val) {</span></a>
+<a name="166"><span class="lineNum">     166 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if ((addr &amp; (sizeof(T) - 1)) != 0)</span></a>
+<a name="167"><span class="lineNum">     167 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       throw trap_store_access_fault((proc) ? proc-&gt;state.v : false, addr, 0, 0);</span></a>
+<a name="168"><span class="lineNum">     168 </span>                :<span class="lineNoCov">          0 :     store&lt;T&gt;(addr, val, {.ss_access=true});</span></a>
+<a name="169"><span class="lineNum">     169 </span>                :<span class="lineNoCov">          0 :   }</span></a>
+<a name="170"><span class="lineNum">     170 </span>                :            : </a>
+<a name="171"><span class="lineNum">     171 </span>                :            :   // AMO/Zicbom faults should be reported as store faults</a>
+<a name="172"><span class="lineNum">     172 </span>                :            :   #define convert_load_traps_to_store_traps(BODY) \</a>
+<a name="173"><span class="lineNum">     173 </span>                :            :     try { \</a>
+<a name="174"><span class="lineNum">     174 </span>                :            :       BODY \</a>
+<a name="175"><span class="lineNum">     175 </span>                :            :     } catch (trap_load_address_misaligned&amp; t) { \</a>
+<a name="176"><span class="lineNum">     176 </span>                :            :       /* Misaligned fault will not be triggered by Zicbom */ \</a>
+<a name="177"><span class="lineNum">     177 </span>                :            :       throw trap_store_address_misaligned(t.has_gva(), t.get_tval(), t.get_tval2(), t.get_tinst()); \</a>
+<a name="178"><span class="lineNum">     178 </span>                :            :     } catch (trap_load_page_fault&amp; t) { \</a>
+<a name="179"><span class="lineNum">     179 </span>                :            :       throw trap_store_page_fault(t.has_gva(), t.get_tval(), t.get_tval2(), t.get_tinst()); \</a>
+<a name="180"><span class="lineNum">     180 </span>                :            :     } catch (trap_load_access_fault&amp; t) { \</a>
+<a name="181"><span class="lineNum">     181 </span>                :            :       throw trap_store_access_fault(t.has_gva(), t.get_tval(), t.get_tval2(), t.get_tinst()); \</a>
+<a name="182"><span class="lineNum">     182 </span>                :            :     } catch (trap_load_guest_page_fault&amp; t) { \</a>
+<a name="183"><span class="lineNum">     183 </span>                :            :       throw trap_store_guest_page_fault(t.get_tval(), t.get_tval2(), t.get_tinst()); \</a>
+<a name="184"><span class="lineNum">     184 </span>                :            :     }</a>
+<a name="185"><span class="lineNum">     185 </span>                :            : </a>
+<a name="186"><span class="lineNum">     186 </span>                :            :   // template for functions that perform an atomic memory operation</a>
+<a name="187"><span class="lineNum">     187 </span>                :            :   template&lt;typename T, typename op&gt;</a>
+<a name="188"><span class="lineNum">     188 </span>                :<span class="lineCov">       2394 :   T amo(reg_t addr, op f) {</span></a>
+<a name="189"><span class="lineNum">     189 </span>  [<span class="branchCov" title="Branch 0 was taken 2394 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchCov" title="Branch 2 was taken 1461 times"> + </span><span class="branchCov" title="Branch 3 was taken 135 times"> + </span> :<span class="lineCov">       6384 :     convert_load_traps_to_store_traps({</span></a>
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchNoCov" title="Branch 7 was not taken"> - </span><span class="branchNoCov" title="Branch 8 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 9 was not taken"> - </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchNoCov" title="Branch 12 was not taken"> - </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 14 was not taken"> - </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchNoCov" title="Branch 17 was not taken"> - </span><span class="branchNoCov" title="Branch 18 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 19 was not taken"> - </span><span class="branchNoCov" title="Branch 20 was not taken"> - </span><span class="branchNoCov" title="Branch 21 was not taken"> - </span><span class="branchNoCov" title="Branch 22 was not taken"> - </span><span class="branchNoCov" title="Branch 23 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 24 was not taken"> - </span><span class="branchNoCov" title="Branch 25 was not taken"> - </span><span class="branchNoCov" title="Branch 26 was not taken"> - </span><span class="branchNoCov" title="Branch 27 was not taken"> - </span><span class="branchNoCov" title="Branch 28 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 29 was not taken"> - </span><span class="branchNoCov" title="Branch 30 was not taken"> - </span><span class="branchNoCov" title="Branch 31 was not taken"> - </span><span class="branchNoCov" title="Branch 32 was not taken"> - </span><span class="branchNoCov" title="Branch 33 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 34 was not taken"> - </span><span class="branchNoCov" title="Branch 35 was not taken"> - </span><span class="branchNoCov" title="Branch 36 was not taken"> - </span><span class="branchNoCov" title="Branch 37 was not taken"> - </span><span class="branchNoCov" title="Branch 38 was not taken"> - </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 39 was not executed"> # </span><span class="branchNoExec" title="Branch 40 was not executed"> # </span>]
+<a name="190"><span class="lineNum">     190 </span>                :            :       store_slow_path(addr, sizeof(T), nullptr, {}, false, true);</a>
+<a name="191"><span class="lineNum">     191 </span>                :            :       auto lhs = load&lt;T&gt;(addr);</a>
+<a name="192"><span class="lineNum">     192 </span>                :            :       store&lt;T&gt;(addr, f(lhs));</a>
+<a name="193"><span class="lineNum">     193 </span>                :            :       return lhs;</a>
+<a name="194"><span class="lineNum">     194 </span>                :            :     })</a>
+<a name="195"><span class="lineNum">     195 </span>                :            :   }</a>
+<a name="196"><span class="lineNum">     196 </span>                :            : </a>
+<a name="197"><span class="lineNum">     197 </span>                :            :   // for shadow stack amoswap</a>
+<a name="198"><span class="lineNum">     198 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="199"><span class="lineNum">     199 </span>                :<span class="lineNoCov">          0 :   T ssamoswap(reg_t addr, reg_t value) {</span></a>
+<a name="200"><span class="lineNum">     200 </span>                :<span class="lineNoCov">          0 :       store_slow_path(addr, sizeof(T), nullptr, {.ss_access=true}, false, true);</span></a>
+<a name="201"><span class="lineNum">     201 </span>                :<span class="lineNoCov">          0 :       auto data = load&lt;T&gt;(addr, {.ss_access=true});</span></a>
+<a name="202"><span class="lineNum">     202 </span>                :<span class="lineNoCov">          0 :       store&lt;T&gt;(addr, value, {.ss_access=true});</span></a>
+<a name="203"><span class="lineNum">     203 </span>                :<span class="lineNoCov">          0 :       return data;</span></a>
+<a name="204"><span class="lineNum">     204 </span>                :            :   }</a>
+<a name="205"><span class="lineNum">     205 </span>                :            : </a>
+<a name="206"><span class="lineNum">     206 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="207"><span class="lineNum">     207 </span>                :<span class="lineNoCov">          0 :   T amo_compare_and_swap(reg_t addr, T comp, T swap) {</span></a>
+<a name="208"><span class="lineNum">     208 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     convert_load_traps_to_store_traps({</span></a>
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span><span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span><span class="branchNoExec" title="Branch 12 was not executed"> # </span><span class="branchNoExec" title="Branch 13 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 14 was not executed"> # </span><span class="branchNoExec" title="Branch 15 was not executed"> # </span><span class="branchNoExec" title="Branch 16 was not executed"> # </span><span class="branchNoExec" title="Branch 17 was not executed"> # </span><span class="branchNoExec" title="Branch 18 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 19 was not executed"> # </span><span class="branchNoExec" title="Branch 20 was not executed"> # </span><span class="branchNoExec" title="Branch 21 was not executed"> # </span><span class="branchNoExec" title="Branch 22 was not executed"> # </span><span class="branchNoExec" title="Branch 23 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 24 was not executed"> # </span><span class="branchNoExec" title="Branch 25 was not executed"> # </span><span class="branchNoExec" title="Branch 26 was not executed"> # </span><span class="branchNoExec" title="Branch 27 was not executed"> # </span><span class="branchNoExec" title="Branch 28 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 29 was not executed"> # </span><span class="branchNoExec" title="Branch 30 was not executed"> # </span><span class="branchNoExec" title="Branch 31 was not executed"> # </span><span class="branchNoExec" title="Branch 32 was not executed"> # </span><span class="branchNoExec" title="Branch 33 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 34 was not executed"> # </span><span class="branchNoExec" title="Branch 35 was not executed"> # </span><span class="branchNoExec" title="Branch 36 was not executed"> # </span><span class="branchNoExec" title="Branch 37 was not executed"> # </span><span class="branchNoExec" title="Branch 38 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 39 was not executed"> # </span><span class="branchNoExec" title="Branch 40 was not executed"> # </span>]
+<a name="209"><span class="lineNum">     209 </span>                :            :       store_slow_path(addr, sizeof(T), nullptr, {}, false, true);</a>
+<a name="210"><span class="lineNum">     210 </span>                :            :       auto lhs = load&lt;T&gt;(addr);</a>
+<a name="211"><span class="lineNum">     211 </span>                :            :       if (lhs == comp)</a>
+<a name="212"><span class="lineNum">     212 </span>                :            :         store&lt;T&gt;(addr, swap);</a>
+<a name="213"><span class="lineNum">     213 </span>                :            :       return lhs;</a>
+<a name="214"><span class="lineNum">     214 </span>                :            :     })</a>
+<a name="215"><span class="lineNum">     215 </span>                :            :   }</a>
+<a name="216"><span class="lineNum">     216 </span>                :            : </a>
+<a name="217"><span class="lineNum">     217 </span>                :<span class="lineNoCov">          0 :   void cbo_zero(reg_t addr) {</span></a>
+<a name="218"><span class="lineNum">     218 </span>                :<span class="lineNoCov">          0 :     auto access_info = generate_access_info(addr, STORE, {});</span></a>
+<a name="219"><span class="lineNum">     219 </span>                :<span class="lineNoCov">          0 :     reg_t transformed_addr = access_info.transformed_vaddr;</span></a>
+<a name="220"><span class="lineNum">     220 </span>                :            : </a>
+<a name="221"><span class="lineNum">     221 </span>                :<span class="lineNoCov">          0 :     auto base = transformed_addr &amp; ~(blocksz - 1);</span></a>
+<a name="222"><span class="lineNum">     222 </span>                :<span class="lineNoCov">          0 :     check_triggers(triggers::OPERATION_STORE, base, false, blocksz);</span></a>
+<a name="223"><span class="lineNum">     223 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     for (size_t offset = 0; offset &lt; blocksz; offset += 1)</span></a>
+<a name="224"><span class="lineNum">     224 </span>                :<span class="lineNoCov">          0 :       store&lt;uint8_t&gt;(base + offset, 0);</span></a>
+<a name="225"><span class="lineNum">     225 </span>                :<span class="lineNoCov">          0 :   }</span></a>
+<a name="226"><span class="lineNum">     226 </span>                :            : </a>
+<a name="227"><span class="lineNum">     227 </span>                :<span class="lineNoCov">          0 :   void clean_inval(reg_t addr, bool clean, bool inval) {</span></a>
+<a name="228"><span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :     auto access_info = generate_access_info(addr, LOAD, {.clean_inval = true});</span></a>
+<a name="229"><span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :     reg_t transformed_addr = access_info.transformed_vaddr;</span></a>
+<a name="230"><span class="lineNum">     230 </span>                :            : </a>
+<a name="231"><span class="lineNum">     231 </span>                :<span class="lineNoCov">          0 :     auto base = transformed_addr &amp; ~(blocksz - 1);</span></a>
+<a name="232"><span class="lineNum">     232 </span>                :<span class="lineNoCov">          0 :     check_triggers(triggers::OPERATION_STORE, base, false, blocksz);</span></a>
+<a name="233"><span class="lineNum">     233 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     convert_load_traps_to_store_traps({</span></a>
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span><span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span><span class="branchNoExec" title="Branch 12 was not executed"> # </span><span class="branchNoExec" title="Branch 13 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 14 was not executed"> # </span><span class="branchNoExec" title="Branch 15 was not executed"> # </span><span class="branchNoExec" title="Branch 16 was not executed"> # </span><span class="branchNoExec" title="Branch 17 was not executed"> # </span><span class="branchNoExec" title="Branch 18 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 19 was not executed"> # </span><span class="branchNoExec" title="Branch 20 was not executed"> # </span><span class="branchNoExec" title="Branch 21 was not executed"> # </span><span class="branchNoExec" title="Branch 22 was not executed"> # </span><span class="branchNoExec" title="Branch 23 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 24 was not executed"> # </span><span class="branchNoExec" title="Branch 25 was not executed"> # </span><span class="branchNoExec" title="Branch 26 was not executed"> # </span><span class="branchNoExec" title="Branch 27 was not executed"> # </span><span class="branchNoExec" title="Branch 28 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 29 was not executed"> # </span><span class="branchNoExec" title="Branch 30 was not executed"> # </span><span class="branchNoExec" title="Branch 31 was not executed"> # </span><span class="branchNoExec" title="Branch 32 was not executed"> # </span><span class="branchNoExec" title="Branch 33 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 34 was not executed"> # </span><span class="branchNoExec" title="Branch 35 was not executed"> # </span><span class="branchNoExec" title="Branch 36 was not executed"> # </span><span class="branchNoExec" title="Branch 37 was not executed"> # </span><span class="branchNoExec" title="Branch 38 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 39 was not executed"> # </span><span class="branchNoExec" title="Branch 40 was not executed"> # </span><span class="branchNoExec" title="Branch 41 was not executed"> # </span><span class="branchNoExec" title="Branch 42 was not executed"> # </span><span class="branchNoExec" title="Branch 43 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 44 was not executed"> # </span><span class="branchNoExec" title="Branch 45 was not executed"> # </span><span class="branchNoExec" title="Branch 46 was not executed"> # </span><span class="branchNoExec" title="Branch 47 was not executed"> # </span><span class="branchNoExec" title="Branch 48 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 49 was not executed"> # </span><span class="branchNoExec" title="Branch 50 was not executed"> # </span>]
+<a name="234"><span class="lineNum">     234 </span>                :            :       const reg_t paddr = translate(access_info, 1);</a>
+<a name="235"><span class="lineNum">     235 </span>                :            :       if (sim-&gt;reservable(paddr)) {</a>
+<a name="236"><span class="lineNum">     236 </span>                :            :         if (tracer.interested_in_range(paddr, paddr + PGSIZE, LOAD))</a>
+<a name="237"><span class="lineNum">     237 </span>                :            :           tracer.clean_invalidate(paddr, blocksz, clean, inval);</a>
+<a name="238"><span class="lineNum">     238 </span>                :            :       } else {</a>
+<a name="239"><span class="lineNum">     239 </span>                :            :         throw trap_store_access_fault((proc) ? proc-&gt;state.v : false, transformed_addr, 0, 0);</a>
+<a name="240"><span class="lineNum">     240 </span>                :            :       }</a>
+<a name="241"><span class="lineNum">     241 </span>                :            :     })</a>
+<a name="242"><span class="lineNum">     242 </span>                :<span class="lineNoCov">          0 :   }</span></a>
+<a name="243"><span class="lineNum">     243 </span>                :            : </a>
+<a name="244"><span class="lineNum">     244 </span>                :<span class="lineCov">    9958101 :   inline void yield_load_reservation()</span></a>
+<a name="245"><span class="lineNum">     245 </span>                :            :   {</a>
+<a name="246"><span class="lineNum">     246 </span>        [<span class="branchCov" title="Branch 0 was taken 9957549 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    9958101 :     load_reservation_address = (reg_t)-1;</span></a>
+<a name="247"><span class="lineNum">     247 </span>                :            :   }</a>
+<a name="248"><span class="lineNum">     248 </span>                :            : </a>
+<a name="249"><span class="lineNum">     249 </span>                :<span class="lineNoCov">          0 :   inline bool check_load_reservation(reg_t vaddr, size_t size)</span></a>
+<a name="250"><span class="lineNum">     250 </span>                :            :   {</a>
+<a name="251"><span class="lineNum">     251 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (vaddr &amp; (size-1)) {</span></a>
+<a name="252"><span class="lineNum">     252 </span>                :            :       // Raise either access fault or misaligned exception</a>
+<a name="253"><span class="lineNum">     253 </span>                :<span class="lineNoCov">          0 :       store_slow_path(vaddr, size, nullptr, {}, false, true);</span></a>
+<a name="254"><span class="lineNum">     254 </span>                :            :     }</a>
+<a name="255"><span class="lineNum">     255 </span>                :            : </a>
+<a name="256"><span class="lineNum">     256 </span>                :<span class="lineNoCov">          0 :     auto [tlb_hit, host_addr, paddr] = access_tlb(tlb_store, vaddr);</span></a>
+<a name="257"><span class="lineNum">     257 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (!tlb_hit)</span></a>
+<a name="258"><span class="lineNum">     258 </span>                :<span class="lineNoCov">          0 :       paddr = translate(generate_access_info(vaddr, STORE, {}), 1);</span></a>
+<a name="259"><span class="lineNum">     259 </span>                :            : </a>
+<a name="260"><span class="lineNum">     260 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (sim-&gt;reservable(paddr))</span></a>
+<a name="261"><span class="lineNum">     261 </span>                :<span class="lineNoCov">          0 :       return load_reservation_address == paddr;</span></a>
+<a name="262"><span class="lineNum">     262 </span>                :            :     else</a>
+<a name="263"><span class="lineNum">     263 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :       throw trap_store_access_fault((proc) ? proc-&gt;state.v : false, vaddr, 0, 0);</span></a>
+<a name="264"><span class="lineNum">     264 </span>                :            :   }</a>
+<a name="265"><span class="lineNum">     265 </span>                :            : </a>
+<a name="266"><span class="lineNum">     266 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="267"><span class="lineNum">     267 </span>                :<span class="lineNoCov">          0 :   bool store_conditional(reg_t addr, T val)</span></a>
+<a name="268"><span class="lineNum">     268 </span>                :            :   {</a>
+<a name="269"><span class="lineNum">     269 </span>                :<span class="lineNoCov">          0 :     bool have_reservation = check_load_reservation(addr, sizeof(T));</span></a>
+<a name="270"><span class="lineNum">     270 </span>                :            : </a>
+<a name="271"><span class="lineNum">     271 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (have_reservation)</span></a>
+<a name="272"><span class="lineNum">     272 </span>                :<span class="lineNoCov">          0 :       store(addr, val);</span></a>
+<a name="273"><span class="lineNum">     273 </span>                :            : </a>
+<a name="274"><span class="lineNum">     274 </span>                :<span class="lineNoCov">          0 :     yield_load_reservation();</span></a>
+<a name="275"><span class="lineNum">     275 </span>                :            : </a>
+<a name="276"><span class="lineNum">     276 </span>                :<span class="lineNoCov">          0 :     return have_reservation;</span></a>
+<a name="277"><span class="lineNum">     277 </span>                :            :   }</a>
+<a name="278"><span class="lineNum">     278 </span>                :            : </a>
+<a name="279"><span class="lineNum">     279 </span>                :            :   static const reg_t ICACHE_ENTRIES = 4096;</a>
+<a name="280"><span class="lineNum">     280 </span>                :            : </a>
+<a name="281"><span class="lineNum">     281 </span>                :<span class="lineCov">   12110609 :   inline size_t icache_index(reg_t addr)</span></a>
+<a name="282"><span class="lineNum">     282 </span>                :            :   {</a>
+<a name="283"><span class="lineNum">     283 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">    1076621 :     return (addr / PC_ALIGN) % ICACHE_ENTRIES;</span></a>
+<a name="284"><span class="lineNum">     284 </span>                :            :   }</a>
+<a name="285"><span class="lineNum">     285 </span>                :            : </a>
+<a name="286"><span class="lineNum">     286 </span>                :            :   template&lt;typename T&gt;</a>
+<a name="287"><span class="lineNum">     287 </span>                :<span class="lineNoCov">          0 :   T ALWAYS_INLINE fetch_jump_table(reg_t addr) {</span></a>
+<a name="288"><span class="lineNum">     288 </span>                :            :     T res = 0;</a>
+<a name="289"><span class="lineNum">     289 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     for (size_t i = 0; i &lt; sizeof(T) / sizeof(insn_parcel_t); i++)</span></a>
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span><span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span><span class="branchNoExec" title="Branch 12 was not executed"> # </span><span class="branchNoExec" title="Branch 13 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 14 was not executed"> # </span><span class="branchNoExec" title="Branch 15 was not executed"> # </span>]
+<a name="290"><span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :       res |= (T)fetch_insn_parcel(addr + i * sizeof(insn_parcel_t)) &lt;&lt; (i * sizeof(insn_parcel_t) * 8);</span></a>
+<a name="291"><span class="lineNum">     291 </span>                :            : </a>
+<a name="292"><span class="lineNum">     292 </span>                :            :     // table accesses use data endianness, not instruction (little) endianness</a>
+<a name="293"><span class="lineNum">     293 </span>                :            :     return target_big_endian ? to_be(res) : res;</a>
+<a name="294"><span class="lineNum">     294 </span>                :            :   }</a>
+<a name="295"><span class="lineNum">     295 </span>                :            : </a>
+<a name="296"><span class="lineNum">     296 </span>                :<span class="lineCov">   11033988 :   inline icache_entry_t* refill_icache(reg_t addr, icache_entry_t* entry)</span></a>
+<a name="297"><span class="lineNum">     297 </span>                :            :   {</a>
+<a name="298"><span class="lineNum">     298 </span>                :<span class="lineCov">   11033988 :     insn_bits_t insn = fetch_insn_parcel(addr);</span></a>
+<a name="299"><span class="lineNum">     299 </span>  [<span class="branchCov" title="Branch 0 was taken 831974 times"> + </span><span class="branchCov" title="Branch 1 was taken 49634 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 831974 times"> + </span> :<span class="lineCov">    1076621 :     unsigned length = insn_length(insn);</span></a>
+<span class="lineNum">         </span>         <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<a name="300"><span class="lineNum">     300 </span>                :            : </a>
+<a name="301"><span class="lineNum">     301 </span>        [<span class="branchCov" title="Branch 0 was taken 831974 times"> + </span><span class="branchCov" title="Branch 1 was taken 881608 times"> + </span>]:<span class="lineCov">    2103518 :     for (unsigned pos = sizeof(insn_parcel_t); pos &lt; length; pos += sizeof(insn_parcel_t)) {</span></a>
+<a name="302"><span class="lineNum">     302 </span>                :<span class="lineCov">    1026897 :       insn |= (insn_bits_t)fetch_insn_parcel(addr + pos) &lt;&lt; (8 * pos);</span></a>
+<a name="303"><span class="lineNum">     303 </span>  [<span class="branchCov" title="Branch 0 was taken 831974 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 831974 times"> + </span> :<span class="lineCov">    1026897 :       length = insn_length(insn);</span></a>
+<span class="lineNum">         </span>         <span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<a name="304"><span class="lineNum">     304 </span>                :            :     }</a>
+<a name="305"><span class="lineNum">     305 </span>                :            : </a>
+<a name="306"><span class="lineNum">     306 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 881608 times"> + </span>]:<span class="lineCov">    1076621 :     insn_fetch_t fetch = {proc-&gt;decode_insn(insn), insn};</span></a>
+<a name="307"><span class="lineNum">     307 </span>                :<span class="lineCov">    1076621 :     entry-&gt;tag = addr;</span></a>
+<a name="308"><span class="lineNum">     308 </span>                :<span class="lineCov">    1076621 :     entry-&gt;next = &amp;icache[icache_index(addr + length)];</span></a>
+<a name="309"><span class="lineNum">     309 </span>                :<span class="lineCov">    1076621 :     entry-&gt;data = fetch;</span></a>
+<a name="310"><span class="lineNum">     310 </span>                :            : </a>
+<a name="311"><span class="lineNum">     311 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">    1076621 :     auto [check_tracer, _, paddr] = access_tlb(tlb_insn, addr, TLB_FLAGS, TLB_CHECK_TRACER);</span></a>
+<a name="312"><span class="lineNum">     312 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 881608 times"> + </span>]:<span class="lineCov">    1076621 :     if (unlikely(check_tracer)) {</span></a>
+<a name="313"><span class="lineNum">     313 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :       if (tracer.interested_in_range(paddr, paddr + 1, FETCH)) {</span></a>
+<a name="314"><span class="lineNum">     314 </span>                :<span class="lineNoCov">          0 :         entry-&gt;tag = -1;</span></a>
+<a name="315"><span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :         tracer.trace(paddr, paddr + length, FETCH);</span></a>
+<a name="316"><span class="lineNum">     316 </span>                :            :       }</a>
+<a name="317"><span class="lineNum">     317 </span>                :            :     }</a>
+<a name="318"><span class="lineNum">     318 </span>                :<span class="lineCov">    1076621 :     MMU_OBSERVE_FETCH(addr, insn, length);</span></a>
+<a name="319"><span class="lineNum">     319 </span>                :<span class="lineCov">    1076621 :     return entry;</span></a>
+<a name="320"><span class="lineNum">     320 </span>                :            :   }</a>
+<a name="321"><span class="lineNum">     321 </span>                :            : </a>
+<a name="322"><span class="lineNum">     322 </span>                :<span class="lineNoCov">          0 :   inline icache_entry_t* access_icache(reg_t addr)</span></a>
+<a name="323"><span class="lineNum">     323 </span>                :            :   {</a>
+<a name="324"><span class="lineNum">     324 </span>                :<span class="lineNoCov">          0 :     icache_entry_t* entry = &amp;icache[icache_index(addr)];</span></a>
+<a name="325"><span class="lineNum">     325 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (likely(entry-&gt;tag == addr)){</span></a>
+<a name="326"><span class="lineNum">     326 </span>                :            :       MMU_OBSERVE_FETCH(addr, entry-&gt;data.insn, insn_length(entry-&gt;data.insn.bits()));</a>
+<a name="327"><span class="lineNum">     327 </span>                :            :       return entry;</a>
+<a name="328"><span class="lineNum">     328 </span>                :            :     }</a>
+<a name="329"><span class="lineNum">     329 </span>                :<span class="lineNoCov">          0 :     return refill_icache(addr, entry);</span></a>
+<a name="330"><span class="lineNum">     330 </span>                :            :   }</a>
+<a name="331"><span class="lineNum">     331 </span>                :            : </a>
+<a name="332"><span class="lineNum">     332 </span>                :<span class="lineCov">   11033988 :   inline insn_fetch_t load_insn(reg_t addr)</span></a>
+<a name="333"><span class="lineNum">     333 </span>                :            :   {</a>
+<a name="334"><span class="lineNum">     334 </span>                :<span class="lineCov">   11033988 :     return refill_icache(addr, &amp;icache[icache_index(addr)])-&gt;data;</span></a>
+<a name="335"><span class="lineNum">     335 </span>                :            :   }</a>
+<a name="336"><span class="lineNum">     336 </span>                :            : </a>
+<a name="337"><span class="lineNum">     337 </span>                :<span class="lineCov">   44090637 :   std::tuple&lt;bool, uintptr_t, reg_t&gt; ALWAYS_INLINE access_tlb(const dtlb_entry_t* tlb, reg_t vaddr, reg_t allowed_flags = 0, reg_t required_flags = 0)</span></a>
+<a name="338"><span class="lineNum">     338 </span>                :            :   {</a>
+<a name="339"><span class="lineNum">     339 </span>                :<span class="lineCov">   44090637 :     auto vpn = vaddr / PGSIZE, pgoff = vaddr % PGSIZE;</span></a>
+<a name="340"><span class="lineNum">     340 </span>                :<span class="lineCov">   44090637 :     auto&amp; entry = tlb[vpn % TLB_ENTRIES];</span></a>
+<a name="341"><span class="lineNum">     341 </span>                :<span class="lineCov">   44090637 :     auto hit = likely((entry.tag &amp; (~allowed_flags | required_flags)) == (vpn | required_flags));</span></a>
+<a name="342"><span class="lineNum">     342 </span>                :<span class="lineCov">   44090637 :     bool mmio = allowed_flags &amp; TLB_MMIO &amp; entry.tag;</span></a>
+<a name="343"><span class="lineNum">     343 </span>  [<span class="branchCov" title="Branch 0 was taken 2432 times"> + </span><span class="branchCov" title="Branch 1 was taken 1889 times"> + </span><span class="branchCov" title="Branch 2 was taken 38 times"> + </span><span class="branchCov" title="Branch 3 was taken 1889 times"> + </span> :<span class="lineCov">   34132151 :     auto host_addr = mmio ? 0 : entry.data.host_addr + pgoff;</span></a>
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 495 times"> + </span><span class="branchNoCov" title="Branch 6 was not taken"> - </span><span class="branchCov" title="Branch 7 was taken 495 times"> + </span><span class="branchCov" title="Branch 8 was taken 1 time"> + </span> 
+<span class="lineNum">         </span>            <span class="branchCov" title="Branch 9 was taken 9960069 times"> + </span>]
+<a name="344"><span class="lineNum">     344 </span>                :<span class="lineCov">   44090637 :     auto paddr = entry.data.target_addr + pgoff;</span></a>
+<a name="345"><span class="lineNum">     345 </span>  [<span class="branchCov" title="Branch 0 was taken 9960196 times"> + </span><span class="branchCov" title="Branch 1 was taken 883535 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 1927 times"> + </span> :<span class="lineCov">   33316779 :     return std::make_tuple(hit, host_addr, paddr);</span></a>
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 495 times"> + </span><span class="branchCov" title="Branch 6 was taken 32 times"> + </span><span class="branchCov" title="Branch 7 was taken 495 times"> + </span><span class="branchCov" title="Branch 8 was taken 1738 times"> + </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 9 was taken 9958332 times"> + </span><span class="branchNoCov" title="Branch 10 was not taken"> - </span><span class="branchNoCov" title="Branch 11 was not taken"> - </span><span class="branchCov" title="Branch 12 was taken 220679 times"> + </span><span class="branchNoCov" title="Branch 13 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 14 was taken 1197 times"> + </span><span class="branchNoCov" title="Branch 15 was not taken"> - </span><span class="branchNoCov" title="Branch 16 was not taken"> - </span><span class="branchNoCov" title="Branch 17 was not taken"> - </span><span class="branchNoCov" title="Branch 18 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 19 was not taken"> - </span><span class="branchNoCov" title="Branch 20 was not taken"> - </span><span class="branchNoCov" title="Branch 21 was not taken"> - </span><span class="branchNoCov" title="Branch 22 was not taken"> - </span><span class="branchNoCov" title="Branch 23 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchCov" title="Branch 24 was taken 1197 times"> + </span><span class="branchNoCov" title="Branch 25 was not taken"> - </span><span class="branchCov" title="Branch 26 was taken 1197 times"> + </span><span class="branchNoCov" title="Branch 27 was not taken"> - </span><span class="branchNoCov" title="Branch 28 was not taken"> - </span> 
+<span class="lineNum">         </span><span class="branchNoCov" title="Branch 29 was not taken"> - </span><span class="branchNoCov" title="Branch 30 was not taken"> - </span><span class="branchNoCov" title="Branch 31 was not taken"> - </span><span class="branchNoExec" title="Branch 32 was not executed"> # </span><span class="branchNoExec" title="Branch 33 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 34 was not executed"> # </span><span class="branchNoExec" title="Branch 35 was not executed"> # </span><span class="branchNoExec" title="Branch 36 was not executed"> # </span><span class="branchNoExec" title="Branch 37 was not executed"> # </span><span class="branchNoExec" title="Branch 38 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 39 was not executed"> # </span><span class="branchNoExec" title="Branch 40 was not executed"> # </span><span class="branchNoExec" title="Branch 41 was not executed"> # </span><span class="branchNoExec" title="Branch 42 was not executed"> # </span><span class="branchNoExec" title="Branch 43 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 44 was not executed"> # </span><span class="branchNoExec" title="Branch 45 was not executed"> # </span><span class="branchNoExec" title="Branch 46 was not executed"> # </span><span class="branchNoExec" title="Branch 47 was not executed"> # </span><span class="branchNoExec" title="Branch 48 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 49 was not executed"> # </span><span class="branchNoExec" title="Branch 50 was not executed"> # </span><span class="branchNoExec" title="Branch 51 was not executed"> # </span><span class="branchNoExec" title="Branch 52 was not executed"> # </span><span class="branchNoExec" title="Branch 53 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 54 was not executed"> # </span><span class="branchNoExec" title="Branch 55 was not executed"> # </span><span class="branchNoExec" title="Branch 56 was not executed"> # </span><span class="branchNoExec" title="Branch 57 was not executed"> # </span><span class="branchNoExec" title="Branch 58 was not executed"> # </span> 
+<span class="lineNum">         </span>   <span class="branchNoExec" title="Branch 59 was not executed"> # </span><span class="branchNoExec" title="Branch 60 was not executed"> # </span><span class="branchNoExec" title="Branch 61 was not executed"> # </span><span class="branchNoExec" title="Branch 62 was not executed"> # </span> 
+<span class="lineNum">         </span>            <span class="branchNoExec" title="Branch 63 was not executed"> # </span>]
+<a name="346"><span class="lineNum">     346 </span>                :            :   }</a>
+<a name="347"><span class="lineNum">     347 </span>                :            : </a>
+<a name="348"><span class="lineNum">     348 </span>                :            :   void flush_tlb();</a>
+<a name="349"><span class="lineNum">     349 </span>                :            :   void flush_icache();</a>
+<a name="350"><span class="lineNum">     350 </span>                :            : </a>
+<a name="351"><span class="lineNum">     351 </span>                :            :   void register_memtracer(memtracer_t*);</a>
+<a name="352"><span class="lineNum">     352 </span>                :            : </a>
+<a name="353"><span class="lineNum">     353 </span>                :<span class="lineNoCov">          0 :   int is_misaligned_enabled()</span></a>
+<a name="354"><span class="lineNum">     354 </span>                :            :   {</a>
+<a name="355"><span class="lineNum">     355 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     return proc &amp;&amp; proc-&gt;extension_enabled(EXT_ZICCLSM);</span></a>
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span><span class="branchNoExec" title="Branch 8 was not executed"> # </span> 
+<span class="lineNum">         </span><span class="branchNoExec" title="Branch 9 was not executed"> # </span><span class="branchNoExec" title="Branch 10 was not executed"> # </span><span class="branchNoExec" title="Branch 11 was not executed"> # </span><span class="branchNoExec" title="Branch 12 was not executed"> # </span><span class="branchNoExec" title="Branch 13 was not executed"> # </span> 
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 14 was not executed"> # </span><span class="branchNoExec" title="Branch 15 was not executed"> # </span>]
+<a name="356"><span class="lineNum">     356 </span>                :            :   }</a>
+<a name="357"><span class="lineNum">     357 </span>                :            : </a>
+<a name="358"><span class="lineNum">     358 </span>                :            :   bool is_target_big_endian()</a>
+<a name="359"><span class="lineNum">     359 </span>                :            :   {</a>
+<a name="360"><span class="lineNum">     360 </span>                :            :     return target_big_endian;</a>
+<a name="361"><span class="lineNum">     361 </span>                :            :   }</a>
+<a name="362"><span class="lineNum">     362 </span>                :            : </a>
+<a name="363"><span class="lineNum">     363 </span>                :<span class="lineCov">       3402 :   template&lt;typename T&gt; inline T from_target(target_endian&lt;T&gt; n) const</span></a>
+<a name="364"><span class="lineNum">     364 </span>                :            :   {</a>
+<a name="365"><span class="lineNum">     365 </span>        [<span class="branchCov" title="Branch 0 was taken 721469 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">     819617 :     return target_big_endian? n.from_be() : n.from_le();</span></a>
+<a name="366"><span class="lineNum">     366 </span>                :            :   }</a>
+<a name="367"><span class="lineNum">     367 </span>                :            : </a>
+<a name="368"><span class="lineNum">     368 </span>                :<span class="lineCov">   11021259 :   template&lt;typename T&gt; inline target_endian&lt;T&gt; to_target(T n) const</span></a>
+<a name="369"><span class="lineNum">     369 </span>                :            :   {</a>
+<a name="370"><span class="lineNum">     370 </span>                :<span class="lineCov">   11021259 :     return target_big_endian? target_endian&lt;T&gt;::to_be(n) : target_endian&lt;T&gt;::to_le(n);</span></a>
+<a name="371"><span class="lineNum">     371 </span>                :            :   }</a>
+<a name="372"><span class="lineNum">     372 </span>                :            : </a>
+<a name="373"><span class="lineNum">     373 </span>                :            : private:</a>
+<a name="374"><span class="lineNum">     374 </span>                :            :   simif_t* sim;</a>
+<a name="375"><span class="lineNum">     375 </span>                :            :   processor_t* proc;</a>
+<a name="376"><span class="lineNum">     376 </span>                :            :   memtracer_list_t tracer;</a>
+<a name="377"><span class="lineNum">     377 </span>                :            :   reg_t load_reservation_address;</a>
+<a name="378"><span class="lineNum">     378 </span>                :            :   reg_t blocksz;</a>
+<a name="379"><span class="lineNum">     379 </span>                :            : </a>
+<a name="380"><span class="lineNum">     380 </span>                :            :   // implement an instruction cache for simulator performance</a>
+<a name="381"><span class="lineNum">     381 </span>                :            :   icache_entry_t icache[ICACHE_ENTRIES];</a>
+<a name="382"><span class="lineNum">     382 </span>                :            : </a>
+<a name="383"><span class="lineNum">     383 </span>                :            :   // implement a TLB for simulator performance</a>
+<a name="384"><span class="lineNum">     384 </span>                :            :   static const reg_t TLB_ENTRIES = 256;</a>
+<a name="385"><span class="lineNum">     385 </span>                :            :   // If a TLB tag has TLB_CHECK_TRIGGERS set, then the MMU must check for a</a>
+<a name="386"><span class="lineNum">     386 </span>                :            :   // trigger match before completing an access.</a>
+<a name="387"><span class="lineNum">     387 </span>                :            :   static const reg_t TLB_CHECK_TRIGGERS = reg_t(1) &lt;&lt; 63;</a>
+<a name="388"><span class="lineNum">     388 </span>                :            :   static const reg_t TLB_CHECK_TRACER = reg_t(1) &lt;&lt; 62;</a>
+<a name="389"><span class="lineNum">     389 </span>                :            :   static const reg_t TLB_MMIO = reg_t(1) &lt;&lt; 61;</a>
+<a name="390"><span class="lineNum">     390 </span>                :            :   static const reg_t TLB_FLAGS = TLB_CHECK_TRIGGERS | TLB_CHECK_TRACER | TLB_MMIO;</a>
+<a name="391"><span class="lineNum">     391 </span>                :            :   dtlb_entry_t tlb_load[TLB_ENTRIES];</a>
+<a name="392"><span class="lineNum">     392 </span>                :            :   dtlb_entry_t tlb_store[TLB_ENTRIES];</a>
+<a name="393"><span class="lineNum">     393 </span>                :            :   dtlb_entry_t tlb_insn[TLB_ENTRIES];</a>
+<a name="394"><span class="lineNum">     394 </span>                :            : </a>
+<a name="395"><span class="lineNum">     395 </span>                :            :   static const reg_t PTE_CACHE_ENTRIES = 251;</a>
+<a name="396"><span class="lineNum">     396 </span>                :            :   pte_cache_entry_t pte_cache[PTE_CACHE_ENTRIES];</a>
+<a name="397"><span class="lineNum">     397 </span>                :            : </a>
+<a name="398"><span class="lineNum">     398 </span>                :            :   typedef bloom_filter_t&lt;reg_t, simple_hash1, simple_hash2, TLB_ENTRIES * 16, 3&gt; reverse_tags_t;</a>
+<a name="399"><span class="lineNum">     399 </span>                :            :   reverse_tags_t tlb_store_reverse_tags;</a>
+<a name="400"><span class="lineNum">     400 </span>                :            :   reverse_tags_t tlb_insn_reverse_tags;</a>
+<a name="401"><span class="lineNum">     401 </span>                :            : </a>
+<a name="402"><span class="lineNum">     402 </span>                :            :   bool flush_tlb_ppn(reg_t ppn, dtlb_entry_t* tlb, reverse_tags_t&amp; filter);</a>
+<a name="403"><span class="lineNum">     403 </span>                :            :   void flush_itlb_ppn(reg_t ppn);</a>
+<a name="404"><span class="lineNum">     404 </span>                :            :   void flush_stlb_ppn(reg_t ppn);</a>
+<a name="405"><span class="lineNum">     405 </span>                :            : </a>
+<a name="406"><span class="lineNum">     406 </span>                :            :   // finish translation on a TLB miss and update the TLB</a>
+<a name="407"><span class="lineNum">     407 </span>                :            :   tlb_entry_t refill_tlb(reg_t vaddr, reg_t paddr, char* host_addr, access_type type);</a>
+<a name="408"><span class="lineNum">     408 </span>                :            :   const char* fill_from_mmio(reg_t vaddr, reg_t paddr);</a>
+<a name="409"><span class="lineNum">     409 </span>                :            : </a>
+<a name="410"><span class="lineNum">     410 </span>                :            :   // perform a stage2 translation for a given guest address</a>
+<a name="411"><span class="lineNum">     411 </span>                :            :   reg_t s2xlate(reg_t gva, reg_t gpa, access_type type, access_type trap_type, bool virt, bool hlvx, bool is_for_vs_pt_addr);</a>
+<a name="412"><span class="lineNum">     412 </span>                :            : </a>
+<a name="413"><span class="lineNum">     413 </span>                :            :   // perform a page table walk for a given VA; set referenced/dirty bits</a>
+<a name="414"><span class="lineNum">     414 </span>                :            :   reg_t walk(mem_access_info_t access_info);</a>
+<a name="415"><span class="lineNum">     415 </span>                :            : </a>
+<a name="416"><span class="lineNum">     416 </span>                :            :   // handle uncommon cases: TLB misses, page faults, MMIO</a>
+<a name="417"><span class="lineNum">     417 </span>                :            :   typedef uint16_t insn_parcel_t;</a>
+<a name="418"><span class="lineNum">     418 </span>                :            : </a>
+<a name="419"><span class="lineNum">     419 </span>                :            :   insn_parcel_t fetch_slow_path(reg_t addr);</a>
+<a name="420"><span class="lineNum">     420 </span>                :            :   insn_parcel_t perform_intrapage_fetch(reg_t vaddr, uintptr_t host_addr, reg_t paddr);</a>
+<a name="421"><span class="lineNum">     421 </span>                :            : </a>
+<a name="422"><span class="lineNum">     422 </span>                :            :   void load_slow_path(reg_t original_addr, std::size_t len,</a>
+<a name="423"><span class="lineNum">     423 </span>                :            :     std::uint8_t* bytes, xlate_flags_t xlate_flags);</a>
+<a name="424"><span class="lineNum">     424 </span>                :            :   void load_slow_path_intrapage(reg_t len, uint8_t* bytes, mem_access_info_t access_info);</a>
+<a name="425"><span class="lineNum">     425 </span>                :            :   void perform_intrapage_load(reg_t vaddr, uintptr_t host_addr, reg_t paddr, reg_t len, uint8_t* bytes, xlate_flags_t xlate_flags);</a>
+<a name="426"><span class="lineNum">     426 </span>                :            : </a>
+<a name="427"><span class="lineNum">     427 </span>                :            :   void store_slow_path(reg_t original_addr, std::size_t len, const std::uint8_t* bytes,</a>
+<a name="428"><span class="lineNum">     428 </span>                :            :     xlate_flags_t xlate_flags, bool actually_store, bool require_alignment);</a>
+<a name="429"><span class="lineNum">     429 </span>                :            :   void store_slow_path_intrapage(reg_t len, const uint8_t* bytes, mem_access_info_t access_info, bool actually_store);</a>
+<a name="430"><span class="lineNum">     430 </span>                :            :   void perform_intrapage_store(reg_t vaddr, uintptr_t host_addr, reg_t paddr, reg_t len, const uint8_t* bytes, xlate_flags_t xlate_flags);</a>
+<a name="431"><span class="lineNum">     431 </span>                :            : </a>
+<a name="432"><span class="lineNum">     432 </span>                :            :   bool mmio_fetch(reg_t paddr, size_t len, uint8_t* bytes);</a>
+<a name="433"><span class="lineNum">     433 </span>                :            :   bool mmio_load(reg_t paddr, size_t len, uint8_t* bytes);</a>
+<a name="434"><span class="lineNum">     434 </span>                :            :   bool mmio_store(reg_t paddr, size_t len, const uint8_t* bytes);</a>
+<a name="435"><span class="lineNum">     435 </span>                :            :   bool mmio(reg_t paddr, size_t len, uint8_t* bytes, access_type type);</a>
+<a name="436"><span class="lineNum">     436 </span>                :            :   bool mmio_ok(reg_t paddr, access_type type);</a>
+<a name="437"><span class="lineNum">     437 </span>                :            : </a>
+<a name="438"><span class="lineNum">     438 </span>                :            :   void check_triggers(triggers::operation_t operation,</a>
+<a name="439"><span class="lineNum">     439 </span>                :            :     reg_t addr, bool virt, std::size_t data_size, const std::uint8_t* bytes);</a>
+<a name="440"><span class="lineNum">     440 </span>                :            :   void check_triggers(triggers::operation_t operation,</a>
+<a name="441"><span class="lineNum">     441 </span>                :            :     reg_t addr, bool virt, std::size_t access_len);</a>
+<a name="442"><span class="lineNum">     442 </span>                :            :   void check_triggers(triggers::operation_t operation, reg_t address,</a>
+<a name="443"><span class="lineNum">     443 </span>                :            :     bool virt, std::size_t size, std::optional&lt;reg_t&gt; data);</a>
+<a name="444"><span class="lineNum">     444 </span>                :            : </a>
+<a name="445"><span class="lineNum">     445 </span>                :            :   bool svukte_qualified(mem_access_info_t access_info);</a>
+<a name="446"><span class="lineNum">     446 </span>                :            :   bool svukte_fault(reg_t addr, mem_access_info_t access_info);</a>
+<a name="447"><span class="lineNum">     447 </span>                :            :   reg_t translate(mem_access_info_t access_info, reg_t len);</a>
+<a name="448"><span class="lineNum">     448 </span>                :            : </a>
+<a name="449"><span class="lineNum">     449 </span>                :<span class="lineNoCov">          0 :   reg_t pte_load(reg_t pte_paddr, reg_t addr, bool virt, access_type trap_type, size_t ptesize) {</span></a>
+<a name="450"><span class="lineNum">     450 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (ptesize == 4)</span></a>
+<a name="451"><span class="lineNum">     451 </span>                :<span class="lineNoCov">          0 :       return pte_load&lt;uint32_t&gt;(pte_paddr, addr, virt, trap_type);</span></a>
+<a name="452"><span class="lineNum">     452 </span>                :            :     else</a>
+<a name="453"><span class="lineNum">     453 </span>                :<span class="lineNoCov">          0 :       return pte_load&lt;uint64_t&gt;(pte_paddr, addr, virt, trap_type);</span></a>
+<a name="454"><span class="lineNum">     454 </span>                :            :   }</a>
+<a name="455"><span class="lineNum">     455 </span>                :            : </a>
+<a name="456"><span class="lineNum">     456 </span>                :<span class="lineNoCov">          0 :   void pte_store(reg_t pte_paddr, reg_t new_pte, reg_t addr, bool virt, access_type trap_type, size_t ptesize) {</span></a>
+<a name="457"><span class="lineNum">     457 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (ptesize == 4)</span></a>
+<a name="458"><span class="lineNum">     458 </span>                :<span class="lineNoCov">          0 :       return pte_store&lt;uint32_t&gt;(pte_paddr, new_pte, addr, virt, trap_type);</span></a>
+<a name="459"><span class="lineNum">     459 </span>                :            :     else</a>
+<a name="460"><span class="lineNum">     460 </span>                :<span class="lineNoCov">          0 :       return pte_store&lt;uint64_t&gt;(pte_paddr, new_pte, addr, virt, trap_type);</span></a>
+<a name="461"><span class="lineNum">     461 </span>                :            :   }</a>
+<a name="462"><span class="lineNum">     462 </span>                :            : </a>
+<a name="463"><span class="lineNum">     463 </span>                :<span class="lineNoCov">          0 :   template&lt;typename T&gt; inline reg_t pte_load(reg_t pte_paddr, reg_t addr, bool virt, access_type trap_type)</span></a>
+<a name="464"><span class="lineNum">     464 </span>                :            :   {</a>
+<a name="465"><span class="lineNum">     465 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (auto [hit, pte] = pte_cache_access(pte_paddr); hit)</span></a>
+<a name="466"><span class="lineNum">     466 </span>                :            :       return pte;</a>
+<a name="467"><span class="lineNum">     467 </span>                :            : </a>
+<a name="468"><span class="lineNum">     468 </span>                :<span class="lineNoCov">          0 :     const size_t ptesize = sizeof(T);</span></a>
+<a name="469"><span class="lineNum">     469 </span>                :            : </a>
+<a name="470"><span class="lineNum">     470 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (!pmp_ok(pte_paddr, ptesize, LOAD, PRV_S, false))</span></a>
+<a name="471"><span class="lineNum">     471 </span>                :<span class="lineNoCov">          0 :       throw_access_exception(virt, addr, trap_type);</span></a>
+<a name="472"><span class="lineNum">     472 </span>                :            : </a>
+<a name="473"><span class="lineNum">     473 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     void* host_pte_addr = sim-&gt;addr_to_mem(pte_paddr);</span></a>
+<a name="474"><span class="lineNum">     474 </span>                :<span class="lineNoCov">          0 :     target_endian&lt;T&gt; target_pte;</span></a>
+<a name="475"><span class="lineNum">     475 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (host_pte_addr) {</span></a>
+<a name="476"><span class="lineNum">     476 </span>                :<span class="lineNoCov">          0 :       memcpy(&amp;target_pte, host_pte_addr, ptesize);</span></a>
+<a name="477"><span class="lineNum">     477 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     } else if (!mmio_load(pte_paddr, ptesize, (uint8_t*)&amp;target_pte)) {</span></a>
+<a name="478"><span class="lineNum">     478 </span>                :<span class="lineNoCov">          0 :       throw_access_exception(virt, addr, trap_type);</span></a>
+<a name="479"><span class="lineNum">     479 </span>                :            :     }</a>
+<a name="480"><span class="lineNum">     480 </span>                :            : </a>
+<a name="481"><span class="lineNum">     481 </span>                :<span class="lineNoCov">          0 :     auto res = from_target(target_pte);</span></a>
+<a name="482"><span class="lineNum">     482 </span>                :<span class="lineNoCov">          0 :     pte_cache_insert(pte_paddr, res);</span></a>
+<a name="483"><span class="lineNum">     483 </span>                :            :     return res;</a>
+<a name="484"><span class="lineNum">     484 </span>                :            :   }</a>
+<a name="485"><span class="lineNum">     485 </span>                :            : </a>
+<a name="486"><span class="lineNum">     486 </span>                :<span class="lineNoCov">          0 :   template&lt;typename T&gt; inline void pte_store(reg_t pte_paddr, reg_t new_pte, reg_t addr, bool virt, access_type trap_type)</span></a>
+<a name="487"><span class="lineNum">     487 </span>                :            :   {</a>
+<a name="488"><span class="lineNum">     488 </span>                :<span class="lineNoCov">          0 :     const size_t ptesize = sizeof(T);</span></a>
+<a name="489"><span class="lineNum">     489 </span>                :            : </a>
+<a name="490"><span class="lineNum">     490 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (!pmp_ok(pte_paddr, ptesize, STORE, PRV_S, false))</span></a>
+<a name="491"><span class="lineNum">     491 </span>                :<span class="lineNoCov">          0 :       throw_access_exception(virt, addr, trap_type);</span></a>
+<a name="492"><span class="lineNum">     492 </span>                :            : </a>
+<a name="493"><span class="lineNum">     493 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     void* host_pte_addr = sim-&gt;addr_to_mem(pte_paddr);</span></a>
+<a name="494"><span class="lineNum">     494 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     target_endian&lt;T&gt; target_pte = to_target((T)new_pte);</span></a>
+<a name="495"><span class="lineNum">     495 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     if (host_pte_addr) {</span></a>
+<a name="496"><span class="lineNum">     496 </span>                :<span class="lineNoCov">          0 :       memcpy(host_pte_addr, &amp;target_pte, ptesize);</span></a>
+<a name="497"><span class="lineNum">     497 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     } else if (!mmio_store(pte_paddr, ptesize, (uint8_t*)&amp;target_pte)) {</span></a>
+<a name="498"><span class="lineNum">     498 </span>                :<span class="lineNoCov">          0 :       throw_access_exception(virt, addr, trap_type);</span></a>
+<a name="499"><span class="lineNum">     499 </span>                :            :     }</a>
+<a name="500"><span class="lineNum">     500 </span>                :            : </a>
+<a name="501"><span class="lineNum">     501 </span>                :<span class="lineNoCov">          0 :     pte_cache_insert(pte_paddr, new_pte);</span></a>
+<a name="502"><span class="lineNum">     502 </span>                :<span class="lineNoCov">          0 :   }</span></a>
+<a name="503"><span class="lineNum">     503 </span>                :            : </a>
+<a name="504"><span class="lineNum">     504 </span>                :<span class="lineNoCov">          0 :   std::tuple&lt;bool, reg_t&gt; pte_cache_access(reg_t key)</span></a>
+<a name="505"><span class="lineNum">     505 </span>                :            :   {</a>
+<a name="506"><span class="lineNum">     506 </span>                :<span class="lineNoCov">          0 :     auto e = pte_cache[key % PTE_CACHE_ENTRIES];</span></a>
+<a name="507"><span class="lineNum">     507 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :     return std::make_tuple(e.paddr == key, e.pte);</span></a>
+<a name="508"><span class="lineNum">     508 </span>                :            :   }</a>
+<a name="509"><span class="lineNum">     509 </span>                :            : </a>
+<a name="510"><span class="lineNum">     510 </span>                :<span class="lineNoCov">          0 :   void pte_cache_insert(reg_t key, reg_t value)</span></a>
+<a name="511"><span class="lineNum">     511 </span>                :            :   {</a>
+<a name="512"><span class="lineNum">     512 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     if (value &amp; PTE_V)</span></a>
+<span class="lineNum">         </span>   <span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span><span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<a name="513"><span class="lineNum">     513 </span>                :<span class="lineNoCov">          0 :       pte_cache[key % PTE_CACHE_ENTRIES] = {key, value};</span></a>
+<a name="514"><span class="lineNum">     514 </span>                :            :   }</a>
+<a name="515"><span class="lineNum">     515 </span>                :            : </a>
+<a name="516"><span class="lineNum">     516 </span>                :<span class="lineCov">   12060885 :   inline insn_parcel_t fetch_insn_parcel(reg_t addr) {</span></a>
+<a name="517"><span class="lineNum">     517 </span>        [<span class="branchCov" title="Branch 0 was taken 1710879 times"> + </span><span class="branchCov" title="Branch 1 was taken 9960070 times"> + </span>]:<span class="lineCov">   24121770 :     if (auto [tlb_hit, host_addr, paddr] = access_tlb(tlb_insn, addr); tlb_hit)</span></a>
+<a name="518"><span class="lineNum">     518 </span>                :<span class="lineCov">    2100518 :       return from_le(*(insn_parcel_t*)host_addr);</span></a>
+<a name="519"><span class="lineNum">     519 </span>                :            : </a>
+<a name="520"><span class="lineNum">     520 </span>                :<span class="lineCov">    9960367 :     return from_le(fetch_slow_path(addr));</span></a>
+<a name="521"><span class="lineNum">     521 </span>                :            :   }</a>
+<a name="522"><span class="lineNum">     522 </span>                :            : </a>
+<a name="523"><span class="lineNum">     523 </span>                :<span class="lineCov">    9961786 :   inline bool in_mprv() const</span></a>
+<a name="524"><span class="lineNum">     524 </span>                :            :   {</a>
+<a name="525"><span class="lineNum">     525 </span>                :<span class="lineCov">    9961786 :     return proc != nullptr</span></a>
+<a name="526"><span class="lineNum">     526 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9959456 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">    9959714 :            &amp;&amp; !(proc-&gt;state.mnstatus &amp;&amp; !get_field(proc-&gt;state.mnstatus-&gt;read(), MNSTATUS_NMIE))</span></a>
+<a name="527"><span class="lineNum">     527 </span>  [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 9959456 times"> + </span><span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">    9959714 :            &amp;&amp; (!proc-&gt;state.debug_mode || get_field(proc-&gt;state.dcsr-&gt;read(), DCSR_MPRVEN))</span></a>
+<a name="528"><span class="lineNum">     528 </span>  [<span class="branchCov" title="Branch 0 was taken 9959456 times"> + </span><span class="branchCov" title="Branch 1 was taken 1860 times"> + </span><span class="branchCov" title="Branch 2 was taken 9959456 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">   19921500 :            &amp;&amp; get_field(proc-&gt;state.mstatus-&gt;read(), MSTATUS_MPRV);</span></a>
+<a name="529"><span class="lineNum">     529 </span>                :            :   }</a>
+<a name="530"><span class="lineNum">     530 </span>                :            : </a>
+<a name="531"><span class="lineNum">     531 </span>                :            :   reg_t pmp_homogeneous(reg_t addr, reg_t len);</a>
+<a name="532"><span class="lineNum">     532 </span>                :            :   bool pmp_ok(reg_t addr, reg_t len, access_type type, reg_t mode, bool hlvx);</a>
+<a name="533"><span class="lineNum">     533 </span>                :            : </a>
+<a name="534"><span class="lineNum">     534 </span>                :            : #ifdef RISCV_ENABLE_DUAL_ENDIAN</a>
+<a name="535"><span class="lineNum">     535 </span>                :            :   bool target_big_endian;</a>
+<a name="536"><span class="lineNum">     536 </span>                :            : #else</a>
+<a name="537"><span class="lineNum">     537 </span>                :            :   static const bool target_big_endian = false;</a>
+<a name="538"><span class="lineNum">     538 </span>                :            : #endif</a>
+<a name="539"><span class="lineNum">     539 </span>                :            :   bool check_triggers_fetch;</a>
+<a name="540"><span class="lineNum">     540 </span>                :            :   bool check_triggers_load;</a>
+<a name="541"><span class="lineNum">     541 </span>                :            :   bool check_triggers_store;</a>
+<a name="542"><span class="lineNum">     542 </span>                :            :   std::optional&lt;triggers::matched_t&gt; matched_trigger;</a>
+<a name="543"><span class="lineNum">     543 </span>                :            : </a>
+<a name="544"><span class="lineNum">     544 </span>                :            :   friend class processor_t;</a>
+<a name="545"><span class="lineNum">     545 </span>                :            : };</a>
+<a name="546"><span class="lineNum">     546 </span>                :            : </a>
+<a name="547"><span class="lineNum">     547 </span>                :            : struct vm_info {</a>
+<a name="548"><span class="lineNum">     548 </span>                :            :   int levels;</a>
+<a name="549"><span class="lineNum">     549 </span>                :            :   int idxbits;</a>
+<a name="550"><span class="lineNum">     550 </span>                :            :   int widenbits;</a>
+<a name="551"><span class="lineNum">     551 </span>                :            :   int ptesize;</a>
+<a name="552"><span class="lineNum">     552 </span>                :            :   reg_t ptbase;</a>
+<a name="553"><span class="lineNum">     553 </span>                :            : };</a>
+<a name="554"><span class="lineNum">     554 </span>                :            : </a>
+<a name="555"><span class="lineNum">     555 </span>                :<span class="lineCov">    9959100 : inline vm_info decode_vm_info(int xlen, bool stage2, reg_t prv, reg_t satp)</span></a>
+<a name="556"><span class="lineNum">     556 </span>                :            : {</a>
+<a name="557"><span class="lineNum">     557 </span>        [<span class="branchCov" title="Branch 0 was taken 9958894 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">    9959100 :   if (prv == PRV_M) {</span></a>
+<a name="558"><span class="lineNum">     558 </span>                :<span class="lineCov">    9959100 :     return {0, 0, 0, 0, 0};</span></a>
+<a name="559"><span class="lineNum">     559 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   } else if (!stage2 &amp;&amp; prv &lt;= PRV_S &amp;&amp; xlen == 32) {</span></a>
+<a name="560"><span class="lineNum">     560 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     switch (get_field(satp, SATP32_MODE)) {</span></a>
+<a name="561"><span class="lineNum">     561 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_OFF: return {0, 0, 0, 0, 0};</span></a>
+<a name="562"><span class="lineNum">     562 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_SV32: return {2, 10, 0, 4, (satp &amp; SATP32_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="563"><span class="lineNum">     563 </span>                :            :       default: abort();</a>
+<a name="564"><span class="lineNum">     564 </span>                :            :     }</a>
+<a name="565"><span class="lineNum">     565 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :   } else if (!stage2 &amp;&amp; prv &lt;= PRV_S &amp;&amp; xlen == 64) {</span></a>
+<a name="566"><span class="lineNum">     566 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     switch (get_field(satp, SATP64_MODE)) {</span></a>
+<span class="lineNum">         </span>         <span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<a name="567"><span class="lineNum">     567 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_OFF: return {0, 0, 0, 0, 0};</span></a>
+<a name="568"><span class="lineNum">     568 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_SV39: return {3, 9, 0, 8, (satp &amp; SATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="569"><span class="lineNum">     569 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_SV48: return {4, 9, 0, 8, (satp &amp; SATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="570"><span class="lineNum">     570 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_SV57: return {5, 9, 0, 8, (satp &amp; SATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="571"><span class="lineNum">     571 </span>                :<span class="lineNoCov">          0 :       case SATP_MODE_SV64: return {6, 9, 0, 8, (satp &amp; SATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="572"><span class="lineNum">     572 </span>                :<span class="lineNoCov">          0 :       default: abort();</span></a>
+<a name="573"><span class="lineNum">     573 </span>                :            :     }</a>
+<a name="574"><span class="lineNum">     574 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   } else if (stage2 &amp;&amp; xlen == 32) {</span></a>
+<a name="575"><span class="lineNum">     575 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :     switch (get_field(satp, HGATP32_MODE)) {</span></a>
+<a name="576"><span class="lineNum">     576 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_OFF: return {0, 0, 0, 0, 0};</span></a>
+<a name="577"><span class="lineNum">     577 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_SV32X4: return {2, 10, 2, 4, (satp &amp; HGATP32_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="578"><span class="lineNum">     578 </span>                :            :       default: abort();</a>
+<a name="579"><span class="lineNum">     579 </span>                :            :     }</a>
+<a name="580"><span class="lineNum">     580 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :   } else if (stage2 &amp;&amp; xlen == 64) {</span></a>
+<a name="581"><span class="lineNum">     581 </span>  [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span><span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span> :<span class="lineNoCov">          0 :     switch (get_field(satp, HGATP64_MODE)) {</span></a>
+<span class="lineNum">         </span>            <span class="branchNoExec" title="Branch 4 was not executed"> # </span>]
+<a name="582"><span class="lineNum">     582 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_OFF: return {0, 0, 0, 0, 0};</span></a>
+<a name="583"><span class="lineNum">     583 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_SV39X4: return {3, 9, 2, 8, (satp &amp; HGATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="584"><span class="lineNum">     584 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_SV48X4: return {4, 9, 2, 8, (satp &amp; HGATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="585"><span class="lineNum">     585 </span>                :<span class="lineNoCov">          0 :       case HGATP_MODE_SV57X4: return {5, 9, 2, 8, (satp &amp; HGATP64_PPN) &lt;&lt; PGSHIFT};</span></a>
+<a name="586"><span class="lineNum">     586 </span>                :<span class="lineNoCov">          0 :       default: abort();</span></a>
+<a name="587"><span class="lineNum">     587 </span>                :            :     }</a>
+<a name="588"><span class="lineNum">     588 </span>                :            :   } else {</a>
+<a name="589"><span class="lineNum">     589 </span>                :<span class="lineNoCov">          0 :     abort();</span></a>
+<a name="590"><span class="lineNum">     590 </span>                :            :   }</a>
+<a name="591"><span class="lineNum">     591 </span>                :            : }</a>
+<a name="592"><span class="lineNum">     592 </span>                :            : </a>
+<a name="593"><span class="lineNum">     593 </span>                :            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
