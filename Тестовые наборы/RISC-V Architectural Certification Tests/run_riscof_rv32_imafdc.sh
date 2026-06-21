@@ -44,6 +44,7 @@ CONTAINER="riscv-env"
 SAIL_ENV="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env"
 LINKER_SCRIPT="$SAIL_ENV/link.ld"
 ENV_INCLUDE="/opt/riscv-arch-test/riscv-test-suite/env"
+TEST_SUITE="/opt/riscv-arch-test/riscv-test-suite/rv32i_m"
 ELF_BASE="/tmp/riscof_rv32_elf"
 OUTPUT_BASE="/tmp/riscof_rv32_results"
 LOCAL_OUT="/Users/xiaoyubai/WorkSpace/2275/risc-v/Тестовые наборы/RISC-V Architectural Certification Tests"
@@ -58,6 +59,15 @@ get_march() {
         F) echo "rv32if" ;;
         D) echo "rv32ifd" ;;
         *) echo "rv32i" ;;
+    esac
+}
+
+# ISA → extra GCC defines
+get_defines() {
+    case "$1" in
+        F) echo "-DTEST_CASE_1=True -DXLEN=32 -DFLEN=32" ;;
+        D) echo "-DTEST_CASE_1=True -DXLEN=32 -DFLEN=64" ;;
+        *) echo "-DTEST_CASE_1=True -DXLEN=32" ;;
     esac
 }
 
@@ -132,7 +142,7 @@ for isa in $ISAS_TO_RUN; do
                 -I '$ENV_INCLUDE' \
                 -mabi=$mabi \
                 '$src' -o '$elf_path' \
-                -DTEST_CASE_1=True -DXLEN=32 2>&1
+                $(get_defines $isa) 2>&1
         " 2>/dev/null; then
             compiled=$((compiled + 1))
         else

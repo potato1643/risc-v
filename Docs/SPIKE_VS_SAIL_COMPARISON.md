@@ -1,6 +1,6 @@
 # Spike vs Sail C Simulator — Coverage Comparison Report
 
-**Date:** 2026-06-21  
+**Date:** 2026-06-21 (updated 2026-06-21 with RV32 IMAFDC Sail data)  
 **Project:** №2275, ISP RAS  
 **Author:** Bai Xiaoyu
 
@@ -41,6 +41,8 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 
 | Test Suite | ELF | Pass | Fail | Line% | Func% | Branch% |
 |------------|:---:|:---:|:---:|:-----:|:-----:|:------:|
+| **RISCOF RV64+RV32 IMAFDC** | **1,211** | **1,210** | **1** | **27.8%** | **31.6%** | **5.4%** |
+| RISCOF RV32 IMAFDC (solo) | 1,103 | 1,102 | 1 | **29.5%** | **41.8%** | **8.3%** |
 | MicroTESK | 214 | 187 | 27 | **29.7%** | **42.5%** | **8.6%** |
 | RISCOF RV64 IMAFDC (A+C+F+D) | 108 | 108 | 0 | **28.9%** | **41.7%** | **8.0%** |
 | RISCOF RV64I+RV32I | 88 | 88 | 0 | 20.2% | 40.1% | 3.6% |
@@ -56,6 +58,21 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 | D (Double FP) | 27 | 27 | 26.8% | 41.0% | 6.7% |
 | **Combined** | **108** | **108** | **28.9%** | **41.7%** | **8.0%** |
 
+### 2.4 Per-ISA Breakdown (Sail — RISCOF RV32) 🆕
+
+| ISA | ELF | Pass | Line% | Func% | Branch% |
+|-----|:---:|:---:|:-----:|:-----:|:------:|
+| I (Base Integer) | 38 | 38 | 20.2% | 40.1% | 3.6% |
+| M (Multiply) | 8 | 8 | 20.2% | 40.0% | 3.5% |
+| A (Atomic) | 9 | 9 | 20.1% | 40.1% | 3.5% |
+| C (Compressed) | 27 | 26 | 20.5% | 40.2% | 3.9% |
+| **F (Single FP)** | **342** | **342** | **27.3%** | **41.2%** | **7.0%** |
+| **D (Double FP)** | **679** | **679** | **27.6%** | **41.3%** | **7.1%** |
+| **RV32 IMAFDC Combined** | **1,103** | **1,102** | **29.5%** | **41.8%** | **8.3%** |
+| **RV64+RV32 ALL** | **1,211** | **1,210** | **27.8%** | **31.6%*** | **5.4%*** |
+
+*\*RV64+RV32 denominator includes additional Spike source files (423K lines vs 372K for Sail-only)*
+
 ---
 
 ## 3. Side-by-Side Comparison
@@ -63,23 +80,28 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 ### 3.1 Line Coverage
 
 ```
-Suite           Spike        Sail         Sail/Spike ratio
---------------------------------------------------------------------
-MicroTESK       19.6%        29.7%        1.52x
-RISCOF RV64I    15.5%        20.2%*       1.30x
-Imperas         15.7%        26.3%        1.68x
+Suite                    Spike        Sail         Sail/Spike ratio
+--------------------------------------------------------------------------
+RISCOF ALL IMAFDC        29.0%*       29.5%**      1.02x (RV32 solo)
+RISCOF ALL IMAFDC        29.0%*       27.8%***     0.96x (full denominator)
+MicroTESK                19.6%        29.7%        1.52x
+RISCOF RV64I             15.5%        20.2%†       1.30x
+Imperas                  15.7%        26.3%        1.68x
 ```
 
-*\*RISCOF RV64I+RV32I combined*
+*\*Spike IMAFDC-filtered (40,374 lines)*  
+*\*\*Sail RV32 IMAFDC solo (372,297 lines) — directly comparable to RV64 Sail*  
+*\*\*\*Sail RV64+RV32 combined (423,311 lines — includes extra code from RV64 info files)*  
+*†RISCOF RV64I+RV32I combined*
 
 ### 3.2 Function Coverage
 
 ```
-Suite           Spike        Sail         Notes
---------------------------------------------------------------------
-MicroTESK       14.6%        42.5%        Sail funcs much denser
-RISCOF RV64I    11.8%        40.1%        Same pattern
-Imperas         12.3%        40.9%        Same pattern
+Suite                    Spike        Sail         Notes
+--------------------------------------------------------------------------
+RISCOF ALL IMAFDC        22.0%        41.8%        Sail funcs much denser
+MicroTESK                14.6%        42.5%        Sail funcs much denser
+Imperas                  12.3%        40.9%        Same pattern
 ```
 
 ### 3.3 Ranking Within Each Simulator
@@ -89,10 +111,11 @@ Imperas         12.3%        40.9%        Same pattern
 2. MicroTESK (filtered): 25.9%
 3. Imperas: 15.7%
 
-**Sail (Line%):**
+**Sail (Line% — Sail-only denominator 372K):**
 1. MicroTESK: 29.7%
-2. RISCOF RV64 IMAFDC: 28.9%
-3. Imperas: 26.3%
+2. **RISCOF RV32 IMAFDC: 29.5%** 🆕
+3. RISCOF RV64 IMAFDC: 28.9%
+4. Imperas: 26.3%
 
 ---
 
@@ -113,7 +136,16 @@ Imperas (only 48 ELF, RV32I-only) achieves 26.3% line coverage on Sail — compa
 ### 4.5 Branch Coverage Parallels Line Coverage
 Branch coverage follows the same pattern: Sail (6-8%) vs Spike (2-3%). Both simulators show low branch coverage because branch instrumentation captures all conditional branches in the code — test suites only exercise a fraction of possible execution paths.
 
-### 4.6 Test Suite Pass/Fail Behavior Consistent
+### 4.6 RISCOF RV32 IMAFDC Narrows Gap on Sail 🆕
+
+With the addition of RV32 IMAFDC (1,103 ELFs, 1,102 pass), RISCOF achieved **29.5% line coverage** on Sail — just 0.2pp behind MicroTESK (29.7%). Key insights:
+
+- **F/D are the dominant contributors**: RV32F (+7.1pp) and RV32D (+7.4pp) each contribute more than I/M/A/C combined (~20% baseline)
+- **RISCOF achieves this with 5× more tests**: 1,103 ELFs vs MicroTESK's 214, yet nearly identical coverage — suggesting diminishing returns above ~30% for Sail's monolithic code
+- **RV64+RV32 combined (27.8%) appears lower** because the RV64 info files were generated differently and include extra Spike source files (423K vs 372K denominator)
+- **Branch coverage (8.3%)** is close to MicroTESK (8.6%), confirming similar execution path diversity
+
+### 4.7 Test Suite Pass/Fail Behavior Consistent
 All three test suites pass at similar rates on both simulators:
 - MicroTESK: 185/214 (Spike) vs 187/214 (Sail) — 2 extra passes on Sail
 - RISCOF: 100% pass on both
@@ -129,17 +161,20 @@ The 27-29 MicroTESK failures are the known IEEE 754 expected-value mismatch in F
 
 2. **Sail coverage is structurally different from Spike** — higher percentages across the board due to monolithic code generation. Direct % comparison is misleading; the value is in the patterns.
 
-3. **MicroTESK shows unexpected strength on Sail**, ranking #1 (29.7%) vs RISCOF's #2 (28.9%). On Spike, RISCOF dominates (29.0% vs 25.9%).
+3. **MicroTESK edges RISCOF on Sail (29.7% vs 29.5%)** — a razor-thin 0.2pp margin vs the 3.1pp gap on Spike. RISCOF achieves near-identical Sail coverage with 5× more tests.
 
-4. **RISCOF's full potential on Sail is still untapped** — only 108 RV64 IMAFDC ELFs were run (from 1,268 total). Running the full RV32 IMAFDC (+1,097 ELFs) would likely push Sail coverage significantly higher.
+4. **On Spike, RISCOF dominates (29.0% vs 25.9%)** — the opposite ranking. RISCOF's broad ISA coverage (26 extensions) exercises Spike's hand-written per-instruction code more effectively, while MicroTESK's algorithmic tests fit Sail's monolithic structure better.
 
-5. **The dual-simulator setup is operational** — all scripts support `SIMULATOR=spike|sail`, coverage data can be compared via `compare_simulators.sh`.
+5. **F and D extensions are the dominant coverage drivers on both simulators** — together they contribute +7-9pp on Sail and +4-5pp on Spike.
+
+6. **The dual-simulator setup is operational** — all scripts support `SIMULATOR=spike|sail`, coverage data can be compared via `compare_simulators.sh`.
 
 ---
 
 ## 6. Next Steps
 
-- Run full RISCOF RV32 IMAFDC on Sail (1,097 ELF)
-- Apply Delta analysis: unique coverage per simulator
-- Generate IMAFDC-equivalent filter for Sail (if possible)
-- Update poster with dual-simulator results
+- [x] Run full RISCOF RV32 IMAFDC on Sail (1,103 ELF) ✅
+- [ ] Regenerate RV64 Sail data with consistent methodology (same compile pipeline as RV32)
+- [ ] Apply Delta analysis: unique coverage per simulator
+- [ ] Generate IMAFDC-equivalent filter for Sail (if possible)
+- [ ] Combined coverage: RISCOF + MicroTESK + Imperas merged on both simulators
