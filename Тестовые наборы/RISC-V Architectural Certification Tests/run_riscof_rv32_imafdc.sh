@@ -3,20 +3,47 @@
 # RISCOF RV32 IMAFDC — Compile + Run + Coverage
 # ============================================================================
 # Compiles RV32 .S tests for each ISA (I, M, A, C, F, D),
-# runs through gcov-Spike, and collects per-ISA + combined coverage.
+# runs through gcov-instrumented simulator, and collects per-ISA + combined coverage.
 #
-# Usage: bash run_riscof_rv32_imafdc.sh [isa1 isa2 ...]
+# Usage: bash run_riscof_rv32_imafdc.sh [spike|sail] [isa1 isa2 ...]
+#   SIMULATOR=sail bash run_riscof_rv32_imafdc.sh
 # ============================================================================
 
 set -e
 
+# --- Simulator selection ---
+SIMULATOR="${SIMULATOR:-spike}"
+if [ $# -gt 0 ]; then
+    case "$1" in
+        spike|sail)
+            SIMULATOR="$1"
+            shift
+            ;;
+    esac
+fi
+
+case "$SIMULATOR" in
+    spike)
+        SIM_BIN="/opt/riscv-isa-sim/build/spike"
+        BUILD_DIR="/opt/riscv-isa-sim/build"
+        APPLY_IMAFDC_FILTER=true
+        ;;
+    sail)
+        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SAIL_CONFIG="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
+        APPLY_IMAFDC_FILTER=false
+        ;;
+    *)
+        echo "ERROR: unknown simulator '$SIMULATOR'. Use spike or sail."
+        exit 1
+        ;;
+esac
+
 CONTAINER="riscv-env"
-TEST_SUITE="/opt/riscv-arch-test/riscv-test-suite/rv32i_m"
 SAIL_ENV="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env"
 LINKER_SCRIPT="$SAIL_ENV/link.ld"
 ENV_INCLUDE="/opt/riscv-arch-test/riscv-test-suite/env"
-SPIKE="/opt/riscv-isa-sim/build/spike"
-BUILD_DIR="/opt/riscv-isa-sim/build"
 ELF_BASE="/tmp/riscof_rv32_elf"
 OUTPUT_BASE="/tmp/riscof_rv32_results"
 LOCAL_OUT="/Users/xiaoyubai/WorkSpace/2275/risc-v/Тестовые наборы/RISC-V Architectural Certification Tests"
@@ -57,6 +84,7 @@ fi
 
 echo "============================================"
 echo "  RISCOF RV32 IMAFDC Coverage Collection"
+echo "  Simulator: $SIMULATOR"
 echo "============================================"
 echo "ISAs: $ISAS_TO_RUN"
 echo ""
@@ -129,7 +157,7 @@ docker exec "$CONTAINER" sh -c "mkdir -p '$OUTPUT_BASE'"
 
 for isa in $ISAS_TO_RUN; do
     elf_dir="$ELF_BASE/$isa"
-    output_info="$OUTPUT_BASE/riscof_rv32_${isa}_coverage.info"
+    output_info="$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_${isa}_coverage.info"
 
     elf_count=$(docker exec "$CONTAINER" sh -c "find '$elf_dir' -name '*.elf' 2>/dev/null | wc -l" | tr -d ' ')
     if [ "$elf_count" -eq 0 ]; then
@@ -142,22 +170,40 @@ for isa in $ISAS_TO_RUN; do
     echo "  Clearing gcov..."
     docker exec "$CONTAINER" sh -c "find '$BUILD_DIR' -name '*.gcda' -delete"
 
-    echo "  Running tests..."
-    run_result=$(docker exec "$CONTAINER" sh -c "
-        pass=0; fail=0; timeout_fail=0
-        for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
-            timeout 10 '$SPIKE' --isa=rv32gc -l \"\$elf\" > /dev/null 2>&1
-            rc=\$?
-            if [ \$rc -eq 0 ]; then
-                pass=\$((pass + 1))
-            elif [ \$rc -eq 124 ]; then
-                timeout_fail=\$((timeout_fail + 1))
-            else
-                fail=\$((fail + 1))
-            fi
-        done
-        echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail\"
-    ")
+    echo "  Running tests on $SIMULATOR..."
+    if [ "$SIMULATOR" = "spike" ]; then
+        run_result=$(docker exec "$CONTAINER" sh -c "
+            pass=0; fail=0; timeout_fail=0
+            for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
+                timeout 10 '$SIM_BIN' --isa=rv32gc -l \"\$elf\" > /dev/null 2>&1
+                rc=\$?
+                if [ \$rc -eq 0 ]; then
+                    pass=\$((pass + 1))
+                elif [ \$rc -eq 124 ]; then
+                    timeout_fail=\$((timeout_fail + 1))
+                else
+                    fail=\$((fail + 1))
+                fi
+            done
+            echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail\"
+        ")
+    else
+        run_result=$(docker exec "$CONTAINER" sh -c "
+            pass=0; fail=0; timeout_fail=0
+            for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
+                timeout 10 '$SIM_BIN' --config='$SAIL_CONFIG' --test-signature=/dev/null \"\$elf\" > /dev/null 2>&1
+                rc=\$?
+                if [ \$rc -eq 0 ]; then
+                    pass=\$((pass + 1))
+                elif [ \$rc -eq 124 ]; then
+                    timeout_fail=\$((timeout_fail + 1))
+                else
+                    fail=\$((fail + 1))
+                fi
+            done
+            echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail\"
+        ")
+    fi
     echo "  Result: $run_result"
 
     echo "  Collecting lcov..."
@@ -173,8 +219,8 @@ for isa in $ISAS_TO_RUN; do
         lcov --rc lcov_branch_coverage=1 --summary '$output_info' 2>&1 | grep -E 'lines|functions|branches'
     "
 
-    docker cp "$CONTAINER:$output_info" "$LOCAL_OUT/riscof_rv32_${isa}_coverage.info" 2>/dev/null
-    echo "  Saved: riscof_rv32_${isa}_coverage.info"
+    docker cp "$CONTAINER:$output_info" "$LOCAL_OUT/riscof_${SIMULATOR}_rv32_${isa}_coverage.info" 2>/dev/null
+    echo "  Saved: riscof_${SIMULATOR}_rv32_${isa}_coverage.info"
 done
 
 # ========================================================================
@@ -189,7 +235,7 @@ echo "============================================"
 RV32_ARGS=""
 first=""
 for isa in $ISAS_TO_RUN; do
-    f="$OUTPUT_BASE/riscof_rv32_${isa}_coverage.info"
+    f="$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_${isa}_coverage.info"
     exists=$(docker exec "$CONTAINER" sh -c "test -f '$f' && echo yes || echo no")
     if [ "$exists" = "yes" ]; then
         if [ -z "$first" ]; then
@@ -206,60 +252,69 @@ if [ -n "$first" ]; then
         lcov --rc lcov_branch_coverage=1 \
              --add-tracefile '$first' \
              $RV32_ARGS \
-             --output-file '$OUTPUT_BASE/riscof_rv32_imafdc.info' \
+             --output-file '$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_imafdc.info' \
              --ignore-errors source,empty 2>&1 | tail -3
     "
     echo "RV32 IMAFDC combined:"
-    docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_rv32_imafdc.info' 2>&1 | grep -E 'lines|functions|branches'"
-    docker cp "$CONTAINER:$OUTPUT_BASE/riscof_rv32_imafdc.info" "$LOCAL_OUT/riscof_rv32_imafdc.info" 2>/dev/null
+    docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_imafdc.info' 2>&1 | grep -E 'lines|functions|branches'"
+    docker cp "$CONTAINER:$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_imafdc.info" "$LOCAL_OUT/riscof_${SIMULATOR}_rv32_imafdc.info" 2>/dev/null
 
-    # Merge RV64 + RV32
-    RV64_INFO="/tmp/riscof_isa_results/riscof_imafdc_full.info"
-    echo ""
-    echo "--- Combining RV64 + RV32 ---"
-    docker exec "$CONTAINER" sh -c "
-        lcov --rc lcov_branch_coverage=1 \
-             --add-tracefile '$RV64_INFO' \
-             --add-tracefile '$OUTPUT_BASE/riscof_rv32_imafdc.info' \
-             --output-file '$OUTPUT_BASE/riscof_all_imafdc.info' \
-             --ignore-errors source,empty 2>&1 | tail -3
-    "
-    echo "RV64+RV32 full denominator:"
-    docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_all_imafdc.info' 2>&1 | grep -E 'lines|functions|branches'"
+    # Merge RV64 + RV32 (only if RV64 data exists)
+    RV64_INFO="/tmp/riscof_isa_results/riscof_${SIMULATOR}_imafdc_full.info"
+    RV64_INFO_ALT="/tmp/riscof_isa_results/riscof_imafdc_combined.info"
+    RV64_EXISTS=$(docker exec "$CONTAINER" sh -c "test -f '$RV64_INFO' && echo yes || test -f '$RV64_INFO_ALT' && echo alt || echo no")
+    if [ "$RV64_EXISTS" != "no" ]; then
+        if [ "$RV64_EXISTS" = "alt" ]; then RV64_INFO="$RV64_INFO_ALT"; fi
+        echo ""
+        echo "--- Combining RV64 + RV32 ---"
+        docker exec "$CONTAINER" sh -c "
+            lcov --rc lcov_branch_coverage=1 \
+                 --add-tracefile '$RV64_INFO' \
+                 --add-tracefile '$OUTPUT_BASE/riscof_${SIMULATOR}_rv32_imafdc.info' \
+                 --output-file '$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc.info' \
+                 --ignore-errors source,empty 2>&1 | tail -3
+        "
+        echo "RV64+RV32 full denominator:"
+        docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc.info' 2>&1 | grep -E 'lines|functions|branches'"
 
-    # IMAFDC filter
-    echo ""
-    echo "--- IMAFDC-filtered RV64+RV32 ---"
-    docker exec "$CONTAINER" sh -c "
-        lcov --rc lcov_branch_coverage=1 \
-             --remove '$OUTPUT_BASE/riscof_all_imafdc.info' \
-             '/opt/riscv-isa-sim/riscv/insns/v*' \
-             '/opt/riscv-isa-sim/riscv/insns/aes*' \
-             '/opt/riscv-isa-sim/riscv/insns/sha*' \
-             '/opt/riscv-isa-sim/riscv/insns/sm*' \
-             '/opt/riscv-isa-sim/riscv/insns/*_b.h' \
-             '/opt/riscv-isa-sim/riscv/insns/*_h.h' \
-             '/opt/riscv-isa-sim/riscv/insns/*_q.h' \
-             '/opt/riscv-isa-sim/riscv/insns/cbo_*' \
-             '/opt/riscv-isa-sim/riscv/insns/cm_*' \
-             '/opt/riscv-isa-sim/riscv/insns/czero_*' \
-             '/opt/riscv-isa-sim/riscv/insns/hlv*' \
-             '/opt/riscv-isa-sim/riscv/insns/hsv*' \
-             '/opt/riscv-isa-sim/riscv/insns/hfence*' \
-             '/opt/riscv-isa-sim/riscv/insns/*bf16*' \
-             '/opt/riscv-isa-sim/riscv/insns/*zfa*' \
-             '/opt/riscv-isa-sim/riscv/insns/*zv*' \
-             '/opt/riscv-isa-sim/riscv/insns/v*' \
-             '/opt/riscv-isa-sim/build/v*' \
-             --output-file '$OUTPUT_BASE/riscof_all_imafdc_filtered.info' \
-             --ignore-errors source,empty 2>&1 | tail -3
-    "
-    echo "RV64+RV32 IMAFDC-filtered:"
-    docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_all_imafdc_filtered.info' 2>&1 | grep -E 'lines|functions|branches'"
+        # IMAFDC filter (Spike only — Sail code is monolithic, no per-insn filtering)
+        if [ "$APPLY_IMAFDC_FILTER" = true ]; then
+            echo ""
+            echo "--- IMAFDC-filtered RV64+RV32 ---"
+            docker exec "$CONTAINER" sh -c "
+                lcov --rc lcov_branch_coverage=1 \
+                     --remove '$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc.info' \
+                     '/opt/riscv-isa-sim/riscv/insns/v*' \
+                     '/opt/riscv-isa-sim/riscv/insns/aes*' \
+                     '/opt/riscv-isa-sim/riscv/insns/sha*' \
+                     '/opt/riscv-isa-sim/riscv/insns/sm*' \
+                     '/opt/riscv-isa-sim/riscv/insns/*_b.h' \
+                     '/opt/riscv-isa-sim/riscv/insns/*_h.h' \
+                     '/opt/riscv-isa-sim/riscv/insns/*_q.h' \
+                     '/opt/riscv-isa-sim/riscv/insns/cbo_*' \
+                     '/opt/riscv-isa-sim/riscv/insns/cm_*' \
+                     '/opt/riscv-isa-sim/riscv/insns/czero_*' \
+                     '/opt/riscv-isa-sim/riscv/insns/hlv*' \
+                     '/opt/riscv-isa-sim/riscv/insns/hsv*' \
+                     '/opt/riscv-isa-sim/riscv/insns/hfence*' \
+                     '/opt/riscv-isa-sim/riscv/insns/*bf16*' \
+                     '/opt/riscv-isa-sim/riscv/insns/*zfa*' \
+                     '/opt/riscv-isa-sim/riscv/insns/*zv*' \
+                     '/opt/riscv-isa-sim/riscv/insns/v*' \
+                     '/opt/riscv-isa-sim/build/v*' \
+                     --output-file '$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc_filtered.info' \
+                     --ignore-errors source,empty 2>&1 | tail -3
+            "
+            echo "RV64+RV32 IMAFDC-filtered:"
+            docker exec "$CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc_filtered.info' 2>&1 | grep -E 'lines|functions|branches'"
+            docker cp "$CONTAINER:$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc_filtered.info" "$LOCAL_OUT/riscof_${SIMULATOR}_all_imafdc_filtered.info" 2>/dev/null
+        fi
 
-    # Copy
-    docker cp "$CONTAINER:$OUTPUT_BASE/riscof_all_imafdc.info" "$LOCAL_OUT/riscof_all_imafdc.info" 2>/dev/null
-    docker cp "$CONTAINER:$OUTPUT_BASE/riscof_all_imafdc_filtered.info" "$LOCAL_OUT/riscof_all_imafdc_filtered.info" 2>/dev/null
+        # Copy combined
+        docker cp "$CONTAINER:$OUTPUT_BASE/riscof_${SIMULATOR}_all_imafdc.info" "$LOCAL_OUT/riscof_${SIMULATOR}_all_imafdc.info" 2>/dev/null
+    else
+        echo "  (RV64 data not found — skipping RV64+RV32 merge; run run_riscof_all_isa.sh first)"
+    fi
 fi
 
 echo ""

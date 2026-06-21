@@ -2,15 +2,19 @@
 # ============================================================================
 # RISCOF Architectural Certification Tests — Multi-ISA Coverage Collection
 # ============================================================================
-# Runs all ELF files for each ISA extension through gcov-instrumented Spike,
+# Runs all ELF files for each ISA extension through gcov-instrumented simulator,
 # collecting per-ISA and combined coverage data.
 #
-# Usage: bash run_riscof_all_isa.sh [isa1 isa2 ...]
-#   Without arguments: runs ALL available ISAs
-#   With arguments: runs only specified ISAs (e.g., bash run_riscof_all_isa.sh A C F D)
+# Usage: bash run_riscof_all_isa.sh [spike|sail] [isa1 isa2 ...]
+#   First argument: simulator (spike or sail, default: spike)
+#   Remaining arguments: ISA extensions to test (default: ALL)
+#   Examples:
+#     bash run_riscof_all_isa.sh sail
+#     bash run_riscof_all_isa.sh spike A C F D
+#     SIMULATOR=sail bash run_riscof_all_isa.sh A F D
 #
-# ISA extensions and their Spike compatibility:
-#   IMAFDC core:  A, C, F, D  — supported by default Spike (rv64imafdc)
+# ISA extensions and their compatibility:
+#   IMAFDC core:  A, C, F, D  — supported by both Spike and Sail
 #   Already done:  I, M       — previously tested
 #   Experimental:  B, Zfh, Zicond, Zimop, Zcmop, CMO, Zifencei, hints
 #   Privileged:    pmp, privilege, vm_pmp, vm_sv39, vm_sv48, vm_sv57
@@ -20,9 +24,37 @@
 
 set -e
 
+# --- Simulator selection ---
+# Check if first argument is a simulator name
+SIMULATOR="${SIMULATOR:-spike}"
+if [ $# -gt 0 ]; then
+    case "$1" in
+        spike|sail)
+            SIMULATOR="$1"
+            shift
+            ;;
+    esac
+fi
+
+case "$SIMULATOR" in
+    spike)
+        SIM_BIN="/opt/riscv-isa-sim/build/spike"
+        BUILD_DIR="/opt/riscv-isa-sim/build"
+        RUN_CMD_PREFIX="timeout 10 '$SIM_BIN' -l"
+        ;;
+    sail)
+        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SAIL_CONFIG_RV64="/opt/riscv-arch-test/riscof-plugins/rv64/sail_cSim/env/sail_config.json"
+        SAIL_CONFIG_RV32="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
+        ;;
+    *)
+        echo "ERROR: unknown simulator '$SIMULATOR'. Use spike or sail."
+        exit 1
+        ;;
+esac
+
 DOCKER_CONTAINER="riscv-env"
-SPIKE="/opt/riscv-isa-sim/build/spike"
-BUILD_DIR="/opt/riscv-isa-sim/build"
 # Local ISA-separated ELF source directory
 LOCAL_ELF_BASE="$(cd "$(dirname "$0")" && pwd)/riscof_work"
 # Docker temp directory for ELF files
@@ -62,6 +94,7 @@ fi
 
 echo "============================================"
 echo "  RISCOF Multi-ISA Coverage Collection"
+echo "  Simulator: $SIMULATOR"
 echo "============================================"
 echo "ISAs to test: ${ISAS_TO_RUN[*]}"
 echo "Local ELF base: $LOCAL_ELF_BASE"
@@ -119,7 +152,7 @@ copy_elf_to_docker() {
 run_isa_tests() {
     local isa="$1"
     local elf_dir="$DOCKER_ELF_BASE/$isa"
-    local output_info="$DOCKER_OUTPUT_BASE/riscof_${isa}_coverage.info"
+    local output_info="$DOCKER_OUTPUT_BASE/riscof_${SIMULATOR}_${isa}_coverage.info"
 
     echo ""
     echo -e "${CYAN}============================================"
@@ -138,24 +171,44 @@ run_isa_tests() {
     echo "  Clearing gcov counters..."
     docker exec "$DOCKER_CONTAINER" sh -c "find '$BUILD_DIR' -name '*.gcda' -delete"
 
-    # Run all ELF files through Spike
-    echo "  Running tests..."
-    local run_output=$(docker exec "$DOCKER_CONTAINER" sh -c "
-        pass=0; fail=0; timeout_fail=0
-        for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
-            test_name=\$(basename \"\$elf\" .elf)
-            timeout 10 '$SPIKE' -l \"\$elf\" > /dev/null 2>&1
-            rc=\$?
-            if [ \$rc -eq 0 ]; then
-                pass=\$((pass + 1))
-            elif [ \$rc -eq 124 ]; then
-                timeout_fail=\$((timeout_fail + 1))
-            else
-                fail=\$((fail + 1))
-            fi
-        done
-        echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail total=\$((pass + fail + timeout_fail))\"
-    ")
+    # Run all ELF files through the simulator
+    echo "  Running tests on $SIMULATOR..."
+    if [ "$SIMULATOR" = "spike" ]; then
+        local run_output=$(docker exec "$DOCKER_CONTAINER" sh -c "
+            pass=0; fail=0; timeout_fail=0
+            for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
+                test_name=\$(basename \"\$elf\" .elf)
+                timeout 10 '$SIM_BIN' -l \"\$elf\" > /dev/null 2>&1
+                rc=\$?
+                if [ \$rc -eq 0 ]; then
+                    pass=\$((pass + 1))
+                elif [ \$rc -eq 124 ]; then
+                    timeout_fail=\$((timeout_fail + 1))
+                else
+                    fail=\$((fail + 1))
+                fi
+            done
+            echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail total=\$((pass + fail + timeout_fail))\"
+        ")
+    else
+        # Sail: use RV64 config for all ISAs (most permissive)
+        local run_output=$(docker exec "$DOCKER_CONTAINER" sh -c "
+            pass=0; fail=0; timeout_fail=0
+            for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
+                test_name=\$(basename \"\$elf\" .elf)
+                timeout 10 '$SIM_BIN' --config='$SAIL_CONFIG_RV64' --test-signature=/dev/null \"\$elf\" > /dev/null 2>&1
+                rc=\$?
+                if [ \$rc -eq 0 ]; then
+                    pass=\$((pass + 1))
+                elif [ \$rc -eq 124 ]; then
+                    timeout_fail=\$((timeout_fail + 1))
+                else
+                    fail=\$((fail + 1))
+                fi
+            done
+            echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail total=\$((pass + fail + timeout_fail))\"
+        ")
+    fi
     echo "  Results: $run_output"
 
     # Collect coverage
@@ -175,7 +228,7 @@ run_isa_tests() {
     "
 
     # Copy .info file back to local
-    local local_info="$LOCAL_OUTPUT/riscof_${isa}_coverage.info"
+    local local_info="$LOCAL_OUTPUT/riscof_${SIMULATOR}_${isa}_coverage.info"
     docker cp "$DOCKER_CONTAINER:$output_info" "$local_info" 2>/dev/null
     echo "  Saved: $local_info"
 
@@ -233,8 +286,8 @@ echo "============================================"
 # Combine I + M + A + C + F + D coverage files (those that exist)
 COMBINE_ISAS=()
 for isa in I M A C F D; do
-    local_info="$LOCAL_OUTPUT/riscof_${isa}_coverage.info"
-    docker_info="$DOCKER_OUTPUT_BASE/riscof_${isa}_coverage.info"
+    local_info="$LOCAL_OUTPUT/riscof_${SIMULATOR}_${isa}_coverage.info"
+    docker_info="$DOCKER_OUTPUT_BASE/riscof_${SIMULATOR}_${isa}_coverage.info"
     if [ -f "$local_info" ]; then
         # Ensure Docker has a copy too
         if ! docker exec "$DOCKER_CONTAINER" sh -c "test -f '$docker_info'" 2>/dev/null; then
@@ -246,7 +299,7 @@ done
 
 if [ ${#COMBINE_ISAS[@]} -ge 2 ]; then
     echo "Combining: ${COMBINE_ISAS[*]}"
-    COMBINED_INFO="$DOCKER_OUTPUT_BASE/riscof_imafdc_combined.info"
+    COMBINED_INFO="$DOCKER_OUTPUT_BASE/riscof_${SIMULATOR}_imafdc_combined.info"
     docker exec "$DOCKER_CONTAINER" sh -c "
         lcov --rc lcov_branch_coverage=1 \
              --add-tracefile ${COMBINE_ISAS[0]} \
@@ -255,7 +308,7 @@ if [ ${#COMBINE_ISAS[@]} -ge 2 ]; then
              --ignore-errors source,empty 2>&1 | tail -3
     "
     # Copy combined file
-    docker cp "$DOCKER_CONTAINER:$COMBINED_INFO" "$LOCAL_OUTPUT/riscof_imafdc_combined.info" 2>/dev/null
+    docker cp "$DOCKER_CONTAINER:$COMBINED_INFO" "$LOCAL_OUTPUT/riscof_${SIMULATOR}_imafdc_combined.info" 2>/dev/null
     echo "Combined IMAFDC coverage:"
     docker exec "$DOCKER_CONTAINER" sh -c "lcov --rc lcov_branch_coverage=1 --summary '$COMBINED_INFO' 2>&1 | grep -E 'lines|functions|branches'"
 else
@@ -270,13 +323,13 @@ echo "============================================"
 echo "  Phase 4: Generate HTML Reports"
 echo "============================================"
 
-if [ -f "$LOCAL_OUTPUT/riscof_imafdc_combined.info" ]; then
-    HTML_DIR="$LOCAL_OUTPUT/coverage_html_riscof_combined"
+if [ -f "$LOCAL_OUTPUT/riscof_${SIMULATOR}_imafdc_combined.info" ]; then
+    HTML_DIR="$LOCAL_OUTPUT/coverage_html_riscof_${SIMULATOR}_combined"
     mkdir -p "$HTML_DIR"
-    docker cp "$LOCAL_OUTPUT/riscof_imafdc_combined.info" "$DOCKER_CONTAINER:/tmp/riscof_imafdc_combined.info"
+    docker cp "$LOCAL_OUTPUT/riscof_${SIMULATOR}_imafdc_combined.info" "$DOCKER_CONTAINER:/tmp/riscof_${SIMULATOR}_imafdc_combined.info"
     docker exec "$DOCKER_CONTAINER" sh -c "
         genhtml --rc genhtml_branch_coverage=1 \
-                /tmp/riscof_imafdc_combined.info \
+                /tmp/riscof_${SIMULATOR}_imafdc_combined.info \
                 --output-directory /tmp/riscof_html_combined \
                 --ignore-errors source 2>&1 | tail -5
     "
@@ -300,6 +353,6 @@ if [ ${#FAIL_ISAS[@]} -gt 0 ]; then
 fi
 echo ""
 echo "Coverage files in: $LOCAL_OUTPUT/"
-ls -la "$LOCAL_OUTPUT"/riscof_*_coverage.info 2>/dev/null | awk '{print "  " $NF}'
+ls -la "$LOCAL_OUTPUT"/riscof_${SIMULATOR}_*_coverage.info 2>/dev/null | awk '{print "  " $NF}'
 echo ""
 echo "DONE"
