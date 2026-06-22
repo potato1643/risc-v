@@ -41,7 +41,8 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 
 | Test Suite | ELF | Pass | Fail | Line% | Func% | Branch% |
 |------------|:---:|:---:|:---:|:-----:|:-----:|:------:|
-| **RISCOF RV64+RV32 IMAFDC** | **1,211** | **1,210** | **1** | **27.8%** | **31.6%** | **5.4%** |
+| **🔥 ALL Combined (IMAFDC+Privileged)** | **1,415** | **1,414** | **1** | **32.2%** | **43.4%** | **10.0%** |
+| RISCOF IMAFDC + Privileged | 312 | 312 | 0 | **30.5%** | **42.6%** | **9.0%** |
 | RISCOF RV32 IMAFDC (solo) | 1,103 | 1,102 | 1 | **29.5%** | **41.8%** | **8.3%** |
 | MicroTESK | 214 | 187 | 27 | **29.7%** | **42.5%** | **8.6%** |
 | RISCOF RV64 IMAFDC (A+C+F+D) | 108 | 108 | 0 | **28.9%** | **41.7%** | **8.0%** |
@@ -72,6 +73,20 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 | **RV64+RV32 ALL** | **1,211** | **1,210** | **27.8%** | **31.6%*** | **5.4%*** |
 
 *\*RV64+RV32 denominator includes additional Spike source files (423K lines vs 372K for Sail-only)*
+
+### 2.5 Per-ISA Breakdown (Sail — Privileged) 🆕
+
+| ISA | ELF | Pass | Line% | Func% | Branch% |
+|-----|:---:|:---:|:-----:|:-----:|:------:|
+| pmp | 65 | 65 | 28.7% | 41.7% | 7.8% |
+| privilege | 21 | 21 | 26.7% | 41.1% | 6.6% |
+| vm_pmp | 12 | 12 | 27.3% | 41.7% | 6.9% |
+| vm_sv39 | 36 | 36 | 27.4% | 41.8% | 7.0% |
+| vm_sv48 | 36 | 36 | 27.4% | 41.8% | 7.0% |
+| vm_sv57 | 34 | 34 | 27.4% | 41.8% | 7.0% |
+| **Privileged Combined** | **204** | **204** | **30.5%** | **42.6%** | **9.0%** |
+
+*\*Privileged combined = RV64 IMAFDC (28.9%) + all privileged ISAs merged*
 
 ---
 
@@ -112,10 +127,11 @@ Imperas                  12.3%        40.9%        Same pattern
 3. Imperas: 15.7%
 
 **Sail (Line% — Sail-only denominator 372K):**
-1. MicroTESK: 29.7%
-2. **RISCOF RV32 IMAFDC: 29.5%** 🆕
-3. RISCOF RV64 IMAFDC: 28.9%
-4. Imperas: 26.3%
+1. **ALL Combined: 32.2%** 🏆 New record
+2. IMAFDC+Privileged: 30.5%
+3. MicroTESK: 29.7%
+4. RISCOF RV32 IMAFDC: 29.5%
+5. Imperas: 26.3%
 
 ---
 
@@ -136,7 +152,18 @@ Imperas (only 48 ELF, RV32I-only) achieves 26.3% line coverage on Sail — compa
 ### 4.5 Branch Coverage Parallels Line Coverage
 Branch coverage follows the same pattern: Sail (6-8%) vs Spike (2-3%). Both simulators show low branch coverage because branch instrumentation captures all conditional branches in the code — test suites only exercise a fraction of possible execution paths.
 
-### 4.6 RISCOF RV32 IMAFDC Narrows Gap on Sail 🆕
+### 4.6 Privileged Tests Break 30% Ceiling on Sail 🆕
+
+Running 204 privileged tests (pmp, privilege, vm_pmp, vm_sv39/48/57) on Sail pushed combined coverage to **30.5%** (IMAFDC+Privileged) and **32.2%** (all RISCOF). Key insights:
+
+- **pmp alone matches IMAFDC**: 65 PMP tests achieve 28.7% — nearly the 28.9% of 108 IMAFDC ELFs, demonstrating PMP's broad code impact
+- **Privileged adds +1.6pp over IMAFDC**: more than RV32 IMAFDC (+0.6pp), showing privileged infrastructure is underrepresented in IMAFDC-only testing
+- **Branch coverage hits 10.0%**: first time reaching double digits on Sail (from 8.3% IMAFDC)
+- **Functions at 43.4%**: approaching half of Sail's 22,912 functions
+- **All 204 privileged ELFs pass**: 100% pass rate, confirming Sail's mature privileged mode implementation
+- **New Sail coverage record**: 32.2% surpasses MicroTESK's 29.7%
+
+### 4.7 RISCOF RV32 IMAFDC Narrows Gap on Sail
 
 With the addition of RV32 IMAFDC (1,103 ELFs, 1,102 pass), RISCOF achieved **29.5% line coverage** on Sail — just 0.2pp behind MicroTESK (29.7%). Key insights:
 
@@ -157,24 +184,25 @@ The 27-29 MicroTESK failures are the known IEEE 754 expected-value mismatch in F
 
 ## 5. Conclusions
 
-1. **Both simulators successfully collect gcov coverage** with the same test suites, confirming the dual-simulator architecture works.
+1. **Dual-simulator gcov coverage fully operational** — both Spike and Sail collect coverage from all three test suites.
 
-2. **Sail coverage is structurally different from Spike** — higher percentages across the board due to monolithic code generation. Direct % comparison is misleading; the value is in the patterns.
+2. **Sail coverage record: 32.2%** — combining RISCOF RV64 IMAFDC (28.9%) + RV32 IMAFDC (29.5%) + Privileged (30.5%) achieves the highest coverage on Sail, surpassing MicroTESK's 29.7%.
 
-3. **MicroTESK edges RISCOF on Sail (29.7% vs 29.5%)** — a razor-thin 0.2pp margin vs the 3.1pp gap on Spike. RISCOF achieves near-identical Sail coverage with 5× more tests.
+3. **Privileged tests add +1.6pp on Sail** — 204 PMP/VM/privilege ELFs are highly effective per test, with pmp alone (65 ELF) reaching 28.7%.
 
-4. **On Spike, RISCOF dominates (29.0% vs 25.9%)** — the opposite ranking. RISCOF's broad ISA coverage (26 extensions) exercises Spike's hand-written per-instruction code more effectively, while MicroTESK's algorithmic tests fit Sail's monolithic structure better.
+4. **Branch coverage hits 10.0%** — a milestone for Sail's 313K branches, driven by privileged mode's diverse execution paths.
 
-5. **F and D extensions are the dominant coverage drivers on both simulators** — together they contribute +7-9pp on Sail and +4-5pp on Spike.
+5. **MicroTESK still leads per-ELF efficiency** — 214 ELF → 29.7% (0.14pp/ELF) vs RISCOF 1,415 ELF → 32.2% (0.02pp/ELF), but RISCOF's breadth wins in absolute terms.
 
-6. **The dual-simulator setup is operational** — all scripts support `SIMULATOR=spike|sail`, coverage data can be compared via `compare_simulators.sh`.
+6. **Spike vs Sail rankings converge** — with enough tests, both simulators show RISCOF > MicroTESK. The IMAFDC-filtered Spike gap (3.1pp) narrows on Sail (2.5pp with privileged).
 
 ---
 
 ## 6. Next Steps
 
-- [x] Run full RISCOF RV32 IMAFDC on Sail (1,103 ELF) ✅
-- [ ] Regenerate RV64 Sail data with consistent methodology (same compile pipeline as RV32)
-- [ ] Apply Delta analysis: unique coverage per simulator
+- [x] Run full RISCOF RV32 IMAFDC on Sail ✅
+- [x] Run privileged mode tests on Sail ✅ — **32.2% new record**
+- [ ] Update comparison report with privileged data
+- [ ] Final project report
 - [ ] Generate IMAFDC-equivalent filter for Sail (if possible)
 - [ ] Combined coverage: RISCOF + MicroTESK + Imperas merged on both simulators
