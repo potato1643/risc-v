@@ -78,3 +78,20 @@
 4. MicroTESK (RV64I, алгоритмические) и Imperas (RV32I) дают наибольший уникальный вклад (~240 строк каждый)
 5. RISCOF (RV64I) почти полностью перекрывается MicroTESK (+78)
 6. Каждое расширение ISA добавляет отдельные модули Spike — ожидается накопительный прирост при последовательном тестировании
+
+---
+
+## Sail C Simulator — объединённое покрытие (добавлено 2026-06-22)
+
+Объединение через `lcov --add-tracefile` трёх наборов на Sail C (372 297 строк):
+
+| Файл | Содержание | Line% | Func% | Branch% |
+|------|-----------|:-----:|:-----:|:------:|
+| `sail_combined.info` | RISCOF RV64 IMAFDC | 28.9% | 41.7% | 8.0% |
+| `sail_imafdc_priv_combined.info` | IMAFDC + Privileged (312 ELF) | 30.5% | 42.6% | 9.0% |
+| `sail_everything.info` | ALL: RV64+RV32+Privileged (1,415 ELF) | **32.2%** | 43.4% | 10.0% |
+
+Также в соответствующих директориях тестовых наборов:
+- `MicroTESK/microtesk_sail_coverage.info` — MicroTESK на Sail (29.7%)
+- `Imperas RISC-V test suite/imperas_sail_coverage.info` — Imperas на Sail (26.3%)
+- `RISC-V Architectural Certification Tests/riscof_sail_*.info` — RISCOF на Sail (per-ISA + combined)
