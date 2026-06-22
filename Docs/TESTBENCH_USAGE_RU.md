@@ -214,19 +214,171 @@ docker start compiler-lab
 
 ---
 
-## 9. Примечания
+## 10. Запуск тестов на Sail C Simulator
+
+Все скрипты запуска тестов поддерживают выбор симулятора через переменную `SIMULATOR` или первый аргумент командной строки.
+
+### 10.1 Выбор симулятора
+
+```bash
+# Способ 1: переменная окружения
+SIMULATOR=sail bash run_riscof_all_isa.sh A C F D
+
+# Способ 2: первый аргумент
+bash run_riscof_all_isa.sh sail A C F D
+```
+
+Поддерживаемые значения: `spike` (по умолчанию) или `sail`.
+
+### 10.2 Доступные скрипты
+
+| Скрипт | Назначение | ELF (Spike) | ELF (Sail) |
+|--------|------------|:-----------:|:----------:|
+| `run_riscof_all_isa.sh` | RV64 IMAFDC + Privileged | 312 | 312 |
+| `run_riscof_rv32_imafdc.sh` | RV32 IMAFDC (из исходников) | 1,103 | 1,103 |
+| `run_all_microtesk.sh` | MicroTESK алгоритмические | 214 | 214 |
+| `run_imperas_rv32.sh` | Imperas RV32I | 48 | 48 |
+
+### 10.3 Пример: RISCOF RV32 IMAFDC на Sail
+
+```bash
+cd "Тестовые наборы/RISC-V Architectural Certification Tests"
+
+# Запустить все RV32 IMAFDC на Sail
+SIMULATOR=sail bash run_riscof_rv32_imafdc.sh sail I M A C F D
+```
+
+Вывод:
+```
+============================================
+  RISCOF RV32 IMAFDC Coverage Collection
+  Simulator: sail
+============================================
+ISAs: I M A C F D
+
+--- ISA I: 38 ELFs ---
+  Compiled: 38/38
+  Running tests on sail...
+  Result: pass=38 fail=0 timeout=0
+  Coverage:
+  lines......: 20.2% (75264 of 372297 lines)
+  functions..: 40.1% (9188 of 22912 functions)
+  branches...: 3.6% (11343 of 313342 branches)
+  Saved: riscof_sail_rv32_I_coverage.info
+...
+============================================
+  Phase 3: Combined RV32 + RV64 IMAFDC
+============================================
+RV32 IMAFDC combined:
+  lines......: 29.5% (109673 of 372297 lines)
+  functions..: 41.8% (9576 of 22912 functions)
+  branches...: 8.3% (25969 of 313342 branches)
+```
+
+### 10.4 Пример: Привилегированные тесты на Sail
+
+```bash
+cd "Тестовые наборы/RISC-V Architectural Certification Tests"
+SIMULATOR=sail bash run_riscof_all_isa.sh sail pmp privilege vm_pmp vm_sv39 vm_sv48 vm_sv57
+```
+
+204 ELF. Результат: IMAFDC+Privileged = 30.5%, ALL = 32.2%.
+
+### 10.5 Просмотр покрытия Sail
+
+**Текстовый формат (lcov summary):**
+```bash
+docker exec riscv-env sh -c "
+lcov --rc lcov_branch_coverage=1 --summary /tmp/riscof_rv32_results/riscof_sail_rv32_imafdc.info 2>&1 | grep -E 'lines|functions|branches'
+"
+# lines......: 29.5% (109673 of 372297 lines)
+# functions..: 41.8% (9576 of 22912 functions)
+# branches...: 8.3% (25969 of 313342 branches)
+```
+
+**HTML-отчёт (в браузере):**
+```bash
+# HTML-отчёт генерируется автоматически скриптом run_riscof_all_isa.sh
+# находится в:
+open "Тестовые наборы/RISC-V Architectural Certification Tests/coverage_html_riscof_sail_combined/index.html"
+```
+
+**Сгенерировать HTML вручную:**
+```bash
+docker exec riscv-env sh -c "
+genhtml --rc genhtml_branch_coverage=1 \
+    /tmp/riscof_rv32_results/riscof_sail_rv32_imafdc.info \
+    --output-directory /tmp/sail_html
+"
+docker cp riscv-env:/tmp/sail_html ./sail_html
+open ./sail_html/index.html
+```
+
+### 10.6 Файлы покрытия Sail (.info)
+
+| Файл | Содержание | Строки | % |
+|------|-----------|:------:|:--:|
+| `riscof_sail_rv32_imafdc.info` | RV32 IMAFDC | 109,673 | 29.5% |
+| `riscof_sail_imafdc_combined.info` | RV64 IMAFDC | 107,598 | 28.9% |
+| `riscof_sail_imafdc_priv_combined.info` | IMAFDC+Privileged | 113,503 | 30.5% |
+| `riscof_sail_everything.info` | ALL (RV64+RV32+Priv) | 119,788 | **32.2%** |
+
+Все файлы в: `Тестовые наборы/RISC-V Architectural Certification Tests/riscof_sail_*.info`
+
+### 10.7 Сводка покрытия Sail по наборам тестов
+
+| Тестовый набор | ELF | Line% | Func% | Branch% |
+|----------------|:---:|:-----:|:-----:|:------:|
+| RISCOF ALL (RV64+RV32+Priv) | 1,415 | **32.2%** | 43.4% | 10.0% |
+| RISCOF IMAFDC + Privileged | 312 | 30.5% | 42.6% | 9.0% |
+| MicroTESK | 214 | **29.7%** | **42.5%** | **8.6%** |
+| RISCOF RV32 IMAFDC | 1,103 | 29.5% | 41.8% | 8.3% |
+| RISCOF RV64 IMAFDC | 108 | 28.9% | 41.7% | 8.0% |
+| Imperas RV32I | 48 | 26.3% | 40.9% | 6.4% |
+
+> **Примечание:** Sail — автосгенерированный C-код из формальной спецификации (372,297 строк). Процент покрытия НЕ сопоставим напрямую со Spike (ручной C++, 53,227 строк). Сравнивать можно относительный рейтинг тестовых наборов внутри каждого симулятора.
+
+### 10.8 Сборка Sail с gcov (при необходимости)
+
+Подробная инструкция: `Симуляторы/sail_build_notes.md`
+
+```bash
+docker exec riscv-env sh -c '
+export PATH="/opt/sail/bin:$PATH"
+cd /opt/sail-riscv
+mkdir -p build_cov && cd build_cov
+cmake .. \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_C_FLAGS="--coverage -g -O0" \
+    -DCMAKE_CXX_FLAGS="--coverage -g -O0" \
+    -DCMAKE_EXE_LINKER_FLAGS="--coverage"
+cmake --build . -j$(nproc)
+'
+# Бинарный файл: /opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim
+```
+
+---
+
+## 11. Примечания
 
 ### Imperas — RV32I
 
-Открытая версия Imperas содержит тесты только для RV32I. Тесты RV64I описаны в документации, но исходные файлы `.S` доступны исключительно в коммерческой версии.
+Открытая версия Imperas содержит тесты только для RV32I. Тесты RV64I описаны в документации, но исходные файлы `.S` доступны исключительно в коммерческой версии. M, C, F, D директории существуют, но пусты.
 
 ### Sail C simulator
 
 Используется как эталонная модель RISC-V в фреймворке RISCOF и как тестируемое устройство для Imperas. В compiler-lab пересобран 01.06.2026 с отключённым расширением V (из-за ошибки типа в Sail v0.20.1).
 
+**Сбор покрытия на Sail:** Все скрипты запуска тестов поддерживают параметр `SIMULATOR=sail` для сбора покрытия на Sail C вместо Spike. Подробнее см. раздел 10 «Запуск тестов на Sail C Simulator».
+
 ### Ограничение покрытия
 
-По состоянию на 2026-06-09 gcov-покрытие собрано для расширений **I, M, A, C, F, D** через MicroTESK (202 ELF, 25.9% линий, 12.0% ветвей IMAFDC). Не протестированы: V (векторное), B (битовые операции), Crypto, Hypervisor, Zfh, Zfa, CBO и др. Привилегированные инструкции и системный режим также не покрыты.
+По состоянию на 2026-06-22 gcov-покрытие собрано для расширений **I, M, A, C, F, D** и **привилегированного режима** (pmp, privilege, vm_pmp, vm_sv39/48/57):
+- Spike: 20.6% линий (полный), 29.0% (IMAFDC-фильтр)
+- Sail: 32.2% линий (рекорд), 10.0% ветвей
+
+Не протестированы: V (векторное), B (битовые операции), Crypto, Hypervisor, Zfh, Zfa, CBO и др.
 
 - **Branch coverage** (веточное покрытие) добавлено 2026-06-09: все скрипты обновлены флагом `--rc lcov_branch_coverage=1`
 - F/D тесты MicroTESK покрывают инструкции FPU, но проверка ожидаемых значений не проходит (подробнее: `ANALYSIS_FP_CRASH_ROOT_CAUSE.md`)
+- **Delta-анализ:** `Docs/DELTA_ANALYSIS.md` — объединённое покрытие трёх наборов (20.6%), уникальный вклад каждого
