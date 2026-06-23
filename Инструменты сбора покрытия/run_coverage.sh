@@ -20,8 +20,8 @@ case "$SIMULATOR" in
         RUN_SIM="run_spike"
         ;;
     sail)
-        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
-        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SIM_BIN="/opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_sailcov"
         SAIL_CONFIG_RV64="/opt/riscv-arch-test/riscof-plugins/rv64/sail_cSim/env/sail_config.json"
         SAIL_CONFIG_RV32="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
         RUN_SIM="run_sail"

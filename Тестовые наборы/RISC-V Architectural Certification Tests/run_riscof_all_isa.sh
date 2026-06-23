@@ -43,8 +43,8 @@ case "$SIMULATOR" in
         RUN_CMD_PREFIX="timeout 10 '$SIM_BIN' -l"
         ;;
     sail)
-        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
-        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SIM_BIN="/opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_sailcov"
         SAIL_CONFIG_RV64="/opt/riscv-arch-test/riscof-plugins/rv64/sail_cSim/env/sail_config.json"
         SAIL_CONFIG_RV32="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
         ;;
@@ -192,7 +192,11 @@ run_isa_tests() {
         ")
     else
         # Sail: use RV64 config for all ISAs (most permissive)
+        # Sail spec coverage writes to ./sail_coverage, so cd to output dir
         local run_output=$(docker exec "$DOCKER_CONTAINER" sh -c "
+            mkdir -p '$DOCKER_OUTPUT_BASE'
+            cd '$DOCKER_OUTPUT_BASE'
+            rm -f sail_coverage
             pass=0; fail=0; timeout_fail=0
             for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
                 test_name=\$(basename \"\$elf\" .elf)
@@ -206,6 +210,10 @@ run_isa_tests() {
                     fail=\$((fail + 1))
                 fi
             done
+            # Rename accumulated sail_coverage
+            if [ -f sail_coverage ]; then
+                mv sail_coverage riscof_sail_${isa}_sailcov.txt
+            fi
             echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail total=\$((pass + fail + timeout_fail))\"
         ")
     fi
@@ -231,6 +239,17 @@ run_isa_tests() {
     local local_info="$LOCAL_OUTPUT/riscof_${SIMULATOR}_${isa}_coverage.info"
     docker cp "$DOCKER_CONTAINER:$output_info" "$local_info" 2>/dev/null
     echo "  Saved: $local_info"
+
+    # Collect Sail spec-level coverage (if applicable)
+    if [ "$SIMULATOR" = "sail" ]; then
+        local sailcov_docker="$DOCKER_OUTPUT_BASE/riscof_sail_${isa}_sailcov.txt"
+        local sailcov_local="$LOCAL_OUTPUT/riscof_sail_${isa}_sailcov.txt"
+        docker cp "$DOCKER_CONTAINER:$sailcov_docker" "$sailcov_local" 2>/dev/null
+        if [ -f "$sailcov_local" ]; then
+            local sailcov_lines=$(wc -l < "$sailcov_local" | tr -d ' ')
+            echo "  Sail spec cov: $sailcov_local ($sailcov_lines lines)"
+        fi
+    fi
 
     echo -e "${GREEN}  ISA $isa: DONE${NC}"
     return 0

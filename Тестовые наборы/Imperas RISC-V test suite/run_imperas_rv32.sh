@@ -20,8 +20,8 @@ case "$SIMULATOR" in
         BUILD_DIR="/opt/riscv-isa-sim/build"
         ;;
     sail)
-        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
-        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SIM_BIN="/opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_sailcov"
         SAIL_CONFIG="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
         ;;
     *)

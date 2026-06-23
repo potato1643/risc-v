@@ -1,6 +1,6 @@
 # Spike vs Sail C Simulator — Coverage Comparison Report
 
-**Date:** 2026-06-21 (updated 2026-06-21 with RV32 IMAFDC Sail data)  
+**Date:** 2026-06-23 (updated with Sail spec-level coverage)  
 **Project:** №2275, ISP RAS  
 **Author:** Bai Xiaoyu
 
@@ -180,29 +180,69 @@ All three test suites pass at similar rates on both simulators:
 
 The 27-29 MicroTESK failures are the known IEEE 754 expected-value mismatch in F/D tests, not simulator bugs.
 
+### 4.8 🆕 Sail Spec-Level Coverage — New Dimension
+
+Sail C Simulator has **two layers** of coverage:
+
+| Layer | Mechanism | Denominator | IMAFDC Result |
+|-------|-----------|:-----------:|:------------:|
+| **Sail Spec-Level** | COVERAGE=ON → `.branch_info` + `sail_coverage` | 38,387 spec points | **7.1%** |
+| **C Code-Level** | GCC `--coverage` → gcov/lcov | 412,320 C lines | **28.3%** |
+
+The spec-level coverage directly measures how much of the **formal Sail specification** is exercised — a fundamentally different metric from C code coverage.
+
+**Three-Suite Sail Spec Coverage:**
+
+| Suite | ELFs | C-Level (gcov) | **Sail Spec** | Spec/C Ratio |
+|-------|:----:|:-------------:|:------------:|:------------:|
+| MicroTESK | 214 | 28.9% | **7.3%** | 0.25× |
+| RISCOF IMAFDC | 1,103 | 28.3% | 7.1% | 0.25× |
+| Imperas | 48 | 25.3% | 5.0% | 0.20× |
+| **All 3 Combined** | **1,365** | — | **8.7%** | — |
+
+**By spec point type (combined):**
+| Type | Covered | Total Static | Ratio |
+|------|:------:|:------------:|:-----:|
+| Functions | 286 | 1,769 | 16.2% |
+| Branches | 1,225 | 12,242 | 10.0% |
+| Branch Targets | 1,840 | 24,376 | 7.5% |
+
+**Delta — Unique Spec Points Added:**
+- RISCOF only: +453 points (+1.2pp)
+- MicroTESK only: +409 points (+1.1pp)  
+- Imperas only: +63 points (+0.2pp)
+
+**Key observations:**
+1. **Sail spec coverage is ~20-25% of C code coverage** — the formal specification is far more comprehensive than the generated C code
+2. **MicroTESK leads spec coverage (7.3%)** despite 5× fewer ELFs than RISCOF — confirms MT exercises more diverse specification paths
+3. **Combined only reaches 8.7%** — >91% of the formal Sail specification remains untested by any suite
+4. **Functions best covered (16.2%)** — specification-level functions correspond to ISA-level operations that basic tests naturally exercise
+5. **Branch targets worst covered (7.5%)** — specification branches capture all architectural corner cases, most untested by conformance suites
+
 ---
 
 ## 5. Conclusions
 
-1. **Dual-simulator gcov coverage fully operational** — both Spike and Sail collect coverage from all three test suites.
+1. **Dual-simulator gcov coverage fully operational** — both Spike and Sail collect C-level coverage from all three test suites.
 
-2. **Sail coverage record: 32.2%** — combining RISCOF RV64 IMAFDC (28.9%) + RV32 IMAFDC (29.5%) + Privileged (30.5%) achieves the highest coverage on Sail, surpassing MicroTESK's 29.7%.
+2. **Triple-layer coverage achieved 🆕** — added **Sail spec-level** (7.1%) as third dimension alongside Spike C-level (29.0% IMAFDC) and Sail C-level (28.3%). Spec coverage measures formal specification exercise.
 
-3. **Privileged tests add +1.6pp on Sail** — 204 PMP/VM/privilege ELFs are highly effective per test, with pmp alone (65 ELF) reaching 28.7%.
+3. **Sail coverage record: 32.2% (C-level)** — combining RISCOF RV64+RV32+Privileged. Spec-level combined: **8.7%** across all three suites.
 
-4. **Branch coverage hits 10.0%** — a milestone for Sail's 313K branches, driven by privileged mode's diverse execution paths.
+4. **MicroTESK leads spec coverage (7.3%)** — 214 ELF beat RISCOF's 1,103 ELF (7.1%), confirming MT's broader specification path diversity.
 
-5. **MicroTESK still leads per-ELF efficiency** — 214 ELF → 29.7% (0.14pp/ELF) vs RISCOF 1,415 ELF → 32.2% (0.02pp/ELF), but RISCOF's breadth wins in absolute terms.
+5. **>91% of Sail specification untested** — all three suites combined cover only 8.7% of 38,387 formal specification points, revealing the vast gap between conformance testing and full specification exercise.
 
-6. **Spike vs Sail rankings converge** — with enough tests, both simulators show RISCOF > MicroTESK. The IMAFDC-filtered Spike gap (3.1pp) narrows on Sail (2.5pp with privileged).
+6. **Spike vs Sail rankings converge** — with enough tests, both simulators show consistent test suite rankings. The spec-level dimension provides a more rigorous comparison than C code coverage alone.
 
 ---
 
 ## 6. Next Steps
 
 - [x] Run full RISCOF RV32 IMAFDC on Sail ✅
-- [x] Run privileged mode tests on Sail ✅ — **32.2% new record**
-- [ ] Update comparison report with privileged data
+- [x] Run privileged mode tests on Sail ✅
+- [x] 🆕 Sail spec-level coverage: rebuild with COVERAGE=ON, collect .branch_info ✅
+- [x] 🆕 Three-suite spec coverage comparison ✅
+- [ ] Regenerate RV64 Sail data with build_sailcov (consistent denominator)
 - [ ] Final project report
-- [ ] Generate IMAFDC-equivalent filter for Sail (if possible)
-- [ ] Combined coverage: RISCOF + MicroTESK + Imperas merged on both simulators
+- [ ] Generate IMAFDC-equivalent filter for Sail spec coverage

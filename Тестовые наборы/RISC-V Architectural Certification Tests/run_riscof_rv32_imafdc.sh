@@ -29,8 +29,8 @@ case "$SIMULATOR" in
         APPLY_IMAFDC_FILTER=true
         ;;
     sail)
-        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
-        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SIM_BIN="/opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_sailcov"
         SAIL_CONFIG="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
         APPLY_IMAFDC_FILTER=false
         ;;
@@ -199,6 +199,8 @@ for isa in $ISAS_TO_RUN; do
         ")
     else
         run_result=$(docker exec "$CONTAINER" sh -c "
+            cd '$OUTPUT_BASE'
+            rm -f sail_coverage
             pass=0; fail=0; timeout_fail=0
             for elf in \$(find '$elf_dir' -name '*.elf' | sort); do
                 timeout 10 '$SIM_BIN' --config='$SAIL_CONFIG' --test-signature=/dev/null \"\$elf\" > /dev/null 2>&1
@@ -211,6 +213,9 @@ for isa in $ISAS_TO_RUN; do
                     fail=\$((fail + 1))
                 fi
             done
+            if [ -f sail_coverage ]; then
+                mv sail_coverage riscof_${SIMULATOR}_rv32_${isa}_sailcov.txt
+            fi
             echo \"pass=\$pass fail=\$fail timeout=\$timeout_fail\"
         ")
     fi
@@ -231,6 +236,16 @@ for isa in $ISAS_TO_RUN; do
 
     docker cp "$CONTAINER:$output_info" "$LOCAL_OUT/riscof_${SIMULATOR}_rv32_${isa}_coverage.info" 2>/dev/null
     echo "  Saved: riscof_${SIMULATOR}_rv32_${isa}_coverage.info"
+
+    # Collect Sail spec-level coverage
+    if [ "$SIMULATOR" = "sail" ]; then
+        sailcov_docker="$OUTPUT_BASE/riscof_sail_rv32_${isa}_sailcov.txt"
+        sailcov_local="$LOCAL_OUT/riscof_sail_rv32_${isa}_sailcov.txt"
+        docker cp "$CONTAINER:$sailcov_docker" "$sailcov_local" 2>/dev/null
+        if [ -f "$sailcov_local" ]; then
+            echo "  Sail spec cov: $(wc -l < "$sailcov_local" | tr -d ' ') lines"
+        fi
+    fi
 done
 
 # ========================================================================

@@ -47,8 +47,8 @@ case "$SIMULATOR" in
         APPLY_IMAFDC_FILTER=true
         ;;
     sail)
-        SIM_BIN="/opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim"
-        BUILD_DIR="/opt/sail-riscv/build_cov"
+        SIM_BIN="/opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim"
+        BUILD_DIR="/opt/sail-riscv/build_sailcov"
         SAIL_CONFIG_RV64="/opt/riscv-arch-test/riscof-plugins/rv64/sail_cSim/env/sail_config.json"
         SAIL_CONFIG_RV32="/opt/riscv-arch-test/riscof-plugins/rv32/sail_cSim/env/sail_config.json"
         SOURCE_FILTER="/opt/sail-riscv/*"
