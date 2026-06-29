@@ -122,12 +122,60 @@ The **Sail spec-level coverage (7.1%)** is much lower than C code coverage (28.3
 
 **Consistent pattern**: Sail spec coverage is ~15–22% of C code coverage across ISAs.
 
-## Three-Suite Comparison (build_sailcov)
+## Results: RISCOF RV64 IMAFDC (159 ELF) 🆕
+
+### C Code-Level (gcov/lcov, build_sailcov)
+
+| ISA | ELFs | Pass | Lines | Functions | Branches |
+|-----|:----:|:----:|:-----:|:---------:|:--------:|
+| I   | 50   | 50   | 18.9% | 40.2%     | 3.4%     |
+| M   | 13   | 13   | 18.9% | 40.2%     | 3.4%     |
+| A   | 18   | 18   | 18.7% | 40.2%     | 3.3%     |
+| C   | 33   | 32   | 19.2% | 40.3%     | 3.7%     |
+| F   | 18   | 18   | 25.6% | 41.0%     | 6.9%     |
+| D   | 27   | 27   | 25.8% | 41.0%     | 7.0%     |
+| **Combined** | **159** | **158** | **27.6%** | **41.5%** | **8.2%** |
+
+Denominator: 412,320 lines (build_sailcov). *C ISA: 12/45 Zcb tests failed.*
+
+### Sail Spec-Level (RV64 deduplicated)
+
+| ISA | Unique Points | **Coverage %** |
+|-----|:------------:|:------------:|
+| I   | 1,166        | **3.0%** |
+| M   | 1,145        | **3.0%** |
+| A   | 1,144        | **3.0%** |
+| C   | 1,231        | **3.2%** |
+| F   | 1,985        | **5.2%** |
+| D   | 1,998        | **5.2%** |
+| **Combined** | **2,477** | **6.5%** |
+
+## RV64 vs RV32 Spec Coverage Comparison
+
+| ISA | RV64 | RV32 | Overlap | Combined |
+|-----|:----:|:----:|:-------:|:--------:|
+| I   | 1,166 | 1,094 | 1,075   | 1,185    |
+| M   | 1,145 | 1,048 | 1,031   | 1,162    |
+| A   | 1,144 | 1,086 | 1,069   | 1,161    |
+| C   | 1,231 | 1,152 | 1,123   | 1,260    |
+| F   | 1,985 | 2,148 | 1,883   | 2,250    |
+| D   | 1,998 | 2,230 | 1,886   | 2,342    |
+| **Total** | **2,477** | **2,761** | — | **2,983** |
+
+- RV64 total: **2,477/38,387 = 6.5%**
+- RV32 total: 2,761/38,387 = 7.1%
+- Combined: **2,983/38,387 = 7.8%**
+- RV64 adds +222 points over RV32 alone
+- High overlap (87-94% per ISA) — core RISC-V spec shared; F/D most divergent
+
+## Three-Suite + RV64 Comparison (build_sailcov)
 
 | Suite | ELFs | C-Level (gcov) | Sail Spec | Spec/C Ratio |
 |-------|:----:|:-------------:|:---------:|:------------:|
 | MicroTESK | 214 | 28.9% | **7.3%** | 0.25× |
-| RISCOF IMAFDC | 1,103 | 28.3% | 7.1% | 0.25× |
+| RISCOF RV32 IMAFDC | 1,103 | 28.3% | **7.1%** | 0.25× |
+| 🆕 RISCOF RV64 IMAFDC | 159 | 27.6% | **6.5%** | 0.24× |
+| 🆕 RISCOF RV64+RV32 | 1,262 | 29.2% | **7.8%** | 0.27× |
 | Imperas | 48 | 25.3% | 5.0% | 0.20× |
 | **All 3 Combined** | **1,365** | — | **8.7%** | — |
 
@@ -138,6 +186,7 @@ The **Sail spec-level coverage (7.1%)** is much lower than C code coverage (28.3
 | RISCOF only (not in MT/Imperas) | +453 | +1.2pp |
 | MicroTESK only | +409 | +1.1pp |
 | Imperas only | +63 | +0.2pp |
+| 🆕 RV64 only (not in RV32/MT/Imperas) | +102 | +0.3pp |
 
 ### Combined by Type (all 3 suites)
 - Functions: 286 / 1,769 = **16.2%**

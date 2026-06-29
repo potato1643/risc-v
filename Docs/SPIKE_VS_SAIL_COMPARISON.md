@@ -1,6 +1,6 @@
 # Spike vs Sail C Simulator — Coverage Comparison Report
 
-**Date:** 2026-06-23 (updated with Sail spec-level coverage)  
+**Date:** 2026-06-23 (updated with RV64 IMAFDC on build_sailcov + spec coverage)  
 **Project:** №2275, ISP RAS  
 **Author:** Bai Xiaoyu
 
@@ -37,27 +37,32 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 *\* Historical data from previous full runs with IMAFDC filter*  
 *\*\* Fresh measurements as of 2026-06-21*
 
-### 2.2 Sail C Simulator
+### 2.2 Sail C Simulator (build_sailcov, 412,320 lines denominator)
 
 | Test Suite | ELF | Pass | Fail | Line% | Func% | Branch% |
 |------------|:---:|:---:|:---:|:-----:|:-----:|:------:|
-| **🔥 ALL Combined (IMAFDC+Privileged)** | **1,415** | **1,414** | **1** | **32.2%** | **43.4%** | **10.0%** |
-| RISCOF IMAFDC + Privileged | 312 | 312 | 0 | **30.5%** | **42.6%** | **9.0%** |
-| RISCOF RV32 IMAFDC (solo) | 1,103 | 1,102 | 1 | **29.5%** | **41.8%** | **8.3%** |
-| MicroTESK | 214 | 187 | 27 | **29.7%** | **42.5%** | **8.6%** |
-| RISCOF RV64 IMAFDC (A+C+F+D) | 108 | 108 | 0 | **28.9%** | **41.7%** | **8.0%** |
-| RISCOF RV64I+RV32I | 88 | 88 | 0 | 20.2% | 40.1% | 3.6% |
-| Imperas RV32I | 48 | 48 | 0 | 26.3% | 40.9% | 6.4% |
+| MicroTESK | 214 | 187 | 27 | **28.9%** | **42.5%** | **9.0%** |
+| 🆕 RISCOF RV64+RV32 IMAFDC | 1,262 | 1,260 | 1 | **29.2%** | **42.2%** | **9.1%** |
+| RISCOF RV32 IMAFDC (solo) | 1,103 | 1,102 | 1 | **28.3%** | **41.8%** | **8.5%** |
+| 🆕 RISCOF RV64 IMAFDC (solo) | 159 | 158 | 1 | **27.6%** | **41.5%** | **8.2%** |
+| Imperas RV32I | 48 | 48 | 0 | **25.3%** | **40.9%** | **6.4%** |
+| RISCOF RV64I+RV32I (baseline) | 88 | 88 | 0 | 20.2% | 40.1% | 3.6% |
 
-### 2.3 Per-ISA Breakdown (Sail — RISCOF RV64)
+**Note:** All Sail data now uses the unified **build_sailcov** denominator (412,320 lines). RV64 data was regenerated on 2026-06-23. Old `build_cov` (372K) data has been superseded.
+
+### 2.3 Per-ISA Breakdown (Sail — RISCOF RV64) 🆕 Re-run on build_sailcov
 
 | ISA | ELF | Pass | Line% | Func% | Branch% |
 |-----|:---:|:---:|:-----:|:-----:|:------:|
-| A (Atomic) | 18 | 18 | 20.2% | 40.2% | 3.5% |
-| C (Compressed) | 45 | 45 | 27.5% | 41.3% | 7.2% |
-| F (Single FP) | 18 | 18 | 26.7% | 41.0% | 6.6% |
-| D (Double FP) | 27 | 27 | 26.8% | 41.0% | 6.7% |
-| **Combined** | **108** | **108** | **28.9%** | **41.7%** | **8.0%** |
+| I (Base Integer) | 50 | 50 | 18.9% | 40.2% | 3.4% |
+| M (Multiply) | 13 | 13 | 18.9% | 40.2% | 3.4% |
+| A (Atomic) | 18 | 18 | 18.7% | 40.2% | 3.3% |
+| C (Compressed) | 33 | 32* | 19.2% | 40.3% | 3.7% |
+| **F (Single FP)** | **18** | **18** | **25.6%** | **41.0%** | **6.9%** |
+| **D (Double FP)** | **27** | **27** | **25.8%** | **41.0%** | **7.0%** |
+| **RV64 IMAFDC Combined** | **159** | **158** | **27.6%** | **41.5%** | **8.2%** |
+
+*\*C: 12/45 files failed to compile — Zcb extension instructions (c.lbu, c.lh, c.sb, c.sext.b, etc.) not supported by default GCC*
 
 ### 2.4 Per-ISA Breakdown (Sail — RISCOF RV32) 🆕
 
@@ -69,24 +74,24 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 | C (Compressed) | 27 | 26 | 20.5% | 40.2% | 3.9% |
 | **F (Single FP)** | **342** | **342** | **27.3%** | **41.2%** | **7.0%** |
 | **D (Double FP)** | **679** | **679** | **27.6%** | **41.3%** | **7.1%** |
-| **RV32 IMAFDC Combined** | **1,103** | **1,102** | **29.5%** | **41.8%** | **8.3%** |
-| **RV64+RV32 ALL** | **1,211** | **1,210** | **27.8%** | **31.6%*** | **5.4%*** |
+| **RV32 IMAFDC Combined** | **1,103** | **1,102** | **28.3%** | **41.8%** | **8.5%** |
+| **🆕 RV64+RV32 IMAFDC** | **1,262** | **1,260** | **29.2%** | **42.2%** | **9.1%** |
 
-*\*RV64+RV32 denominator includes additional Spike source files (423K lines vs 372K for Sail-only)*
+*\*Denominator: 412,320 lines (build_sailcov). RV64+RV32 = RV64 (159 ELF) + RV32 (1,103 ELF) combined.*
 
-### 2.5 Per-ISA Breakdown (Sail — Privileged) 🆕
+### 2.5 Per-ISA Breakdown (Sail — Privileged) 🔄 Re-run on build_sailcov
 
-| ISA | ELF | Pass | Line% | Func% | Branch% |
-|-----|:---:|:---:|:-----:|:-----:|:------:|
-| pmp | 65 | 65 | 28.7% | 41.7% | 7.8% |
-| privilege | 21 | 21 | 26.7% | 41.1% | 6.6% |
-| vm_pmp | 12 | 12 | 27.3% | 41.7% | 6.9% |
-| vm_sv39 | 36 | 36 | 27.4% | 41.8% | 7.0% |
-| vm_sv48 | 36 | 36 | 27.4% | 41.8% | 7.0% |
-| vm_sv57 | 34 | 34 | 27.4% | 41.8% | 7.0% |
-| **Privileged Combined** | **204** | **204** | **30.5%** | **42.6%** | **9.0%** |
+| ISA | ELF | Pass | Line% | Func% | Branch% | Spec Pts |
+|-----|:---:|:---:|:-----:|:-----:|:------:|:--------:|
+| pmp | 65 | 65 | 27.8% | 41.8% | 7.8% | 2,590 |
+| privilege | 21 | 21 | 25.7% | 41.1% | 6.6% | 2,042 |
+| vm_pmp | 12 | 12 | 26.3% | 41.7% | 6.9% | 2,364 |
+| vm_sv39 | 36 | 36 | 26.4% | 41.8% | 7.0% | 2,401 |
+| vm_sv48 | 36 | 36 | 26.4% | 41.8% | 7.0% | 2,399 |
+| vm_sv57 | 34 | 34 | 26.4% | 41.8% | 7.0% | 2,395 |
+| **Privileged Combined** | **204** | **204** | — | — | — | **2,871 (7.5%)** |
 
-*\*Privileged combined = RV64 IMAFDC (28.9%) + all privileged ISAs merged*
+*\*Denominator: build_sailcov 412,320 lines. Old data (~27-29%) was on build_cov (372K).*
 
 ---
 
@@ -152,25 +157,48 @@ Imperas (only 48 ELF, RV32I-only) achieves 26.3% line coverage on Sail — compa
 ### 4.5 Branch Coverage Parallels Line Coverage
 Branch coverage follows the same pattern: Sail (6-8%) vs Spike (2-3%). Both simulators show low branch coverage because branch instrumentation captures all conditional branches in the code — test suites only exercise a fraction of possible execution paths.
 
-### 4.6 Privileged Tests Break 30% Ceiling on Sail 🆕
+### 4.6 🆕 Privileged Spec Coverage — +754 Points Over IMAFDC
 
-Running 204 privileged tests (pmp, privilege, vm_pmp, vm_sv39/48/57) on Sail pushed combined coverage to **30.5%** (IMAFDC+Privileged) and **32.2%** (all RISCOF). Key insights:
+Running 204 privileged tests on build_sailcov collected **first-ever privileged Sail spec coverage**. Key insights:
 
-- **pmp alone matches IMAFDC**: 65 PMP tests achieve 28.7% — nearly the 28.9% of 108 IMAFDC ELFs, demonstrating PMP's broad code impact
-- **Privileged adds +1.6pp over IMAFDC**: more than RV32 IMAFDC (+0.6pp), showing privileged infrastructure is underrepresented in IMAFDC-only testing
-- **Branch coverage hits 10.0%**: first time reaching double digits on Sail (from 8.3% IMAFDC)
-- **Functions at 43.4%**: approaching half of Sail's 22,912 functions
-- **All 204 privileged ELFs pass**: 100% pass rate, confirming Sail's mature privileged mode implementation
-- **New Sail coverage record**: 32.2% surpasses MicroTESK's 29.7%
+- **Privileged spec coverage: 2,871 unique points (7.5%)** — comparable to RISCOF RV32 IMAFDC (7.1%) with only 204 ELF
+- **IMAFDC + Privileged: 3,737/38,387 = 9.7%** — first time breaking 9% Sail spec coverage
+- **Privileged adds +754 points (+1.9pp)** — 3.4× RV64's contribution (+222), showing privileged infrastructure covers unique specification areas
+- **Overlap (2,117 points)**: IMAFDC and Privileged share significant infrastructure (config validation, memory model, exception handling)
+- **pmp is the star**: 65 PMP tests contribute 2,590 unique spec points — the largest per-ISA privileged contribution
+- **All 204 privileged ELFs pass**: 100% pass rate
+- **C-Level per-ISA**: pmp 27.8%, privilege 25.7%, vm_pmp 26.3%, vm_sv39/48/57 26.4%
 
-### 4.7 RISCOF RV32 IMAFDC Narrows Gap on Sail
+**Historical note:** Previous C-level data (pmp 28.7%, etc.) was from old build_cov (372K denominator). Current build_sailcov values are slightly lower due to the larger code base (412K vs 372K).
 
-With the addition of RV32 IMAFDC (1,103 ELFs, 1,102 pass), RISCOF achieved **29.5% line coverage** on Sail — just 0.2pp behind MicroTESK (29.7%). Key insights:
+### 4.7 RISCOF RV32 IMAFDC on Sail — Solid Results
 
-- **F/D are the dominant contributors**: RV32F (+7.1pp) and RV32D (+7.4pp) each contribute more than I/M/A/C combined (~20% baseline)
-- **RISCOF achieves this with 5× more tests**: 1,103 ELFs vs MicroTESK's 214, yet nearly identical coverage — suggesting diminishing returns above ~30% for Sail's monolithic code
-- **RV64+RV32 combined (27.8%) appears lower** because the RV64 info files were generated differently and include extra Spike source files (423K vs 372K denominator)
-- **Branch coverage (8.3%)** is close to MicroTESK (8.6%), confirming similar execution path diversity
+With RV32 IMAFDC (1,103 ELFs, 1,102 pass), RISCOF achieved **28.3%** line coverage on build_sailcov (412K denominator). Key insights:
+
+- **F/D are the dominant contributors**: RV32F (+6.1pp) and RV32D (+6.4pp) each contribute more than I/M/A/C combined (~19% baseline)
+- **RISCOF achieves this with 5× more tests**: 1,103 ELFs vs MicroTESK's 214, yet nearly identical coverage — suggesting diminishing returns above ~28% for Sail's monolithic code
+- **RV32 F/D ELF counts dwarf RV64**: 342+679 vs 18+27, explaining why RV32 leads overall
+- **Branch coverage (8.5%)** is close to MicroTESK (8.6%), confirming similar execution path diversity
+
+### 4.7a 🆕 RV64 IMAFDC on build_sailcov — Consistent Baseline
+
+RV64 IMAFDC was re-run on build_sailcov (2026-06-23) for consistent comparison:
+
+| Metric | RV64 IMAFDC | RV32 IMAFDC | RV64+RV32 |
+|--------|:-----------:|:-----------:|:---------:|
+| ELFs | 159 | 1,103 | 1,262 |
+| C-Level Lines | **27.6%** | **28.3%** | **29.2%** |
+| C-Level Functions | 41.5% | 41.8% | 42.2% |
+| C-Level Branches | 8.2% | 8.5% | 9.1% |
+| Sail Spec Points | 2,477 (**6.5%**) | 2,761 (**7.1%**) | 2,983 (**7.8%**) |
+
+Key observations:
+- **RV64 C-level (27.6%) ≈ RV32 (28.3%)** — remarkably close despite 7× fewer ELFs
+- **RV64 spec (6.5%) < RV32 (7.1%)** — RV32's massive F/D test suite (1,021 ELFs) dominates spec exercise
+- **RV64 leads I/M/A/C per-ISA** — 64-bit instructions naturally touch more spec infrastructure
+- **High overlap (87-94%)** — both test suites cover the same core specification, with F/D showing most divergence
+- **RV64 adds +222 spec points (+0.7pp)** over RV32 alone — modest unique value
+- **Combined: 29.2% C-level, 7.8% spec** — approaching the three-suite combined 8.7%
 
 ### 4.7 Test Suite Pass/Fail Behavior Consistent
 All three test suites pass at similar rates on both simulators:
@@ -191,12 +219,14 @@ Sail C Simulator has **two layers** of coverage:
 
 The spec-level coverage directly measures how much of the **formal Sail specification** is exercised — a fundamentally different metric from C code coverage.
 
-**Three-Suite Sail Spec Coverage:**
+**Sail Spec Coverage (all on build_sailcov):**
 
 | Suite | ELFs | C-Level (gcov) | **Sail Spec** | Spec/C Ratio |
 |-------|:----:|:-------------:|:------------:|:------------:|
-| MicroTESK | 214 | 28.9% | **7.3%** | 0.25× |
-| RISCOF IMAFDC | 1,103 | 28.3% | 7.1% | 0.25× |
+| RISCOF RV64+RV32 IMAFDC | 1,262 | 29.2% | 7.8% | 0.27× |
+| RISCOF Privileged | 204 | — | 7.5% | — |
+| 🆕 **RISCOF IMAFDC+Privileged** | **1,466** | — | **9.7%** | — |
+| MicroTESK | 214 | 28.9% | 7.3% | 0.25× |
 | Imperas | 48 | 25.3% | 5.0% | 0.20× |
 | **All 3 Combined** | **1,365** | — | **8.7%** | — |
 
@@ -225,13 +255,13 @@ The spec-level coverage directly measures how much of the **formal Sail specific
 
 1. **Dual-simulator gcov coverage fully operational** — both Spike and Sail collect C-level coverage from all three test suites.
 
-2. **Triple-layer coverage achieved 🆕** — added **Sail spec-level** (7.1%) as third dimension alongside Spike C-level (29.0% IMAFDC) and Sail C-level (28.3%). Spec coverage measures formal specification exercise.
+2. **Triple-layer coverage achieved 🆕** — added **Sail spec-level** as third dimension alongside Spike C-level (29.0% IMAFDC) and Sail C-level (29.2%). **RISCOF IMAFDC+Privileged hits 9.7% spec** — first time exceeding 9%.
 
-3. **Sail coverage record: 32.2% (C-level)** — combining RISCOF RV64+RV32+Privileged. Spec-level combined: **8.7%** across all three suites.
+3. **All Sail data unified on build_sailcov (412,320 lines)** — MicroTESK (28.9%), Imperas (25.3%), RISCOF (29.2%), Privileged spec (7.5%). No more build_cov vs build_sailcov discrepancy.
 
-4. **MicroTESK leads spec coverage (7.3%)** — 214 ELF beat RISCOF's 1,103 ELF (7.1%), confirming MT's broader specification path diversity.
+4. **MicroTESK leads spec per-ELF efficiency (7.3% with 214 ELF)** — RISCOF close behind (7.8% with 1,262 ELF). Privileged adds significant unique value (+754 spec points).
 
-5. **>91% of Sail specification untested** — all three suites combined cover only 8.7% of 38,387 formal specification points, revealing the vast gap between conformance testing and full specification exercise.
+5. **>90% of Sail specification untested** — all suites combined cover only 8.7% (three-suite) to 9.7% (RISCOF IMAFDC+Privileged) of 38,387 formal specification points.
 
 6. **Spike vs Sail rankings converge** — with enough tests, both simulators show consistent test suite rankings. The spec-level dimension provides a more rigorous comparison than C code coverage alone.
 
@@ -243,6 +273,8 @@ The spec-level coverage directly measures how much of the **formal Sail specific
 - [x] Run privileged mode tests on Sail ✅
 - [x] 🆕 Sail spec-level coverage: rebuild with COVERAGE=ON, collect .branch_info ✅
 - [x] 🆕 Three-suite spec coverage comparison ✅
-- [ ] Regenerate RV64 Sail data with build_sailcov (consistent denominator)
+- [x] Regenerate RV64 Sail data with build_sailcov ✅ (2026-06-23)
+- [x] 🔄 Re-run MicroTESK + Imperas + Privileged on build_sailcov ✅ (2026-06-29)
+- [x] 🆕 Privileged Sail spec coverage collected ✅ (2026-06-29)
 - [ ] Final project report
 - [ ] Generate IMAFDC-equivalent filter for Sail spec coverage
