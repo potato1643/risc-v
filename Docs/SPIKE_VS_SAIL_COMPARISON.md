@@ -10,7 +10,7 @@
 
 Both simulators were built with GCC `--coverage` instrumentation and run with the same three test suites:
 - **Spike** (riscv-isa-sim): hand-written C++, 53,227 lines tracked by lcov
-- **Sail C** (sail-riscv v0.9): auto-generated C from formal Sail specification, 372,297 lines
+- **Sail C** (sail-riscv v0.9): auto-generated C from formal Sail specification, 412,320 lines (build_sailcov)
 
 Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` for branch coverage. HTML reports generated with `genhtml`.
 
@@ -100,26 +100,23 @@ Coverage was collected via `lcov --capture` with `--rc lcov_branch_coverage=1` f
 ### 3.1 Line Coverage
 
 ```
-Suite                    Spike        Sail         Sail/Spike ratio
+Suite                    Spike        Sail (build_sailcov 412K)
 --------------------------------------------------------------------------
-RISCOF ALL IMAFDC        29.0%*       29.5%**      1.02x (RV32 solo)
-RISCOF ALL IMAFDC        29.0%*       27.8%***     0.96x (full denominator)
-MicroTESK                19.6%        29.7%        1.52x
-RISCOF RV64I             15.5%        20.2%†       1.30x
-Imperas                  15.7%        26.3%        1.68x
+RISCOF RV64+RV32 IMAFDC  29.0%*       29.2%
+MicroTESK                19.6%        28.9%
+RISCOF RV32 IMAFDC         —          28.3%
+RISCOF RV64 IMAFDC         —          27.6%
+Imperas                  15.7%        25.3%
 ```
 
-*\*Spike IMAFDC-filtered (40,374 lines)*  
-*\*\*Sail RV32 IMAFDC solo (372,297 lines) — directly comparable to RV64 Sail*  
-*\*\*\*Sail RV64+RV32 combined (423,311 lines — includes extra code from RV64 info files)*  
-*†RISCOF RV64I+RV32I combined*
+*\*Spike IMAFDC-filtered. Sail data on unified build_sailcov denominator.*
 
 ### 3.2 Function Coverage
 
 ```
 Suite                    Spike        Sail         Notes
 --------------------------------------------------------------------------
-RISCOF ALL IMAFDC        22.0%        41.8%        Sail funcs much denser
+RISCOF RV64+RV32 IMAFDC  22.0%        42.2%        Sail funcs much denser
 MicroTESK                14.6%        42.5%        Sail funcs much denser
 Imperas                  12.3%        40.9%        Same pattern
 ```
@@ -131,12 +128,12 @@ Imperas                  12.3%        40.9%        Same pattern
 2. MicroTESK (filtered): 25.9%
 3. Imperas: 15.7%
 
-**Sail (Line% — Sail-only denominator 372K):**
-1. **ALL Combined: 32.2%** 🏆 New record
-2. IMAFDC+Privileged: 30.5%
-3. MicroTESK: 29.7%
-4. RISCOF RV32 IMAFDC: 29.5%
-5. Imperas: 26.3%
+**Sail (Line% — build_sailcov, 412K):**
+1. RISCOF RV64+RV32 IMAFDC: **29.2%**
+2. MicroTESK: 28.9%
+3. RISCOF RV32 IMAFDC: 28.3%
+4. RISCOF RV64 IMAFDC: 27.6%
+5. Imperas: 25.3%
 
 ---
 
@@ -149,7 +146,7 @@ Sail's line coverage is consistently ~1.3-1.7x higher than Spike for the same te
 Sail's function coverage (~40%) dwarfs Spike's (~12-15%). This is an artifact of code generation: the Sail compiler emits many small functions for the formal model's state machine, and most of them get touched even with basic instruction execution.
 
 ### 4.3 MicroTESK Is Surprisingly Strong on Sail
-On Sail, MicroTESK (214 ELF, 29.7%) slightly edges out RISCOF RV64 IMAFDC (108 ELF, 28.9%). The MicroTESK algorithmic tests, though fewer in number, exercise more diverse coverage patterns in Sail's monolithic code. This is the opposite of Spike where RISCOF dominates.
+On Sail, MicroTESK (214 ELF, 28.9%) slightly edges out RISCOF RV64 IMAFDC (159 ELF, 27.6%). The MicroTESK algorithmic tests, though fewer in number, exercise more diverse coverage patterns in Sail's monolithic code. This is the opposite of Spike where RISCOF dominates.
 
 ### 4.4 Imperas RV32I Effectiveness
 Imperas (only 48 ELF, RV32I-only) achieves 26.3% line coverage on Sail — comparable to RISCOF RV64 IMAFDC's 28.9% with 2x more ELFs. This suggests Imperas RV32I tests are well-designed for exercising fundamental ISA infrastructure in Sail.

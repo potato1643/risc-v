@@ -261,18 +261,18 @@ ISAs: I M A C F D
   Running tests on sail...
   Result: pass=38 fail=0 timeout=0
   Coverage:
-  lines......: 20.2% (75264 of 372297 lines)
-  functions..: 40.1% (9188 of 22912 functions)
-  branches...: 3.6% (11343 of 313342 branches)
+  lines......: 18.7% (77258 of 412320 lines)
+  functions..: 40.1% (9200 of 22963 functions)
+  branches...: 3.6% (11343 of 375964 branches)
   Saved: riscof_sail_rv32_I_coverage.info
 ...
 ============================================
   Phase 3: Combined RV32 + RV64 IMAFDC
 ============================================
 RV32 IMAFDC combined:
-  lines......: 29.5% (109673 of 372297 lines)
-  functions..: 41.8% (9576 of 22912 functions)
-  branches...: 8.3% (25969 of 313342 branches)
+  lines......: 28.3% (116684 of 412320 lines)
+  functions..: 41.8% (9600 of 22963 functions)
+  branches...: 8.5% (31950 of 375964 branches)
 ```
 
 ### 10.4 Пример: Привилегированные тесты на Sail
@@ -282,7 +282,7 @@ cd "Тестовые наборы/RISC-V Architectural Certification Tests"
 SIMULATOR=sail bash run_riscof_all_isa.sh sail pmp privilege vm_pmp vm_sv39 vm_sv48 vm_sv57
 ```
 
-204 ELF. Результат: IMAFDC+Privileged = 30.5%, ALL = 32.2%.
+204 ELF. Spec покрытие: Privileged = 7.5% (2,871 точек), IMAFDC+Privileged = 9.7% (3,737 точек).
 
 ### 10.5 Просмотр покрытия Sail
 
@@ -291,9 +291,9 @@ SIMULATOR=sail bash run_riscof_all_isa.sh sail pmp privilege vm_pmp vm_sv39 vm_s
 docker exec riscv-env sh -c "
 lcov --rc lcov_branch_coverage=1 --summary /tmp/riscof_rv32_results/riscof_sail_rv32_imafdc.info 2>&1 | grep -E 'lines|functions|branches'
 "
-# lines......: 29.5% (109673 of 372297 lines)
-# functions..: 41.8% (9576 of 22912 functions)
-# branches...: 8.3% (25969 of 313342 branches)
+# lines......: 28.3% (116684 of 412320 lines)
+# functions..: 41.8% (9600 of 22963 functions)
+# branches...: 8.5% (31950 of 375964 branches)
 ```
 
 **HTML-отчёт (в браузере):**
@@ -318,25 +318,23 @@ open ./sail_html/index.html
 
 | Файл | Содержание | Строки | % |
 |------|-----------|:------:|:--:|
-| `riscof_sail_rv32_imafdc.info` | RV32 IMAFDC | 109,673 | 29.5% |
-| `riscof_sail_imafdc_combined.info` | RV64 IMAFDC | 107,598 | 28.9% |
-| `riscof_sail_imafdc_priv_combined.info` | IMAFDC+Privileged | 113,503 | 30.5% |
-| `riscof_sail_everything.info` | ALL (RV64+RV32+Priv) | 119,788 | **32.2%** |
+| `riscof_sail_all_imafdc.info` | RV64+RV32 IMAFDC | 120,327 | 29.2% |
+| `riscof_sail_rv64_imafdc.info` | RV64 IMAFDC | 113,898 | 27.6% |
+| `riscof_sail_rv32_imafdc.info` | RV32 IMAFDC | 116,684 | 28.3% |
 
 Все файлы в: `Тестовые наборы/RISC-V Architectural Certification Tests/riscof_sail_*.info`
 
-### 10.7 Сводка покрытия Sail по наборам тестов
+### 10.7 Сводка покрытия Sail по наборам тестов (build_sailcov, 412K строк)
 
 | Тестовый набор | ELF | Line% | Func% | Branch% |
 |----------------|:---:|:-----:|:-----:|:------:|
-| RISCOF ALL (RV64+RV32+Priv) | 1,415 | **32.2%** | 43.4% | 10.0% |
-| RISCOF IMAFDC + Privileged | 312 | 30.5% | 42.6% | 9.0% |
-| MicroTESK | 214 | **29.7%** | **42.5%** | **8.6%** |
-| RISCOF RV32 IMAFDC | 1,103 | 29.5% | 41.8% | 8.3% |
-| RISCOF RV64 IMAFDC | 108 | 28.9% | 41.7% | 8.0% |
-| Imperas RV32I | 48 | 26.3% | 40.9% | 6.4% |
+| RISCOF RV64+RV32 IMAFDC | 1,262 | **29.2%** | 42.2% | 9.1% |
+| MicroTESK | 214 | **28.9%** | **42.5%** | 9.0% |
+| RISCOF RV32 IMAFDC | 1,103 | 28.3% | 41.8% | 8.5% |
+| RISCOF RV64 IMAFDC | 159 | 27.6% | 41.5% | 8.2% |
+| Imperas RV32I | 48 | 25.3% | 40.9% | 6.7% |
 
-> **Примечание:** Sail — автосгенерированный C-код из формальной спецификации (372,297 строк). Процент покрытия НЕ сопоставим напрямую со Spike (ручной C++, 53,227 строк). Сравнивать можно относительный рейтинг тестовых наборов внутри каждого симулятора.
+> **Примечание:** Sail — автосгенерированный C-код из формальной спецификации (412,320 строк, build_sailcov). Процент покрытия НЕ сопоставим напрямую со Spike (ручной C++, 53,227 строк). Сравнивать можно относительный рейтинг тестовых наборов внутри каждого симулятора. Для Spec-Level покрытия см. `Docs/SAIL_SPEC_COVERAGE.md`.
 
 ### 10.8 Сборка Sail с gcov (при необходимости)
 
@@ -346,7 +344,7 @@ open ./sail_html/index.html
 docker exec riscv-env sh -c '
 export PATH="/opt/sail/bin:$PATH"
 cd /opt/sail-riscv
-mkdir -p build_cov && cd build_cov
+mkdir -p build_sailcov && cd build_sailcov
 cmake .. \
     -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_C_FLAGS="--coverage -g -O0" \
@@ -354,7 +352,7 @@ cmake .. \
     -DCMAKE_EXE_LINKER_FLAGS="--coverage"
 cmake --build . -j$(nproc)
 '
-# Бинарный файл: /opt/sail-riscv/build_cov/c_emulator/sail_riscv_sim
+# Бинарный файл: /opt/sail-riscv/build_sailcov/c_emulator/sail_riscv_sim
 ```
 
 ---

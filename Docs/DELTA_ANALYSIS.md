@@ -96,11 +96,12 @@ RISCOF leads on IMAFDC code, MicroTESK leads on the full codebase. This demonstr
 
 | Test Suite | ELF | Sail Line% |
 |------------|:---:|:----------:|
-| MicroTESK | 214 | **29.7%** |
-| RISCOF RV32 IMAFDC | 1,103 | **29.5%** |
-| Imperas RV32I | 48 | 26.3% |
+| RISCOF RV64+RV32 IMAFDC | 1,262 | **29.2%** |
+| MicroTESK | 214 | **28.9%** |
+| RISCOF RV32 IMAFDC | 1,103 | **28.3%** |
+| Imperas RV32I | 48 | 25.3% |
 
-On Sail (monolithic auto-generated code), the gap is razor-thin: **0.2pp** between MicroTESK and RISCOF. RISCOF achieves this with 5× more tests, confirming that both suites reach similar coverage saturation on Sail's centralized code structure.
+On Sail (monolithic auto-generated code, build_sailcov 412K lines), RISCOF RV64+RV32 leads at 29.2%, with MicroTESK close behind at 28.9% despite 6× fewer tests — confirming MT's higher per-ELF efficiency. RISCOF achieves comparable coverage through sheer test volume (1,262 ELFs).
 
 ---
 

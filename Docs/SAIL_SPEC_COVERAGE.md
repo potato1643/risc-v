@@ -4,12 +4,12 @@
 
 Sail C Simulator has **two layers** of coverage:
 
-| Layer | Mechanism | What it Measures | Previous Status |
-|-------|-----------|-----------------|:---------------:|
-| **Sail Spec-Level** | `COVERAGE=ON` → `--c-coverage` → `.branch_info` + `sail_coverage` | Formal Sail specification exercise | ❌ Not collected |
+| Layer | Mechanism | What it Measures | Status |
+|-------|-----------|-----------------|:------:|
+| **Sail Spec-Level** | `COVERAGE=ON` → `--c-coverage` → `.branch_info` + `sail_coverage` | Formal Sail specification exercise | ✅ Collected |
 | **C Code-Level** | GCC `--coverage` → gcov/lcov `.info` | Generated C code exercise | ✅ Collected |
 
-This analysis is the **first-ever** collection and comparison of both layers.
+Both layers have been collected for **all three test suites** (RISCOF, MicroTESK, Imperas) plus RISCOF Privileged mode tests — the first-ever dual-layer coverage analysis for RISC-V compliance testing.
 
 ## Build: Sail with COVERAGE=ON
 
@@ -193,13 +193,53 @@ Denominator: 412,320 lines (build_sailcov). *C ISA: 12/45 Zcb tests failed.*
 - Branches: 1,225 / 12,242 = **10.0%**
 - Branch targets: 1,840 / 24,376 = **7.5%**
 
+## Results: RISCOF Privileged (204 ELF) 🔄 2026-06-29
+
+### C Code-Level (gcov/lcov, build_sailcov)
+
+| ISA | ELFs | Pass | Lines | Functions | Branches |
+|-----|:----:|:----:|:-----:|:---------:|:--------:|
+| pmp | 65 | 65 | 27.8% | 41.8% | 7.8% |
+| privilege | 21 | 21 | 25.7% | 41.1% | 6.6% |
+| vm_pmp | 12 | 12 | 26.3% | 41.7% | 6.9% |
+| vm_sv39 | 36 | 36 | 26.4% | 41.8% | 7.0% |
+| vm_sv48 | 36 | 36 | 26.4% | 41.8% | 7.0% |
+| vm_sv57 | 34 | 34 | 26.4% | 41.8% | 7.0% |
+
+### Sail Spec-Level (Privileged deduplicated)
+
+| ISA | Unique Points | **Coverage %** |
+|-----|:------------:|:------------:|
+| pmp | 2,590 | **6.7%** |
+| privilege | 2,042 | **5.3%** |
+| vm_pmp | 2,364 | **6.2%** |
+| vm_sv39 | 2,401 | **6.3%** |
+| vm_sv48 | 2,399 | **6.2%** |
+| vm_sv57 | 2,395 | **6.2%** |
+| **Privileged Combined** | **2,871** | **7.5%** |
+
+### 🏆 IMAFDC + Privileged Grand Total
+
+| Layer | IMAFDC (RV64+RV32) | Privileged | **Combined** |
+|-------|:---:|:---:|:---:|
+| C-Level (gcov) | 29.2% | — | — |
+| **Spec-Level** | 7.8% (2,983) | 7.5% (2,871) | **9.7% (3,737)** |
+
+- **Privileged adds +754 unique spec points (+1.9pp)** — largest single-component contribution
+- Overlap IMAFDC ∩ Privileged: 2,117 points (shared infrastructure: config validation, memory model, exception handling)
+- **pmp alone (65 ELF): 2,590 points (6.7%)** — most efficient privileged ISA
+- First time exceeding **9%** Sail spec coverage
+- All data on unified **build_sailcov** (412,320 lines) denominator
+
 ## Files
 
 | File | Description |
 |------|-------------|
 | `sail_riscv_model.branch_info` | Static reference (38,387 points) |
-| `riscof_sail_rv32_*.sailcov.txt` | RISCOF per-ISA runtime coverage |
-| `microtesk_sailcov.txt` | MicroTESK runtime coverage |
-| `imperas_sailcov.txt` | Imperas runtime coverage |
-| `sail_spec_imafdc_combined_unique.txt` | RISCOF combined deduplicated |
+| `riscof_sail_rv32_*.sailcov.txt` | RISCOF RV32 per-ISA spec coverage (6 files) |
+| `riscof_sail_rv64_*.sailcov.txt` | RISCOF RV64 per-ISA spec coverage (6 files) |
+| `riscof_sail_{pmp,privilege,vm_*}_sailcov.txt` | RISCOF Privileged spec coverage (6 files) |
+| `microtesk_sailcov.txt` | MicroTESK spec coverage |
+| `imperas_sailcov.txt` | Imperas spec coverage |
+| `riscof_sail_{rv64_,}imafdc.info` | Combined C-level coverage (IMAFDC, build_sailcov) |
 | `*_sailcov_unique.txt` | Per-suite deduplicated files |
